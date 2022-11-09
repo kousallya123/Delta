@@ -1,0 +1,9 @@
+.sidebar{
+    flex: 3;
+    height: 93vh;
+    background-color:#fff;
+}
+.fileuploaded{
+    background-color: aqua;
+    color: black;
+}

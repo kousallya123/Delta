@@ -1,0 +1,49 @@
+.profileCover{
+    height: 250px;
+    position: relative;
+    background-color: black;
+}
+
+.profileCoverImage{
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    position: relative;
+    opacity: 0.6;
+  
+}
+
+.profileUserImage{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: 20px;
+    top: 25px;
+    border: 3px solid white ;
+}
+
+.profileInfo{
+    color: rgb(244, 250, 255);
+    position: absolute;
+    top: 180px;
+    margin-left: 20px;
+}
+
+
+.profileInfoName{
+    font:bold;
+    font-size: 24px;
+}
+
+
+.profileInfoDesc{
+    font-weight: 300;
+}
+
+.profileInfoDesc{
+
+}

@@ -1,18 +1,32 @@
+require('dotenv').config()
 const express=require('express')
-const app=express()
-const userRouter=require('./routes/users')
-
+const mongoose=require('mongoose')
 const cors=require('cors')
-app.use(cors())
+const cookieParser=require('cookie-parser')
 
 
-const {connetDb}=require('../server/helpers/mongo')
-connetDb()
- 
+const app=express()
 app.use(express.json())
-app.use('/',userRouter)
+app.use(cors())
+app.use(cookieParser())
 
-app.listen(5000, 'localhost'); // or server.listen(3001, '0.0.0.0'); for all interfaces
-app.on('listening', function() {
-    console.log('Express server started on port %s at %s', server.address().port, server.address().address);
-});
+
+app.use('/',require('./routes/authRouter'))
+app.use('/post',require('./routes/postRouter'))
+app.use('/admin',require('./routes/adminRouter'))
+
+
+const URI=process.env.MONGODB_URL
+mongoose.connect(URI,{
+    useNewUrlParser:true,
+    useUnifiedTopology:true
+},err=>{
+    if(err) throw err;
+    console.log('connected to mongodb');
+})
+
+
+const port=process.env.PORT || 5000
+app.listen(port,()=>{
+    console.log(`server is runing on port`,port);
+})
