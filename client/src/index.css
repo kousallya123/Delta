@@ -17,6 +17,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#theme:checked ~ .App{
+  filter: invert(1);
+} 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+

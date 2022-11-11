@@ -31,9 +31,9 @@ function Navbar() {
         <div className='topbarIconItem'>
         <FavoriteBorderIcon/>
         </div>
-        <div className='topbarIconItem'>
+        {/* <div className='topbarIconItem'>
         <AddBoxIcon/>
-        </div>
+        </div> */}
         <div className='topbarIconItem'>
         <ChatIcon/>
         <span className="topbarIconBadge">2</span>
@@ -50,3 +50,5 @@ function Navbar() {
 }
 
 export default Navbar
+
+

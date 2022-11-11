@@ -1,9 +1,10 @@
-.sidebar{
-    flex: 3;
-    height: 93vh;
-    background-color:#fff;
+.navbar_barContent{
+    height: 54px;
+    background-color: white;
+    border-bottom: 1px solid #dbdbdb;
 }
-.fileuploaded{
-    background-color: aqua;
-    color: black;
+
+.navbar_logo{
+    margin: 10px;
+    height: 40px;
 }
