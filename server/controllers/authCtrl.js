@@ -50,6 +50,7 @@ const { isObjectIdOrHexString } = require('mongoose')
             return res.json({msg:error.message})
         }
     }
+    
     const authCtrlLogin=async(req,res)=>{
         try {
             console.log(req.body);
@@ -170,9 +171,8 @@ const { isObjectIdOrHexString } = require('mongoose')
 const getUser=async(req,res)=>{
    try {
       const user=await Users.findById(req.params.id)
-      const {passwoed,updatedAt,...other}=user._doc
       if(user){
-        res.json(other)
+        res.json(user)
       }
      
    } catch (error) {

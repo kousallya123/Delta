@@ -1,14 +1,18 @@
-import React,{useState} from 'react'
+import React,{useContext, useState} from 'react'
 import {Link,useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import './Login.css'
+import { useDispatch } from 'react-redux'
+import { login } from '../../../features/userReducer'
 
 function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const navigate=useNavigate()
+    const dispatch=useDispatch()
+
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -27,6 +31,10 @@ function Login() {
                     email: email,
                     password: password
                 });
+                dispatch(login({
+                    user:data.user,
+                    loggedIn:true}))
+              
                 if (data) {
                     console.log(data);
                     if (data.user) {
@@ -39,8 +47,7 @@ function Login() {
                             timer: 1500,
                             size:"small"
                           })
-                        console.log(data)
-                        navigate("/home");  
+                        navigate("/home"); 
                        
                     } else {
                         setErrorMessage(data.msg)

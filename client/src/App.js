@@ -8,16 +8,20 @@ import Sidebar from './Components/Users/Sidebar/Sidebar';
 import AdminLogin from './Components/Admin/Login/Login'
 import AdminHomePage from './Pages/Admin/AdminHomePage';
 import ProfilePage from './Pages/User/ProfilePage';
+import { useSelector } from 'react-redux';
+import { selectUser } from './features/userReducer';
 
 function App() {
+  const user=useSelector(selectUser)
+  console.log(user);
   return (
     <div className="App">
        <Router>
           <Routes>  
               <Route path='/signup' element={<SignupPage/>}/> 
               <Route path='/' element={<LoginPage/>}/>  
-              <Route path='/home' element={<Homepage/>}/>
-              <Route path='/profile' element={<ProfilePage/>}/>
+               {user?<Route path='/home' element={<Homepage/>}/>:<Route path='/home' element={<LoginPage/>}/>} 
+               {user? <Route path='/profile' element={<ProfilePage/>}/>: <Route path='/profile' element={<LoginPage/>}/>} 
           </Routes>
           <Routes>  
           <Route path='/sidebar' element={<Sidebar/>}/>

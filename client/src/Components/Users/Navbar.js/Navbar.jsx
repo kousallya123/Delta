@@ -1,21 +1,29 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Navbar.css'
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import ChatIcon from '@mui/icons-material/Chat';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import AddBoxIcon from '@mui/icons-material/AddBox';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import {Link} from 'react-router-dom'
+import {Link, Navigate} from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, selectUser } from '../../../features/userReducer';
 
 function Navbar() {
+  const user=useSelector(selectUser)
+  const dispatch=useDispatch();
+    const handleLogout=(e)=>{
+      e.preventDefault();
+     dispatch(logout())
+     Navigate('/')
+    }
+   
   return (
     <div className='topbarContainer'>
      <div className="topbarLeft">
       <Link to='/home' style={{textDecoration:"none"}}>
       <span className="logo">Delta</span>
       </Link>
-       
      </div>
      <div className="topbarCenter">
       <div className="searchBar">
@@ -44,6 +52,7 @@ function Navbar() {
         </div>
        </div>
        <img src="/assets/c2.jpg" alt="" className="topbarImg" />
+       <button onClick={(e)=>handleLogout(e)}>Logout</button>
      </div>
     </div>
   )
