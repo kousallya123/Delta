@@ -3,12 +3,16 @@ const userDetails=JSON.parse(localStorage.getItem('user'))
 
 
 if(userDetails){
-    userDetails=userDetails.user
+   var {username,email,profilePicture,coverPicture,followers,followings,posts,createdAt}=userDetails
 }
+
+
 export const userSlice=createSlice({
     name:"user",
     initialState:{
-        user:
+        user:{
+            username,email,profilePicture,coverPicture,followers,followings,posts,createdAt
+        }
     },
     reducers:{
          login:(state,action)=>{

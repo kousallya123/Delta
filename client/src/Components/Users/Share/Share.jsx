@@ -36,6 +36,8 @@ function Share() {
      console.log(err);
     }
   }
+  console.log('user detailssssssssssss');
+  console.log(user);
   return (
     <div className='share'>
       <div className='shareWrapper'>
