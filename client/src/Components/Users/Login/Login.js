@@ -31,10 +31,7 @@ function Login() {
                     email: email,
                     password: password
                 });
-                dispatch(login({
-                    user:data.user,
-                    loggedIn:true}))
-              
+               
                 if (data) {
                     console.log(data);
                     if (data.user) {
@@ -48,6 +45,10 @@ function Login() {
                             size:"small"
                           })
                         navigate("/home"); 
+                        localStorage.setItem('user', JSON.stringify(data.user))
+                        dispatch(login({
+                            user:data.user,
+                            loggedIn:true}))        
                        
                     } else {
                         setErrorMessage(data.msg)

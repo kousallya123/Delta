@@ -9,6 +9,7 @@ function Share() {
   const user=useSelector(selectUser)
   const [file,setFile]= useState('')
   const [desc,setDesc]=useState('')
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const submitHandler=async(e)=>{
     e.preventDefault() 
     const newPost={
@@ -17,12 +18,13 @@ function Share() {
     }
     if(file){
       const data=new FormData();
-      const fileName=Date.now()+file.name
+      const fileName=file.name
       data.append("file",file)
-      data.append('name',fileName)
+      data.append("name",fileName)
       newPost.img=fileName
       try {
-        await axios.post(`http://localhost:5000/upload`,data)
+        await axios.post('http://localhost:5000/post/upload',data)
+        window.location.reload()
         
       } catch (error) {
         console.log(error);
@@ -39,7 +41,7 @@ function Share() {
       <div className='shareWrapper'>
        <div className="shareTop">
         <img src={user.profilePicture? user.profilePicture:'/assets/c2.jpg'} className='shareProfileImg' alt=""></img>  
-        <input placeholder="what's in your mind?" className='shareInput' value={desc}  onChange={(e)=> {setDesc(e.target.value)}}></input>
+        <input className="shareInput"placeholder={"What's in your mind " + user.user.username + "?"} onChange={(e)=> {setDesc(e.target.value)}}></input>
 
        </div>
        <hr className='shareHr'/>
@@ -48,7 +50,7 @@ function Share() {
            <label for='file' className="shareOptions">
             <PermMedia htmlColor="tomato" className='shareIcon'/>
             <span className='shareOptionText'>Photo</span>
-            <input style={{display:"none"}} type='file' id='file' onChange={(e)=>setFile(e.target.files[0])}/>
+            <input style={{display:"none"}} type='file'name='file' id='file' onChange={(e)=>setFile(e.target.files[0])}/>
            </label>
          </div>
          {/* <div className="shareOptions">

@@ -13,7 +13,6 @@ import { selectUser } from './features/userReducer';
 
 function App() {
   const user=useSelector(selectUser)
-  console.log(user);
   return (
     <div className="App">
        <Router>
@@ -21,7 +20,7 @@ function App() {
               <Route path='/signup' element={<SignupPage/>}/> 
               <Route path='/' element={<LoginPage/>}/>  
                {user?<Route path='/home' element={<Homepage/>}/>:<Route path='/home' element={<LoginPage/>}/>} 
-               {user? <Route path='/profile' element={<ProfilePage/>}/>: <Route path='/profile' element={<LoginPage/>}/>} 
+               {user? <Route path='/profile/:username' element={<ProfilePage/>}/>: <Route path='/profile/:username' element={<LoginPage/>}/>} 
           </Routes>
           <Routes>  
           <Route path='/sidebar' element={<Sidebar/>}/>

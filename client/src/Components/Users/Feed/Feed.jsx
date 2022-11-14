@@ -13,7 +13,11 @@ function Feed() {
    useEffect (()=>{
       const fetchPost=async()=>{
         const res=await axios.get(`http://localhost:5000/post/timeline/${user.user._id}`)
-        setPosts(res.data)
+        setPosts(
+          res.data.sort((p1,p2)=>{
+          return new Date(p2.createdAt)-new Date(p1.createdAt)
+        })
+       )
       }
       fetchPost()
    },[])

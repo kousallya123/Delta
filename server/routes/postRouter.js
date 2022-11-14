@@ -6,18 +6,21 @@ const {addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost}=req
 
 const storage = multer.diskStorage({
     destination(req, file, callback) {
-        callback(null, '../client/public/images');
+        callback(null, './public/images');
     },
     filename(req, file, callback) {
-        callback(null, fileName);
+        callback(null,file.originalname);
     },
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage:storage});
 
-router.post('/upload', upload.single('image'), (req, res) => {
-    console.log('upppppppppppp');
-    console.log(req.body);
+router.post('/upload', upload.single('file'), (req, res) => {
+    try {
+        res.json("success")
+    } catch (error) {
+        res.json(error)
+    }
 })
 
 router.post("/",addPost)

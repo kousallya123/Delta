@@ -8,24 +8,26 @@ import { useSelector } from 'react-redux'
 import { selectUser } from '../../../features/userReducer'
 
 function Post({post}) {
-    const users=useSelector(selectUser)
-   
-
-
+    const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+   const users=useSelector(selectUser)
     const likeHandler=() =>{
        try {
          const like=async()=>{
-          await axios.put(`http://localhost:5000/post/like/${post._id}`,{userId:users.user._id})
+          console.log(users.user._id);
+          console.log(post._id);
+          let liked=await axios.put(`http://localhost:5000/post/like/${post._id}`,{userId:users.user._id})
+          console.log(liked);
          }
          like()
          
        } catch (error) {
-        
+         console.log(error);
        }
         setLike(isliked ? like-1 :like+1)
         seIstLiked(!isliked)
     }
-    const [like,setLike]=useState(post.likes.length)
+    console.log(post.likes.length);
+    const [like,setLike]=useState('')
     const [isliked,seIstLiked]=useState(false)
     const [user,setUser]=useState({})
 
@@ -40,7 +42,7 @@ function Post({post}) {
    
    useEffect(()=>{
     setLike(post.likes.includes(users.user._id))
-    },[users.user._id,post.likes])
+    },[])
 
 
 
@@ -61,7 +63,7 @@ function Post({post}) {
         </div>
         <div className='postCenter'>
             <span className="postText">{post?.desc}</span>
-            <img className="postImg"src={post.img} alt=''/>
+            <img className="postImg"src={PF+post.img} alt=''/>
         </div>
         <div className='w-full h-16  border-slate-300 '>
           <div className='w-full  flex justify-between  h-3/5 items-center '>
@@ -75,8 +77,11 @@ function Post({post}) {
           </div>
 
           <div className='w-full  h-2/5 text-xs flex justify-start p-2'>
-            Liked_by: britto and {like} others
+               Liked by {like} peoples
           </div>
+          {/* <div className="postBottomRight">
+            <span className="postCommentText">{post.comment} comments</span>
+          </div> */}
 
         </div>
         </div>

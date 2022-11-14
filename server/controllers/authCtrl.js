@@ -53,11 +53,10 @@ const { isObjectIdOrHexString } = require('mongoose')
     
     const authCtrlLogin=async(req,res)=>{
         try {
-            console.log(req.body);
          const {email,password}=req.body
 
          const user=await userModel.findOne({email})
-   
+                
          if(!user) return res.json({msg:'Could not find the user'})
          
          const isMatch=await bcrypt.compare(password,user.password)

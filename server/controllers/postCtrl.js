@@ -2,6 +2,8 @@ const express=require('express')
 const Users=require('../models/userModel')
 const Post=require('../models/postSchema')
 
+
+
 const addPost=async(req,res)=>{
     const newPost=new Post(req.body)
     try {
@@ -46,7 +48,10 @@ const deletePost=async(req,res)=>{
 }
 
 const likePost=async(req,res)=>{
+    console.log(req.body.userId);
+    console.log(req.params.id);
     try{
+        console.log('like');
         const post=await Post.findById(req.params.id)
         console.log(post);
         if(!post.likes.includes(req.body.userId)){
@@ -58,7 +63,6 @@ const likePost=async(req,res)=>{
             res.json("The post has been unliked")
         }
     }catch(error){
-        console.log('something went wrong');
         res.json(error)
     }
    }
