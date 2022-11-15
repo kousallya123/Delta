@@ -4,12 +4,9 @@ import Feed from '../../Components/Users/Feed/Feed'
 import Navbar from '../../Components/Users/Navbar.js/Navbar'
 import Rightbar from '../../Components/Users/Rightbar/Rightbar'
 import Sidebar from '../../Components/Users/Sidebar/Sidebar'
-import { selectUser } from '../../features/userReducer'
 import './Home.css'
 
 function Homepage() {
-  const user=useSelector(selectUser)
-  console.log(user);
   return (
     <div>
        <Navbar/>

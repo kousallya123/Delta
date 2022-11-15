@@ -1,3 +1,14 @@
 .rightbar{
     flex: 3.5;
 }
+.followButton{
+    background-color: black;
+    color: aliceblue;
+    border-radius: 5px;
+    padding: 5px;
+}
+.friendsDetails{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 6px;
+}

@@ -5,88 +5,76 @@ import {useState,useEffect, useContext} from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { selectUser } from '../../../features/userReducer'
+
+
 
 function Post({post}) {
-    const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-   const users=useSelector(selectUser)
-    const likeHandler=() =>{
-       try {
-         const like=async()=>{
-          console.log(users.user._id);
-          console.log(post._id);
-          let liked=await axios.put(`http://localhost:5000/post/like/${post._id}`,{userId:users.user._id})
-          console.log(liked);
-         }
-         like()
-         
-       } catch (error) {
-         console.log(error);
-       }
-        setLike(isliked ? like-1 :like+1)
-        seIstLiked(!isliked)
-    }
-    console.log(post.likes.length);
-    const [like,setLike]=useState('')
-    const [isliked,seIstLiked]=useState(false)
-    const [user,setUser]=useState({})
+  const [like, setLike] = useState(post.likes.length);
+  const [isLiked, setIsLiked] = useState(false);
+  const [user, setUser] = useState({});
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const currentUser= useSelector((state)=>state.user)
 
-    useEffect (()=>{
-      const fetchUser=async()=>{
-        const res=await axios.get(`http://localhost:5000/${post.userId}`)
-        setUser(res.data)
-      }
-      fetchUser()
-   },[post.userId])
+  useEffect(() => {
+    setIsLiked(post.likes.includes(currentUser._id));
+  }, [currentUser._id, post.likes]);
 
-   
-   useEffect(()=>{
-    setLike(post.likes.includes(users.user._id))
-    },[])
-
-
-
-
+  useEffect(() => {
+    const fetchUser = async () => {
+      console.log(post,'ffffffffffffffffffffffffff');
+      const res = await axios.get(`/users?userId=${post.userId}`);
+      setUser(res.data);
+    };
+    fetchUser();
+  }, [post.userId]);
+  const likeHandler = () => {
+    try {
+      axios.put(`/post/like/${post._id} `, { userId: currentUser._id });
+    } catch (err) {}
+    setLike(isLiked ? like - 1 : like + 1);
+    setIsLiked(!isLiked);
+  };
   return (
-    <div className='post'>
-        <div children="postWrapper">
-        <div className='postTop'>
-            <div className="postTopLeft">
-                <Link to='/profile'>
-                <img className='postProfileImg' src={user.profilePicture ||"https://res.cloudinary.com/practicaldev/image/fetch/s--zbRnbp3---/c_imagga_scale,f_auto,fl_progressive,h_900,q_auto,w_1600/https://thepracticaldev.s3.amazonaws.com/i/u1x7n8mbvor1nq6tcbk0.jpg"} alt="" />
-                </Link>
-                <span className="postUsername">{user.username}</span>
-                <span className="postDate">{format(post.createdAt)}</span>
-            </div>
-            <div className="postTopRight">
-            </div>
-        </div>
-        <div className='postCenter'>
-            <span className="postText">{post?.desc}</span>
-            <img className="postImg"src={PF+post.img} alt=''/>
-        </div>
-        <div className='w-full h-16  border-slate-300 '>
-          <div className='w-full  flex justify-between  h-3/5 items-center '>
-            <div className='w-28 bg-white flex justify-between items-center space-x-2 p-1'>
-              <div className='text-2xl text-slate-900' onClick={likeHandler}>{isliked? <FavoriteOutlined style={{color:"#ed4956"}}/>:<FavoriteBorder/>}</div>
-              <div className='text-xl'><Comment/> </div>
-              <div className='text-xl'><Send /> </div>
-
-            </div>
-            <div className='text-xl p-1 '><BookmarkBorder /> </div>
+    <div className="post">
+      <div className="postWrapper">
+        <div className="postTop">
+          <div className="postTopLeft">
+            <Link to={`/profile/${user.username}`}>
+              <img
+                className="postProfileImg"
+                src={
+                  user.profilePicture
+                    ? PF + user.profilePicture
+                    :  "/assets/avatar1.jpg"
+                }
+                alt=""
+              />
+            </Link>
+            <span className="postUsername">{user.username}</span>
+            <span className="postDate">{format(post.createdAt)}</span>
           </div>
-
-          <div className='w-full  h-2/5 text-xs flex justify-start p-2'>
-               Liked by {like} peoples
+          <div className="postTopRight">
+            <MoreVert />
           </div>
-          {/* <div className="postBottomRight">
+        </div>
+        <div className="postCenter">
+          <span className="postText">{post?.desc}</span>
+          <img className="postImg" src={PF + post.img} alt="" />
+        </div>
+        <div className="postBottom">
+          <div className="postBottomLeft">
+          <div className='text-2xl text-slate-900' onClick={likeHandler}>{isLiked? <FavoriteOutlined style={{color:"#ed4956"}}/>:<FavoriteBorder/>}</div>
+              &emsp;<div className='text-xl'><Comment/> </div>
+              &emsp;<div className='text-xl'><Send /> </div>
+            <span className="postLikeCounter">{like} people like it</span>
+          </div>
+          <div className="postBottomRight">
             <span className="postCommentText">{post.comment} comments</span>
-          </div> */}
-
+          </div>
         </div>
-        </div>
+      </div>
     </div>
-  )
+  );
 }
 
 export default Post

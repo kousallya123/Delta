@@ -14,9 +14,6 @@ function ProfilePage() {
       <div className="profileRight">
         <Profile/>
       </div>
-      <div className='profileRightBottom'>
-        <Rightbar Profile/>
-      </div>
       </div>
     </>
      

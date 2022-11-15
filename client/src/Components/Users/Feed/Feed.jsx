@@ -1,18 +1,18 @@
 import axios from 'axios'
-import { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { selectUser } from '../../../features/userReducer'
 import Post from '../Post/Post'
 import Share from '../Share/Share'
 import './Feed.css'
 
 function Feed() {
-  const user=useSelector(selectUser)
+  const user = useSelector((state)=> state.user)
    const [posts,setPosts]=useState([])
+   console.log(posts,'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
    useEffect (()=>{
       const fetchPost=async()=>{
-        const res=await axios.get(`http://localhost:5000/post/timeline/${user.user._id}`)
+        const res=await axios.get(`http://localhost:5000/post/timeline/${user._id}`)
         setPosts(
           res.data.sort((p1,p2)=>{
           return new Date(p2.createdAt)-new Date(p1.createdAt)

@@ -168,15 +168,17 @@ const { isObjectIdOrHexString } = require('mongoose')
 }
 
 const getUser=async(req,res)=>{
-   try {
-      const user=await Users.findById(req.params.id)
-      if(user){
-        res.json(user)
-      }
-     
-   } catch (error) {
-      res.json(error)
-   }
+  const userId = req.query.userId;
+  const username = req.query.username;
+  try {
+    const user = userId
+      ? await Users.findById(userId)
+      : await Users.findOne({ username: username });
+    const { password, updatedAt, ...other } = user._doc;
+    res.status(200).json(other);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 }
 
 const followUser=async(req,res)=>{

@@ -5,17 +5,21 @@ import HomeIcon from '@mui/icons-material/Home';
 import ChatIcon from '@mui/icons-material/Chat';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import {Link, Navigate} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, selectUser } from '../../../features/userReducer';
+import { logout} from '../../../redux/userSlice';
+import {useNavigate} from 'react-router-dom'
+import axios from 'axios'
 
 function Navbar() {
-  const user=useSelector(selectUser)
+  const user = useSelector((state)=> state.user)
+  const navigate=useNavigate()
   const dispatch=useDispatch();
-    const handleLogout=(e)=>{
+    const handleLogout=async(e)=>{
       e.preventDefault();
-     dispatch(logout())
-     Navigate('/')
+      dispatch(logout())
+      await axios.post('http://localhost:5000/logout')
+      navigate('/')
     }
    
   return (

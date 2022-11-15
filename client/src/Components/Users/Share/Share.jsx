@@ -2,18 +2,17 @@ import './Share.css'
 import {PermMedia,Label,EmojiEmotions,Room} from '@mui/icons-material'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { selectUser } from '../../../features/userReducer'
 import axios from 'axios'
 
 function Share() {
-  const user=useSelector(selectUser)
+  const user = useSelector((state)=> state.user)
   const [file,setFile]= useState('')
   const [desc,setDesc]=useState('')
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const submitHandler=async(e)=>{
     e.preventDefault() 
     const newPost={
-      userId:user.user._id,
+      userId:user._id,
       desc:desc,
     }
     if(file){
@@ -43,7 +42,7 @@ function Share() {
       <div className='shareWrapper'>
        <div className="shareTop">
         <img src={user.profilePicture? user.profilePicture:'/assets/c2.jpg'} className='shareProfileImg' alt=""></img>  
-        <input className="shareInput"placeholder={"What's in your mind " + user.user.username + "?"} onChange={(e)=> {setDesc(e.target.value)}}></input>
+        <input className="shareInput"placeholder={"What's in your mind " + user.username + "?"} onChange={(e)=> {setDesc(e.target.value)}}></input>
 
        </div>
        <hr className='shareHr'/>

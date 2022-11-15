@@ -91,7 +91,6 @@ useEffect(()=>{
           })
     }
 
-
   return (
     <div>
         <h1 className='text-2xl text-blue-800 p-4 font-extrabold '>User Management</h1>
