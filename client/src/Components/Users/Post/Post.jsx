@@ -1,10 +1,15 @@
 import  './Post.css'
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import ShareIcon from '@mui/icons-material/Share';
+import SendIcon from '@mui/icons-material/Send';
 import {BookmarkBorder, MoreVert,Send,FavoriteBorder,Comment, FavoriteOutlined} from '@mui/icons-material'
 import {format}  from 'timeago.js'
 import {useState,useEffect, useContext} from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import Comments from '../Comments/Comments';
 
 
 
@@ -15,13 +20,13 @@ function Post({post}) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const currentUser= useSelector((state)=>state.user)
 
+
   useEffect(() => {
     setIsLiked(post.likes.includes(currentUser._id));
   }, [currentUser._id, post.likes]);
 
   useEffect(() => {
     const fetchUser = async () => {
-      console.log(post,'ffffffffffffffffffffffffff');
       const res = await axios.get(`/users?userId=${post.userId}`);
       setUser(res.data);
     };
@@ -29,11 +34,12 @@ function Post({post}) {
   }, [post.userId]);
   const likeHandler = () => {
     try {
-      axios.put(`/post/like/${post._id} `, { userId: currentUser._id });
+      axios.put(`/post/like/${post._id} `,{ userId: currentUser._id });
     } catch (err) {}
     setLike(isLiked ? like - 1 : like + 1);
     setIsLiked(!isLiked);
   };
+
   return (
     <div className="post">
       <div className="postWrapper">
@@ -54,7 +60,7 @@ function Post({post}) {
             <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
-            <MoreVert />
+            {/* <MoreVert /> */}
           </div>
         </div>
         <div className="postCenter">
@@ -64,17 +70,21 @@ function Post({post}) {
         <div className="postBottom">
           <div className="postBottomLeft">
           <div className='text-2xl text-slate-900' onClick={likeHandler}>{isLiked? <FavoriteOutlined style={{color:"#ed4956"}}/>:<FavoriteBorder/>}</div>
-              &emsp;<div className='text-xl'><Comment/> </div>
-              &emsp;<div className='text-xl'><Send /> </div>
+            &nbsp;&nbsp;<ChatBubbleIcon />
+            &nbsp;&nbsp;<ShareIcon/>
+            &nbsp;&nbsp;
             <span className="postLikeCounter">{like} people like it</span>
           </div>
           <div className="postBottomRight">
             <span className="postCommentText">{post.comment} comments</span>
           </div>
         </div>
-      </div>
-    </div>
-  );
+        <div>
+        <Comments post={post} />
+            </div>
+           </div>
+         </div>
+      );
 }
 
 export default Post

@@ -36,7 +36,7 @@ useEffect(()=>{
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Yes, block the user!'
           }).then((result) => {
             axios.post('http://localhost:5000/admin/blockUsers/'+id).then((result) => {
             if (result.status == 200) {

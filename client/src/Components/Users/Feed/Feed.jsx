@@ -9,7 +9,6 @@ import './Feed.css'
 function Feed() {
   const user = useSelector((state)=> state.user)
    const [posts,setPosts]=useState([])
-   console.log(posts,'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
    useEffect (()=>{
       const fetchPost=async()=>{
         const res=await axios.get(`http://localhost:5000/post/timeline/${user._id}`)

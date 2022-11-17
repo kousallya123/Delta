@@ -1,49 +1,69 @@
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import './Profile.css'
-import axios from 'axios'
-import Post from '../Post/Post'
-import { useParams } from 'react-router-dom'
-import Navbar from '../Navbar.js/Navbar'
+import "./Profile.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router";
+import Navbar from "../Navbar.js/Navbar";
 
-function Profile() {
-
+export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  const [user, setUser] = useState('');
-  const username = useParams().username;
-  const users = useSelector((state)=> state.user)
-  const [posts,setPosts]=useState([])
+  const [user, setUser] = useState({});
   
-  useEffect (()=>{
-     const fetchPost=async()=>{
-       const res=await axios.get(`http://localhost:5000/post/userpost/${user._id}`)
-       setPosts(
-         res.data)
-     }
-     fetchPost()
-  },[])
-  console.log(posts,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+  const [currentpost,setCurrentPost]=useState([]) 
+  const username = useParams().username;
   useEffect(() => {
     const fetchUser = async () => {
       const res = await axios.get(`/users?username=${username}`);
       setUser(res.data);
     };
     fetchUser();
+    // const fetchPost = async () => {
+      const res =  axios.get(`http://localhost:5000/post/userpost/${res.data._id}`).then((data)=>{
+        setCurrentPost(data.data);
+      })
+      
+      console.log(res.data,'vvvvvvv');
+     //  localStorage.setItem('currentpost', JSON.stringify(res.data))
+     //  console.log(res,'ddddddddddddddddddddddd');
+    // };
+    // fetchPost();
+    
   }, [username]);
+  localStorage.setItem('currentUser', JSON.stringify(user))
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'))
+   
+  console.log(currentUser,'qqqqqqqqqqqqqqqqqqqqqqq');
+
+
+
+//   useEffect(() => {
+//      const fetchPost = async () => {
+//      const res = await axios.get(`http://localhost:5000/post/userpost/${currentUser._id}`);
+//      setCurrentPost(res.data);
+//     //  localStorage.setItem('currentpost', JSON.stringify(res.data))
+//     //  console.log(res,'ddddddddddddddddddddddd');
+//    };
+//    fetchPost();
+//  },[currentUser._id]);
+
+ console.log(currentpost,"postsss");
+
+
+//  const currentposts = JSON.parse(localStorage.getItem('currentpost'))
+
+//  console.log(currentposts,"rrrrrrrrrrrrrrr");
+
 
   return (
     <>
-      {/* <Navbar /> */}
       <div className="profile">
-        {/* <Sidebar /> */}
         <div className="profileRight">
           <div className="profileRightTop">
             <div className="profileCover">
               <img
                 className="profileCoverImg"
                 src={
-                  user.coverPicture
-                    ? PF + user.coverPicture
+                  currentUser.coverPicture
+                    ? PF + currentUser.coverPicture
                     : "/assets/cover1.jpg"
                 }
                 alt=""
@@ -51,45 +71,74 @@ function Profile() {
               <img
                 className="profileUserImg"
                 src={
-                  user.profilePicture
-                    ? PF + user.profilePicture
+                  currentUser.profilePicture
+                    ? PF + currentUser.profilePicture
                     : "/assets/avatar.jpg"
                 }
                 alt=""
               />
             </div>
-            <div className='followDetails'>
-            <div className='followDetails1'>
-              {/* <h2>{user.followings.length}</h2> */}
-              <h2>Followings</h2>
-
-            </div>
-            <div className='followDetails2'>
-             {/* <h2>{obj.followers.length}</h2> */}
-              <h3>Followers</h3>
-            </div>
-            </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">{user.username}</h4>
-              <span className="profileInfoDesc">{user.email}</span><br/>
+              <h4 className="profileInfoName">{currentUser.username}</h4>
+              <span className="profileInfoDesc">{currentUser.email}</span>
             </div>
-            <div className='profileButtons'>
-              {users.username===username?<button className='profileFollowButton'>Edit profile</button>:
-              <button className='profileFollowButton'>Follow</button>
-              }
-              
+            <div className='follow'>
+              Followers{currentUser?.followers?.length}<br/>
+              Followings{currentUser?.followings?.length}
             </div>
-            <div className='postinProfile'>
-            {posts.map((posts)=>(
-             <Post key={posts.id} post={posts}/>
-             ))}
+             
+            <div class="px-px md:px-3">
+    <ul class="flex items-center justify-around md:justify-center space-x-12  
+                  uppercase tracking-widest font-semibold text-xs text-gray-600
+                  border-t">
+
+      <li class="md:border-t md:border-gray-700 md:-mt-px md:text-gray-700">
+        <a class="inline-block p-3" href="#">
+          <i class="fas fa-th-large text-xl md:text-xs"></i>
+          <span class="hidden md:inline">post</span>
+        </a>
+      </li>
+    </ul>
+    <div class="flex flex-wrap -mx-px md:-mx-3">
+{console.log(currentpost,'kkkkkkkkkkoooooooooooooooooo')}
+{currentpost?.map((obj)=>{
+      return(
+          
+      <div key={obj} class="w-1/3 p-px md:px-3">
+      <a href="#">
+        <article class="post bg-gray-100 text-white relative pb-full md:mb-6">
+          <img class="w-full h-full absolute left-0 top-0 object-cover" src={PF+obj.img} alt="image"/>
+
+          <i class="fas fa-square absolute right-0 top-0 m-1"></i>
+          <div class="overlay bg-gray-800 bg-opacity-25 w-full h-full absolute 
+                            left-0 top-0 hidden">
+            <div class="flex justify-center items-center 
+                                space-x-4 h-full">
+              <span class="p-2">
+                <i class="fas fa-heart"></i>
+                {obj?.likes?.length}
+              </span>
+
+              <span class="p-2">
+                <i class="fas fa-comment"></i>
+                2,909
+              </span>
             </div>
-           
+          </div>
+
+        </article>
+      </a>
+       </div>
+
+      )
+    })
+    }  
+    </div>
+  </div>
+
           </div>
         </div>
       </div>
     </>
   );
 }
-
-export default Profile

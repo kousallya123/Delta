@@ -1,6 +1,7 @@
 const express=require('express')
 const Users=require('../models/userModel')
 const Post=require('../models/postSchema')
+const Comments=require('../models/commentSchema')
 
 
 
@@ -103,4 +104,26 @@ const getPost=async(req,res)=>{
         
     }
    }
-  module.exports={addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost}
+
+ const addComment=async(req,res)=>{
+    const comment=new Comments(req.body)
+    try {
+        const comments=await comment.save()
+        res.json(comments)
+    } catch (error) {
+        res.json(error)
+    }
+ }
+ const getPostComments=async(req,res)=>{
+    console.log(req.params.id);
+    try {
+      const postComment=await Comments.find({postId:req.params.id})
+      res.json(postComment)
+        
+    } catch (error) {
+       res.json(error) 
+    }
+ }
+
+
+  module.exports={addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost,addComment,getPostComments}

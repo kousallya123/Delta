@@ -1,7 +1,7 @@
 const express=require('express')
 const router=express.Router()
 const multer=require('multer')
-const {addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost}=require('../controllers/postCtrl')
+const {addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost,addComment,getPostComments}=require('../controllers/postCtrl')
 
 
 const storage = multer.diskStorage({
@@ -36,6 +36,10 @@ router.get('/:id',getPost)
 router.get('/timeline/:userId',timelinePost)
 
 router.get('/userpost/:userId',userPost)
+
+router.post('/addcomment/:id',addComment)
+
+router.get('/getcomments/:id',getPostComments)
 
 
 module.exports=router

@@ -193,7 +193,6 @@ const followUser=async(req,res)=>{
          }else{
             res.json('You already followed')
          }
-
        } catch (error) {
          res.json(error)
        }

@@ -3,7 +3,6 @@ const User = require('../models/userModel')
 
 const getUsers = (req,res)=>{
 try {
-
     User.find().sort({_id:-1}).then(response =>{
         res.status(200).json(response)
     }).catch(error =>{

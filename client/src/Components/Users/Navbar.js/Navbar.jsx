@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout} from '../../../redux/userSlice';
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 function Navbar() {
   const user = useSelector((state)=> state.user)
@@ -17,9 +18,11 @@ function Navbar() {
   const dispatch=useDispatch();
     const handleLogout=async(e)=>{
       e.preventDefault();
+      localStorage.removeItem('user')
       dispatch(logout())
       await axios.post('http://localhost:5000/logout')
       navigate('/')
+      alert('Are you sure you want to logout?')
     }
    
   return (
@@ -55,7 +58,7 @@ function Navbar() {
         <span className="topbarIconBadge">5</span>
         </div>
        </div>
-       <img src="/assets/c2.jpg" alt="" className="topbarImg" />
+       <Link to='/userProfile'><img src="/assets/c2.jpg" alt="" className="topbarImg" /></Link>
        <button onClick={(e)=>handleLogout(e)}>Logout</button>
      </div>
     </div>

@@ -8,18 +8,20 @@ import AdminLogin from './Components/Admin/Login/Login'
 import AdminHomePage from './Pages/Admin/AdminHomePage';
 import ProfilePage from './Pages/User/ProfilePage';
 import { useSelector } from 'react-redux';
+import UserProfile from './Components/Users/Profile/UserProfile';
 
 
 function App() {
-  const user = useSelector((state)=> state.user)
   return (
     <div className="App">
        <Router>
           <Routes>  
               <Route path='/signup' element={<SignupPage/>}/> 
               <Route path='/' element={<LoginPage/>}/>  
-               {user?<Route path='/home' element={<Homepage/>}/>:<Route path='/home' element={<LoginPage/>}/>} 
-               {user? <Route path='/profile/:username' element={<ProfilePage/>}/>: <Route path='/profile' element={<LoginPage/>}/>} 
+               <Route path='/home' element={<Homepage/>}/>
+              <Route path='/profile/:username' element={<ProfilePage/>}/>
+               <Route path='/userProfile' element={<UserProfile/>}/>  
+
           </Routes>
           <Routes>  
           <Route path='/sidebar' element={<Sidebar/>}/>
