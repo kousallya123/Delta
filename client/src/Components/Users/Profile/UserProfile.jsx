@@ -11,8 +11,10 @@ import './Profile.css'
 function UserProfile() {
  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
  const user=useSelector((state)=>state.user) 
+ const [edit,setEdit]=useState([])
  const [post,setPost]=useState([]) 
- useEffect(() => {
+ const [showMod,SetShowMod]=useState(false)
+  useEffect(() => {
     const fetchPost = async () => {
     const res = await axios.get(`http://localhost:5000/post/userpost/${user._id}`);
     setPost(res.data);
@@ -20,6 +22,8 @@ function UserProfile() {
   };
   fetchPost();
 },[user._id]);
+
+
   return (
     <div>
         <Navbar/>
@@ -42,7 +46,7 @@ function UserProfile() {
         </h2>
         <a href="#" class="bg-blue-500 px-2 py-1 
                       text-white font-semibold text-sm rounded block text-center 
-                      sm:inline-block ">Edit profile</a>
+                      sm:inline-block "  onClick={()=>SetShowMod(true)}>Edit profile</a>
       </div>
 
     
@@ -84,6 +88,73 @@ function UserProfile() {
         </a>
       </li>
     </ul>
+    {showMod ? (
+        <>
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+           
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                  <h3 className="text-3xl font-semibold">Edit your details</h3>
+                  <button
+                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    onClick={() => SetShowMod(false)}
+                  >
+                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                      ×
+                    </span>
+                  </button>
+                </div>
+                <div className="relative p-6 flex-auto">
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="name"
+                    // onChange={handleChange}
+                  />
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add profile pic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  <input
+                    type="file"
+
+                  /> 
+                  <br /> <br />
+                  <input
+                    type="text"
+                    name="email"
+                    placeholder="email"
+                    // onChange={handleChange}
+                  />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <input
+                    type="text"
+                    name="password"
+                    placeholder="change password"
+                  />
+                </div>
+                
+                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                  <button
+                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => SetShowMod(false)}
+                  >
+                    Close
+                  </button>
+                  <button
+                    className="bg-blue-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    // onClick={handleEdit}
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+      ) : null}
+
+
     <div class="flex flex-wrap -mx-px md:-mx-3">
 
    

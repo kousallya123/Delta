@@ -7,15 +7,20 @@ import Navbar from "../Navbar.js/Navbar";
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [user, setUser] = useState({});
+  const [post,setPost]=useState([])
   const username = useParams().username;
   useEffect(()=>{
     axios.get(`/users?username=${username}`).then((res)=>{
       setUser(res.data)
-      
+      axios.get(`http://localhost:5000/post/userpost/${res.data._id}`).then((res)=>{
+        console.log(res.data,'post kittyyyyyyyyyyyyyyyyyy');
+        setPost(res.data)
+      })
     })
-  })
+  },[username])
 
  console.log(user,"postsss");
+ console.log(post,'wwwwwwwwwwwwwwwwwwww');
 
   return (
     <>
@@ -64,8 +69,7 @@ export default function Profile() {
       </li>
     </ul>
     <div class="flex flex-wrap -mx-px md:-mx-3">
-{/* {console.log(currentpost,'kkkkkkkkkkoooooooooooooooooo')}
-{currentpost?.map((obj)=>{
+   {post?.map((obj)=>{
       return(
           
       <div key={obj} class="w-1/3 p-px md:px-3">
@@ -96,7 +100,7 @@ export default function Profile() {
 
       )
     })
-    }   */}
+    }   
     </div>
   </div>
 

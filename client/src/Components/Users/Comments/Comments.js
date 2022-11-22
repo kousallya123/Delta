@@ -19,9 +19,9 @@ function Comments({post}) {
         console.log(post._id);
          e.preventDefault()
          const res=await axios.post(`http://localhost:5000/post/addcomment/${post._id}`,{userId:currentUser._id,comment:comment,postId:post._id})
-         if(res.data){
-          window.location.reload()
-         }
+        //  if(res.data){
+        //   window.location.reload()
+        //  }
       }
     
       const postComments=async()=>{

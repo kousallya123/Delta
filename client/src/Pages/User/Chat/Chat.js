@@ -19,7 +19,6 @@ function Chat() {
   const scrollRef=useRef()
   const socket=useRef()
 
-
    useEffect(()=>{
     socket.current=io("ws://localhost:2002")
     socket.current.on("getMessage",(data)=>{
