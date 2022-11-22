@@ -7,51 +7,15 @@ import Navbar from "../Navbar.js/Navbar";
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [user, setUser] = useState({});
-  
-  const [currentpost,setCurrentPost]=useState([]) 
   const username = useParams().username;
-  useEffect(() => {
-    const fetchUser = async () => {
-      const res = await axios.get(`/users?username=${username}`);
-      setUser(res.data);
-    };
-    fetchUser();
-    // const fetchPost = async () => {
-      const res =  axios.get(`http://localhost:5000/post/userpost/${res.data._id}`).then((data)=>{
-        setCurrentPost(data.data);
-      })
+  useEffect(()=>{
+    axios.get(`/users?username=${username}`).then((res)=>{
+      setUser(res.data)
       
-      console.log(res.data,'vvvvvvv');
-     //  localStorage.setItem('currentpost', JSON.stringify(res.data))
-     //  console.log(res,'ddddddddddddddddddddddd');
-    // };
-    // fetchPost();
-    
-  }, [username]);
-  localStorage.setItem('currentUser', JSON.stringify(user))
-  const currentUser = JSON.parse(localStorage.getItem('currentUser'))
-   
-  console.log(currentUser,'qqqqqqqqqqqqqqqqqqqqqqq');
+    })
+  })
 
-
-
-//   useEffect(() => {
-//      const fetchPost = async () => {
-//      const res = await axios.get(`http://localhost:5000/post/userpost/${currentUser._id}`);
-//      setCurrentPost(res.data);
-//     //  localStorage.setItem('currentpost', JSON.stringify(res.data))
-//     //  console.log(res,'ddddddddddddddddddddddd');
-//    };
-//    fetchPost();
-//  },[currentUser._id]);
-
- console.log(currentpost,"postsss");
-
-
-//  const currentposts = JSON.parse(localStorage.getItem('currentpost'))
-
-//  console.log(currentposts,"rrrrrrrrrrrrrrr");
-
+ console.log(user,"postsss");
 
   return (
     <>
@@ -62,8 +26,8 @@ export default function Profile() {
               <img
                 className="profileCoverImg"
                 src={
-                  currentUser.coverPicture
-                    ? PF + currentUser.coverPicture
+                  user.coverPicture
+                    ? PF + user.coverPicture
                     : "/assets/cover1.jpg"
                 }
                 alt=""
@@ -71,20 +35,20 @@ export default function Profile() {
               <img
                 className="profileUserImg"
                 src={
-                  currentUser.profilePicture
-                    ? PF + currentUser.profilePicture
+                  user.profilePicture
+                    ? PF + user.profilePicture
                     : "/assets/avatar.jpg"
                 }
                 alt=""
               />
             </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">{currentUser.username}</h4>
-              <span className="profileInfoDesc">{currentUser.email}</span>
+              <h4 className="profileInfoName">{user.username}</h4>
+              <span className="profileInfoDesc">{user.email}</span>
             </div>
             <div className='follow'>
-              Followers{currentUser?.followers?.length}<br/>
-              Followings{currentUser?.followings?.length}
+              Followers{user?.followers?.length}<br/>
+              Followings{user?.followings?.length}
             </div>
              
             <div class="px-px md:px-3">
@@ -100,7 +64,7 @@ export default function Profile() {
       </li>
     </ul>
     <div class="flex flex-wrap -mx-px md:-mx-3">
-{console.log(currentpost,'kkkkkkkkkkoooooooooooooooooo')}
+{/* {console.log(currentpost,'kkkkkkkkkkoooooooooooooooooo')}
 {currentpost?.map((obj)=>{
       return(
           
@@ -132,7 +96,7 @@ export default function Profile() {
 
       )
     })
-    }  
+    }   */}
     </div>
   </div>
 

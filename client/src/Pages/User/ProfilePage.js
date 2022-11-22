@@ -16,7 +16,6 @@ function ProfilePage() {
       </div>
       </div>
     </>
-     
     </div>
   )
 }

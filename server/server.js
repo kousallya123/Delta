@@ -16,6 +16,7 @@ app.use('/images',express.static(path.join(__dirname,'public/images')))
 app.use('/',require('./routes/authRouter'))
 app.use('/post',require('./routes/postRouter'))
 app.use('/admin',require('./routes/adminRouter'))
+app.use('/chat',require('./routes/chatRouter'))
 
 
 const URI=process.env.MONGODB_URL

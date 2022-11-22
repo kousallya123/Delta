@@ -50,7 +50,9 @@ function Navbar() {
         <AddBoxIcon/>
         </div> */}
         <div className='topbarIconItem'>
+        <Link to='/chat'>
         <ChatIcon/>
+        </Link>
         <span className="topbarIconBadge">2</span>
         </div>
         <div className='topbarIconItem'>

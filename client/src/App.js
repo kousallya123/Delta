@@ -9,6 +9,7 @@ import AdminHomePage from './Pages/Admin/AdminHomePage';
 import ProfilePage from './Pages/User/ProfilePage';
 import { useSelector } from 'react-redux';
 import UserProfile from './Components/Users/Profile/UserProfile';
+import Chat from './Pages/User/Chat/Chat';
 
 
 function App() {
@@ -18,9 +19,10 @@ function App() {
           <Routes>  
               <Route path='/signup' element={<SignupPage/>}/> 
               <Route path='/' element={<LoginPage/>}/>  
-               <Route path='/home' element={<Homepage/>}/>
+              <Route path='/home' element={<Homepage/>}/>
               <Route path='/profile/:username' element={<ProfilePage/>}/>
-               <Route path='/userProfile' element={<UserProfile/>}/>  
+              <Route path='/userProfile' element={<UserProfile/>}/> 
+              <Route path='/chat' element={<Chat/>}/>   
 
           </Routes>
           <Routes>  

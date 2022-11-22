@@ -21,15 +21,23 @@ function Feed() {
       fetchPost()
    },[])
 
-
+  console.log(posts,'kkkkkkkkkkkkkkkkkkkkkk');
 
   return (
     <div className='feed'>
       <div className='feedWrapper'>
         <Share/>
-        {posts.map((p)=>(
+        {posts.length===0?
+        <h1>No feeds to shown</h1>:
+         <div>
+         {posts.map((p)=>(
              <Post key={p.id} post={p}/>
         ))}
+         </div>
+        
+        }
+        
+       
        
       </div>
     </div>

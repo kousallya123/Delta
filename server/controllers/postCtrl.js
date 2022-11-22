@@ -9,7 +9,6 @@ const addPost=async(req,res)=>{
     const newPost=new Post(req.body)
     try {
       const savedPost=await newPost.save()
-      await Users.updateOne({$push:{posts:savedPost._id}})
       res.json(savedPost)
       
     } catch (error) {
@@ -124,6 +123,7 @@ const getPost=async(req,res)=>{
        res.json(error) 
     }
  }
+
 
 
   module.exports={addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost,addComment,getPostComments}

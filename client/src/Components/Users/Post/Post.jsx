@@ -3,7 +3,7 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import ShareIcon from '@mui/icons-material/Share';
 import SendIcon from '@mui/icons-material/Send';
-import {BookmarkBorder, MoreVert,Send,FavoriteBorder,Comment, FavoriteOutlined} from '@mui/icons-material'
+import {BookmarkBorder, MoreVert,Send,FavoriteBorder,Comment, FavoriteOutlined, DeleteOutline} from '@mui/icons-material'
 import {format}  from 'timeago.js'
 import {useState,useEffect, useContext} from 'react'
 import axios from 'axios'
@@ -40,6 +40,13 @@ function Post({post}) {
     setIsLiked(!isLiked);
   };
 
+
+  const deletePost=async()=>{
+    const res= await axios.delete(`http://localhost:5000/post/${post._id}`,{ userId: currentUser._id })
+    alert('post deleted successfully')
+    window.location.reload()
+  }
+
   return (
     <div className="post">
       <div className="postWrapper">
@@ -60,7 +67,7 @@ function Post({post}) {
             <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
-            {/* <MoreVert /> */}
+            <DeleteOutline  onClick={deletePost}/>
           </div>
         </div>
         <div className="postCenter">

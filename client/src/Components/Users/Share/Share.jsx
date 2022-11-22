@@ -1,12 +1,12 @@
 import './Share.css'
-import {PermMedia,Label,EmojiEmotions,Room} from '@mui/icons-material'
+import {PermMedia,Label,EmojiEmotions,Room, Cancel} from '@mui/icons-material'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 
 function Share() {
   const user = useSelector((state)=> state.user)
-  const [file,setFile]= useState('')
+  const [file,setFile]= useState([])
   const [desc,setDesc]=useState('')
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const submitHandler=async(e)=>{
@@ -15,6 +15,7 @@ function Share() {
       userId:user._id,
       desc:desc,
     }
+    console.log(file,'filerererer.................')
     if(file){
       const data=new FormData();
       const fileName=file.name
@@ -34,6 +35,12 @@ function Share() {
     }catch(err){
      console.log(err);
     }
+    // {file && (
+    //   <div className="shareImgContainer">
+    //     <img className="shareImg" src={URL.createObjectURL(file)} alt="" />
+    //     <Cancel className="shareCancelImg" onClick={() => setFile(null)} />
+    //   </div>
+    // )}
   }
   console.log('user detailssssssssssss');
   console.log(user);
@@ -42,16 +49,18 @@ function Share() {
       <div className='shareWrapper'>
        <div className="shareTop">
         <img src={user.profilePicture? user.profilePicture:'/assets/c2.jpg'} className='shareProfileImg' alt=""></img>  
-        <input className="shareInput"placeholder={"What's in your mind " + user.username + "?"} onChange={(e)=> {setDesc(e.target.value)}}></input>
+        <input className="shareInput"placeholder={"What's in your mind " + user.username + "?"} onChange={(e)=> {setDesc(e.target.value)}} multiple></input>
 
        </div>
        <hr className='shareHr'/>
+       
        <form className='shareBottom' onSubmit={submitHandler}>
          <div className="shareOptions">
            <label for='file' className="shareOptions">
             <PermMedia htmlColor="tomato" className='shareIcon'/>
             <span className='shareOptionText'>Photo</span>
-            <input style={{display:"none"}} type='file'name='file' id='file' onChange={(e)=>setFile(e.target.files[0])}/>
+            <input style={{display:"none"}} type='file'name='file' id='file' multiple onChange={(e)=>{setFile(e.target.files[0]) }
+          }/>
            </label>
          </div>
          {/* <div className="shareOptions">
