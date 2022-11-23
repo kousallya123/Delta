@@ -10,6 +10,7 @@ import ProfilePage from './Pages/User/ProfilePage';
 import { useSelector } from 'react-redux';
 import UserProfile from './Components/Users/Profile/UserProfile';
 import Chat from './Pages/User/Chat/Chat';
+import Test from './Pages/Test';
 
 
 function App() {
@@ -22,7 +23,8 @@ function App() {
               <Route path='/home' element={<Homepage/>}/>
               <Route path='/profile/:username' element={<ProfilePage/>}/>
               <Route path='/userProfile' element={<UserProfile/>}/> 
-              <Route path='/chat' element={<Chat/>}/>   
+              <Route path='/chat' element={<Chat/>}/> 
+              <Route path='/test' element={<Test/>} />
 
           </Routes>
           <Routes>  

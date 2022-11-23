@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {BookmarkBorder, MoreVert,Send,FavoriteBorder,Comment, FavoriteOutlined} from '@mui/icons-material'
 import {format}  from 'timeago.js'
 import { useState } from 'react'
@@ -15,32 +15,34 @@ function Comments({post}) {
     const currentUser= useSelector((state)=>state.user)
  
     const handleComment=async(e)=>{
-        console.log(currentUser._id);
-        console.log(post._id);
          e.preventDefault()
-         const res=await axios.post(`http://localhost:5000/post/addcomment/${post._id}`,{userId:currentUser._id,comment:comment,postId:post._id})
-        //  if(res.data){
-        //   window.location.reload()
-        //  }
+         await axios.post(`http://localhost:5000/post/addcomment/${post._id}`,{userId:currentUser._id,comment:comment,postId:post._id})
+         setComment("")
       }
     
-      const postComments=async()=>{
-        console.log('see commentsssss');
-        const comments= await axios.get(`http://localhost:5000/post/getcomments/${post._id}`)
-        setSeeComments(comments.data);
-        setCommentShow(!commentShow) 
+      useEffect(()=>{
+        const postComments=async()=>{
+          const comments= await axios.get(`http://localhost:5000/post/getcomments/${post._id}`)
+            setSeeComments(comments.data);
+          }
+          postComments()
+      },[comment])
+      
+      const handleShow=()=>{
+        setCommentShow(!commentShow)
       }
+  
 
   return (
     <div>
-        <form className="flex items-center p-4" onSubmit={handleComment}>
+        <form className="flex items-center py-2" onSubmit={handleComment}>
            <SentimentSatisfiedAltIcon className="h-7 mr-2" />
              <input
               type="text" value={comment} onChange={(e)=>setComment(e.target.value)}
               className="border-none flex-1 focus:ring-0 outline-none"placeholder="Add a comment..." />
              <button type="submit" className="font-semibold text-blue-400" >Post</button>
           </form>
-            <p onClick={postComments}>see comments</p>
+            <p onClick={handleShow}>see comments</p>
           {
             seeComments.map((obj)=>{
 

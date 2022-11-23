@@ -61,7 +61,7 @@ function Navbar() {
         </div>
        </div>
        <Link to='/userProfile'><img src="/assets/c2.jpg" alt="" className="topbarImg" /></Link>
-       <button onClick={(e)=>handleLogout(e)}>Logout</button>
+       {/* <button onClick={(e)=>handleLogout(e)}>Logout</button> */}
      </div>
     </div>
   )
