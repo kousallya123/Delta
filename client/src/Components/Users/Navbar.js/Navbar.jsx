@@ -19,12 +19,30 @@ function Navbar() {
   const [drop,setDrop]=useState(false)
   const dispatch=useDispatch();
     const handleLogout=async(e)=>{
+      console.log('logout is calleddddddd');
       e.preventDefault();
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      })
       localStorage.removeItem('user')
       dispatch(logout())
       await axios.post('http://localhost:5000/logout')
       navigate('/')
-      alert('Are you sure you want to logout?')
+      .then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        }
+      })
     }
    
   return (
@@ -65,10 +83,13 @@ function Navbar() {
        <>
      <div class="flex justify-center">
      <div class="relative inline-block">
-     
-        <button class="relative z-10 flex items-center p-2 text-sm text-gray-600 bg-white border border-transparent rounded-md focus:border-blue-100 focus:border-radious-20 ">
-            <span class="mx-1"><MoreVert onClick={()=>setDrop(!drop)}/></span>
-        </button>
+         
+
+     <img src="/assets/c2.jpg" alt="" className="topbarImg" onClick={()=>setDrop(!drop)}/>
+
+        {/* <button class="relative z-10 flex items-center p-2 text-sm text-gray-600 bg-white border border-transparent rounded-md focus:border-blue-100 focus:border-radious-20 ">
+            <span class="mx-1"><MoreVert /></span>
+        </button> */}
 
         {drop?
         <div class="absolute right-0 z-20 w-56 py-2 mt-2 overflow-hidden bg-white rounded-md shadow-xl dark:bg-gray-800">
@@ -76,11 +97,11 @@ function Navbar() {
         <hr class="border-gray-200 dark:border-gray-700 "/>
         
         <a href="#" class="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
-          view profile
+          <Link to={`/userProfile`}>view profile</Link>
         </a>
 
         <a href="#" class="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
-           logout
+          <span onClick={(e)=>handleLogout(e)}>logout</span> 
         </a>
 
 
@@ -90,7 +111,9 @@ function Navbar() {
     </div>
      </div>
     </>
-       <Link to='/userProfile'><img src="/assets/c2.jpg" alt="" className="topbarImg" /></Link>
+       {/* <Link to='/userProfile'> */}
+      
+        {/* </Link> */}
        {/* <button onClick={(e)=>handleLogout(e)}>Logout</button> */}
      </div>
     </div>

@@ -52,60 +52,87 @@ function Rightbar() {
     
   }
   return (
-    <div>
-      <div class=" h-screen w-full justify-center">
-        <div class="max-w-full grid grid-cols-2 gap-4">
-          {users.map((obj) => {
-            return (
-              <div class="bg-white shadow-xl rounded-lg py-2 ">
-                <div class="photo-wrapper p-2">
-                  <img
-                    class="w-20 h-20 rounded-full mx-auto"
-                    src="/assets/a1.jpg"
-                    alt="John Doe"
-                  />
-                </div>
-                <div class="p-2">
-                  <h3 class="text-center text-xl text-gray-800 font-extralight leading-8">
-                    {obj.username}
-                  </h3>
-                  <div class="text-center text-gray-400 text-xs font-semibold truncate">
-                    <h6>{obj.email}</h6>
-                  </div>
-                  {/* <a class="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium" href="#">View Profile</a> */}
+
+    <div className='fixed'>
+      <h2 className='align-center justify-center p-5 text-blue-500 font-semibold'> Suggetions</h2>
+      {users.map((obj)=>( 
+        <>
+        {obj.username!==user.username&&
+        
+         <div class="flex items-center relative p-4 w-full bg-white rounded-lg overflow-hidden shadow hover:shadow-md mb-5">
+          <Link to={`/profile/${obj.username}`}>
+         <img class="w-12 h-12 rounded-full bg-gray-100" src='/assets/avatar.jpg'></img>
+         </Link>
+           <div class="ml-3">
+             <p class="font-medium text-gray-800">{obj.username}</p>
+             <p class="text-sm text-gray-600">{obj.email}</p>
+          </div>
+         
+     </div>
+     }
+      
+    </> 
+   ))}
+    </div>
+   
+    // <div>
+    //   <div class=" h-screen w-full justify-center">
+    //     <div class="max-w-full grid grid-cols-2 gap-4">
+    //       {users.map((obj) => {
+    //         return (
+    //           <div class="bg-white shadow-xl rounded-lg py-2 ">
+    //             <div class="photo-wrapper p-2">
+    //               <img
+    //                 class="w-20 h-20 rounded-full mx-auto"
+    //                 src="/assets/a1.jpg"
+    //                 alt="John Doe"
+    //               />
+    //             </div>
+    //             <div class="p-2">
+    //               <h3 class="text-center text-xl text-gray-800 font-extralight leading-8">
+    //                 {obj.username}
+    //               </h3>
+    //               <div class="text-center text-gray-400 text-xs font-semibold truncate">
+    //                 <h6>{obj.email}</h6>
+    //               </div>
+    //               {/* <a class="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium" href="#">View Profile</a> */}
                     
 
 
-                  {obj.followers.includes(user._id) ? (
-                    <div class="text-center my-3">
-                      <Link to={`/profile/${obj.username}`}>
-                      <button
-                        className="btn bg-neutral-400 text-white p-1"
-                        // onClick={(e) => {
-                        //   handleSubmitUndo(obj._id);
-                        // }}
-                      >
-                       View profile
-                      </button>
-                      </Link>
-                    </div>
-                  ) : (
-                    <div class="text-center my-3">
-                      <button
-                        className="btn bg-neutral-400 text-white p-1"
-                        onClick={(e) => { FollowUser(obj._id) }}
-                      >
-                        Follow
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </div>
+    //               {obj.followers.includes(user._id) ? (
+    //                 <div class="text-center my-3">
+    //                   <Link to={`/profile/${obj.username}`}>
+    //                   <button
+    //                     className="btn bg-neutral-400 text-white p-1"
+    //                     // onClick={(e) => {
+    //                     //   handleSubmitUndo(obj._id);
+    //                     // }}
+    //                   >
+    //                    View profile
+    //                   </button>
+    //                   </Link>
+    //                 </div>
+    //               ) : (
+    //                 <div class="text-center my-3">
+    //                   <button
+    //                     className="btn bg-neutral-400 text-white p-1"
+    //                     onClick={(e) => { FollowUser(obj._id) }}
+    //                   >
+    //                     Follow
+    //                   </button>
+    //                 </div>
+    //               )}
+    //             </div>
+    //           </div>
+    //         );
+    //       })}
+    //     </div>
+    //   </div>
+    // </div>
+
+    
+
+    
   //   <div className='rightbar'>
   //         <div class="sidebar">
   // <div class="sidebar-menu-container">
