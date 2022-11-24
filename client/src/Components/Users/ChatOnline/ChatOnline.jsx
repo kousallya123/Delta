@@ -9,7 +9,9 @@ function ChatOnline({onlineUsers,currentId,setCurrentChat}) {
 
   useEffect(()=>{
     const getFriends=async()=>{
-      const res=await axios.get('/friends'+currentId)
+      console.log(currentId,'awwwwwwwwww');
+      const res=await axios.get('http://localhost:5000/chat/friendlist/'+currentId)
+      console.log(res,'rrrrrrrrrrrrrrrrrrrrrrrr');
       setFriends(res.data)
     }
     getFriends()
@@ -24,12 +26,12 @@ function ChatOnline({onlineUsers,currentId,setCurrentChat}) {
     try {
       const res= await axios.get(`/chat/find/${currentId}/${user._id}`)
       setCurrentChat(res.data)
-      
     } catch (error) {
       console.log(error);
     }
   }
 
+  console.log(onlineFriends,'xxxxxxxxxxxxxxxx');
   return (
     <div className="chatOnline">
       {onlineFriends?.map((o)=>(
@@ -42,8 +44,9 @@ function ChatOnline({onlineUsers,currentId,setCurrentChat}) {
             />
             <div className="chatOnlineBadge"></div>
           </div>
-          <span className="chatOnlineName">Britto Vincent</span>
+          <span className="chatOnlineName">{o.username}</span>
         </div>
+        
       ))}
        
     </div>

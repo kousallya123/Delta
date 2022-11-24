@@ -1,19 +1,48 @@
 import axios from 'axios';
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Navbar from '../Navbar.js/Navbar';
 import './Profile.css'
-
+import Swal from 'sweetalert2'
+import {login} from '../../../redux/userSlice'
 
 
 
 function UserProfile() {
+ const dispatch=useDispatch(); 
  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
  const user=useSelector((state)=>state.user) 
  const [edit,setEdit]=useState([])
  const [post,setPost]=useState([]) 
  const [showMod,SetShowMod]=useState(false)
+    
+
+ const handleEdit=async(e)=>{
+  e.preventDefault();
+  try {
+    await axios.put("http://localhost:5000/"+user._id, { ...edit,userId:user._id})
+    axios.put("http://localhost:5000/"+user._id, { ...edit,userId:user._id})
+      .then((response) => {
+        dispatch(login(response.data)) 
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Your details is updated successfully',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        console.log(response,'updated suceesfullyyyyyyyyyyyyyyyyyy');
+        
+      });
+      SetShowMod(false)  
+     
+  } catch (error) {}
+
+}
+
+
+
   useEffect(() => {
     const fetchPost = async () => {
     const res = await axios.get(`http://localhost:5000/post/userpost/${user._id}`);
@@ -21,7 +50,16 @@ function UserProfile() {
     console.log(res);
   };
   fetchPost();
-},[user._id]);
+},[user._id])
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setEdit({
+    ...edit,
+    [name]: value,
+  })
+};
+
 
 
   return (
@@ -108,26 +146,27 @@ function UserProfile() {
                 <div className="relative p-6 flex-auto">
                   <input
                     type="text"
-                    name="name"
-                    placeholder="name"
-                    // onChange={handleChange}
+                    name="username"
+                    placeholder="Enter the username"
+                    onChange={handleChange}
                   />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add profile pic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                  <input
+                  <input className='ml-5'
                     type="file"
 
                   /> 
+                  {/* <span className='text-sm'>Update your profile pic</span> */}
                   <br /> <br />
-                  <input
+                  <input 
                     type="text"
                     name="email"
-                    placeholder="email"
-                    // onChange={handleChange}
-                  />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   <input
-                    type="text"
+                    placeholder="Enter the email"
+                    onChange={handleChange}
+                  />
+                   <input className='ml-5'
+                    type="password"
                     name="password"
                     placeholder="change password"
+                    onChange={handleChange}
                   />
                 </div>
                 
@@ -142,7 +181,7 @@ function UserProfile() {
                   <button
                     className="bg-blue-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    // onClick={handleEdit}
+                    onClick={handleEdit}
                   >
                     Save Changes
                   </button>

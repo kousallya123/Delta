@@ -144,7 +144,7 @@ const { isObjectIdOrHexString } = require('mongoose')
             const user=await Users.findByIdAndUpdate(req.params.id,{
                 $set:req.body,
             })
-            res.json("Account has been updated")
+            res.json(user)
         }catch(error){
             return res.json(error)
         }
@@ -224,23 +224,6 @@ const followUser=async(req,res)=>{
  }
  
 
- const getFriends=async (req, res) => {  
-  try {
-    const user = await Users.findById(req.params.userId);
-    const friends = await Promise.all(
-      user.followings.map((friendId) => {
-        return Users.findById(friendId);
-      })
-    );
-    let friendList = [];
-    friends.map((friend) => {
-      const { _id, username, profilePicture } = friend;
-      friendList.push({ _id, username, profilePicture });
-    });
-    res.status(200).json(friendList)
-  } catch (err) {
-    res.status(500).json(err);
-  }
-}
 
-module.exports={authCtrlRegister,authCtrlLogin,authCtrlLogout,authCtrlGetAccessToken,updateUser,deleteUser,getUser,unFollowUser,followUser,getFriends}    
+
+module.exports={authCtrlRegister,authCtrlLogin,authCtrlLogout,authCtrlGetAccessToken,updateUser,deleteUser,getUser,unFollowUser,followUser}    

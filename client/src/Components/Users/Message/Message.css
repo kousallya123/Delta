@@ -13,8 +13,13 @@
 
 }
 
+
+.messageTop{
+    display: flex;
+}
+
 .messageText{
-    padding: 10px;
+    padding: 5px 10px;
     border-radius: 20px;
     background-color:#9333ea;
     color: white;

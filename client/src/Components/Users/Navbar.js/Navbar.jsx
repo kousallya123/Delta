@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import './Navbar.css'
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
@@ -11,10 +11,12 @@ import { logout} from '../../../redux/userSlice';
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import { MoreVert } from '@mui/icons-material';
 
 function Navbar() {
   const user = useSelector((state)=> state.user)
   const navigate=useNavigate()
+  const [drop,setDrop]=useState(false)
   const dispatch=useDispatch();
     const handleLogout=async(e)=>{
       e.preventDefault();
@@ -60,6 +62,34 @@ function Navbar() {
         <span className="topbarIconBadge">5</span>
         </div>
        </div>
+       <>
+     <div class="flex justify-center">
+     <div class="relative inline-block">
+     
+        <button class="relative z-10 flex items-center p-2 text-sm text-gray-600 bg-white border border-transparent rounded-md focus:border-blue-100 focus:border-radious-20 ">
+            <span class="mx-1"><MoreVert onClick={()=>setDrop(!drop)}/></span>
+        </button>
+
+        {drop?
+        <div class="absolute right-0 z-20 w-56 py-2 mt-2 overflow-hidden bg-white rounded-md shadow-xl dark:bg-gray-800">
+
+        <hr class="border-gray-200 dark:border-gray-700 "/>
+        
+        <a href="#" class="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+          view profile
+        </a>
+
+        <a href="#" class="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+           logout
+        </a>
+
+
+        </div>:null
+        }
+        
+    </div>
+     </div>
+    </>
        <Link to='/userProfile'><img src="/assets/c2.jpg" alt="" className="topbarImg" /></Link>
        {/* <button onClick={(e)=>handleLogout(e)}>Logout</button> */}
      </div>

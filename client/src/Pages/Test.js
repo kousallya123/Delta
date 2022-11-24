@@ -1,12 +1,10 @@
 import React from 'react'
-import Navbar from '../Components/Users/Navbar.js/Navbar'
 
 function Test() {
   return (
     <div>
-        <Navbar/>
       <div>
-    <div class="h-screen chatscreen p-5 mt-4">
+    <div class="h-screen chatscreen p-5 mt-32">
       <section class=" shadow-xl rounded-md w-full lg:w-11/12 lg:mx-auto flex">
         {/* <!-- Left section --> */}
         <div class="w-full md:w-3/6 lg:w-3/6 xl:w-3/6 flex flex-col justify-start items-stretch  bg-white bg-opacity-80 rounded-md lg:rounded-none lg:rounded-l-md p-3">

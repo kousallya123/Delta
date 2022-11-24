@@ -1,5 +1,6 @@
 const Conversation=require('../models/conversation')
 const Message=require('../models/message')
+const User=require('../models/userModel')
 
 const addConversation=async(req,res)=>{
     const newConversation=new Conversation({
@@ -64,4 +65,25 @@ const getTwoConversations=async(req,res)=>{
   }
 }
 
-module.exports={addConversation,getConversation,sendMessage,getMessage,getTwoConversations}
+
+
+const getFriends=async (req, res) => { 
+    try {
+      const user = await User.findById(req.params.userId);
+      const friends = await Promise.all(
+        user.followings.map((friendId) => {
+          return User.findById(friendId);
+        })
+      );
+      let friendList = [];
+      friends.map((friend) => {
+        const { _id, username, profilePicture } = friend;
+        friendList.push({ _id, username, profilePicture });
+      });
+      res.json(friendList)
+    } catch (err) {
+      res.json(err);
+    }
+  }
+
+module.exports={addConversation,getConversation,sendMessage,getMessage,getTwoConversations,getFriends}

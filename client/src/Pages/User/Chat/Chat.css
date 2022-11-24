@@ -43,13 +43,15 @@
 }
 
 .chatSubmitButton{
+   margin-left: 10px;
    width: 70px;
    height: 40px;
    border: none;
-   border-radius: 5px;
+   border-radius: 15px;
    cursor: pointer;
-   background-color: teal;
+   background-color: rgb(107, 109, 132);
    color: white;
+
 
 }
 

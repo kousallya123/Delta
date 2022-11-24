@@ -19,6 +19,6 @@ router.put('/follow/:id',followUser)
 
 router.put('/unfollow/:id',unFollowUser)
 
-router.get('/friends',getFriends)
+
 
 module.exports=router

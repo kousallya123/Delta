@@ -19,7 +19,7 @@ function Post({post}) {
   const [user, setUser] = useState({});
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const currentUser= useSelector((state)=>state.user)
-
+  const [drop,setDrop]=useState(false)
 
   useEffect(() => {
     setIsLiked(post.likes.includes(currentUser._id));
@@ -67,8 +67,35 @@ function Post({post}) {
             <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
-            <DeleteOutline  onClick={deletePost}/>
-          </div>
+    <>
+     <div class="flex justify-center">
+     <div class="relative inline-block">
+     
+        <button class="relative z-10 flex items-center p-2 text-sm text-gray-600 bg-white border border-transparent rounded-md focus:border-blue-100 focus:border-radious-20 ">
+            <span class="mx-1"><MoreVert onClick={()=>setDrop(!drop)}/></span>
+        </button>
+
+        {drop?
+        <div class="absolute right-0 z-20 w-56 py-2 mt-2 overflow-hidden bg-white rounded-md shadow-xl dark:bg-gray-800">
+
+        <hr class="border-gray-200 dark:border-gray-700 "/>
+        
+        <a href="#" class="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+           Report
+        </a>
+
+        <a href="#" class="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+           Unfollow
+        </a>
+
+
+        </div>:null
+        }
+        
+    </div>
+     </div>
+    </>
+      </div>
         </div>
         <div className="postCenter">
           <span className="postText">{post?.desc}</span>
