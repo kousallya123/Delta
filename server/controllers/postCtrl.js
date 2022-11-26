@@ -2,6 +2,7 @@ const express=require('express')
 const Users=require('../models/userModel')
 const Post=require('../models/postSchema')
 const Comments=require('../models/commentSchema')
+const Report=require('../models/reportSchema')
 
 
 
@@ -114,7 +115,7 @@ const getPost=async(req,res)=>{
     }
  }
  const getPostComments=async(req,res)=>{
-    console.log(req.params.id);
+    // console.log(req.params.id);
     try {
       const postComment=await Comments.find({postId:req.params.id})
       res.json(postComment)
@@ -124,6 +125,17 @@ const getPost=async(req,res)=>{
     }
  }
 
+ const reportPost=async(req,res)=>{
+    const newReport=new Report(req.body)
+    try {
+        const report=await newReport.save()
+        res.json(report)
+    } catch (error) {
+        res.json(error)
+    } 
+ }
 
 
-  module.exports={addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost,addComment,getPostComments}
+
+
+  module.exports={addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost,addComment,getPostComments,reportPost}

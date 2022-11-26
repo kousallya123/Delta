@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import UserProfile from './Components/Users/Profile/UserProfile';
 import Chat from './Pages/User/Chat/Chat';
 import Test from './Pages/Test';
-
+import AdminPostPage from './Pages/Admin/AdminPost';
 
 function App() {
   return (
@@ -30,6 +30,7 @@ function App() {
           <Routes>  
           <Route path='/sidebar' element={<Sidebar/>}/>
               <Route path='/admin-users' element={<AdminHomePage/>}/> 
+              <Route path='/admin-posts' element={<AdminPostPage/>}/> 
               <Route path='/admin-login' element={<AdminLogin/>}/>  
           </Routes>
        </Router>

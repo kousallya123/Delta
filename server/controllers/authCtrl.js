@@ -2,11 +2,10 @@ const Users=require('../models/userModel')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
 const userModel = require('../models/userModel')
-const { isObjectIdOrHexString } = require('mongoose')
 
     const authCtrlRegister=async(req,res)=>{
         try {
-            const {fullname,username,email,password,gender}=req.body
+            const {fullname,username,email,password}=req.body
             let newUserName=username.toLowerCase()
 
 
@@ -26,20 +25,10 @@ const { isObjectIdOrHexString } = require('mongoose')
             fullname,username:newUserName,email,password:passwordHash
           })
 
-          const access_token=createAccessToken({id:newUser._id})
-          const refresh_token=createRefreshToken({id:newUser._id})
-          
-          res.cookie('refreshtoken',refresh_token,{
-            httpOnly:true,
-            path:'/refresh_token',
-            maxAge:240000
-          })
-
           await newUser.save()
 
            res.json({
             msg:'register success',
-            access_token,
             user:{
                ...newUser._doc,
                password:''
@@ -64,19 +53,16 @@ const { isObjectIdOrHexString } = require('mongoose')
          
          if(user.status==="inactive") return res.json({msg:"User is blocked"})
          
-         const access_token=createAccessToken({id:user._id})
-         const refresh_token=createRefreshToken({id:user._id})
-         
-         res.cookie('refreshtoken',refresh_token,{
-           httpOnly:true,
-           path:'/refresh_token',
-           maxAge:240000
+        
+         const id='8394n43x14n384n1njk'
+         const usertoken=jwt.sign({id}, process.env.JWT_KEY,{
+             expiresIn:"365d",
          })
-
+         console.log(usertoken);
 
           res.json({
            msg:'Login success',
-           access_token,
+           usertoken:usertoken,
            user:{
               ...user._doc,
               password:''
@@ -86,50 +72,8 @@ const { isObjectIdOrHexString } = require('mongoose')
             return res.json({msg:error.message})
         }
     }
-    const authCtrlLogout=async(req,res)=>{
-        try {
-           res.clearCookie('refreshtoken',{path:'/refresh_token'})
-           return res.json({msg:"Logged out"})
-             
-        } catch (error) {
-            return res.staus(500).json({msg:error.message})
-        }
-    }
-    const authCtrlGetAccessToken=async(req,res)=>{
-        try {
-            const rf_token=req.cookies.refresh_token
-            if(!rf_token) return res.json({msg:"Please login"})
-            
-                jwt.verify(rf_token,process.env.REFRESH_TOKEN_SECRET,async(err,result)=>{
-                console.log(result);
-                if(err) return res.json({msg:"Please loginuhisiu"})
-                const user=await userModel.findById(result.id).select("-password")
-                .populate('followers following','-password')
-                
-                if(!user) return res.json({msg:"User does not exist"})
 
-                const access_token=createAccessToken({id:result.id})
-
-                res.json({
-                    access_token,
-                    user
-                })
-            })
-        } catch (error) {
-            return res.staus(500).json({msg:error.message})
-        }
-    }
-
-
-
-   const createAccessToken=(payload)=>{
-      return jwt.sign(payload,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'1d'})
-    } 
-
-   const createRefreshToken=(payload)=>{
-        return jwt.sign(payload,process.env.REFRESH_TOKEN_SECRET,{expiresIn:'30d'})
-   }
-
+    
    const updateUser=async(req,res)=>{
       if(req.body.userId===req.params.id||req.body.isAdmin){
         if(req.body.password){
@@ -226,4 +170,4 @@ const followUser=async(req,res)=>{
 
 
 
-module.exports={authCtrlRegister,authCtrlLogin,authCtrlLogout,authCtrlGetAccessToken,updateUser,deleteUser,getUser,unFollowUser,followUser}    
+module.exports={authCtrlRegister,authCtrlLogin,updateUser,deleteUser,getUser,unFollowUser,followUser}    

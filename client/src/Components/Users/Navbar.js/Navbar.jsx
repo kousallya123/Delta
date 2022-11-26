@@ -19,30 +19,28 @@ function Navbar() {
   const [drop,setDrop]=useState(false)
   const dispatch=useDispatch();
     const handleLogout=async(e)=>{
-      console.log('logout is calleddddddd');
       e.preventDefault();
       Swal.fire({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        text: "You won't logout!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Yes,logout!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'logout!',
+            'success'
+          )
+        }
       })
       localStorage.removeItem('user')
       dispatch(logout())
       await axios.post('http://localhost:5000/logout')
       navigate('/')
-      .then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire(
-            'Deleted!',
-            'Your file has been deleted.',
-            'success'
-          )
-        }
-      })
+      
     }
    
   return (

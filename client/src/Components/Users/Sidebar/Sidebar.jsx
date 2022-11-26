@@ -17,26 +17,9 @@ function Sidebar() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const handleLogout = () => {
-    console.log('in logout');
-    confirmAlert({
-      title: 'Logout!',
-      message: 'Are you sure to Logout .',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: () => {
-            localStorage.removeItem('user')
+    localStorage.removeItem('user')
             dispatch(logout())
             navigate('/');
-    }
-  },
-  {
-    label: 'No',
-   
-  }
-]
-    });
- 
   }
 
 
@@ -46,7 +29,7 @@ function Sidebar() {
         { name: "Notifications", link: "/home", icon: MdNotificationsNone },
         { name: "Create", link: "/home", icon: BiMessageSquareAdd },
         { name: "Setting", link: "/home", icon: RiSettings4Line },
-        { name: "My Profile", link: "/profile", icon: CgProfile ,bottom:true},
+        { name: "My Profile", link: "/userProfile", icon: CgProfile ,bottom:true},
         { name: "Logout", link: "/", icon: HiOutlineLogout ,},
       ];
 

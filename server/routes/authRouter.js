@@ -5,10 +5,6 @@ router.post('/register',authCtrlRegister)
 
 router.post('/login',authCtrlLogin)
 
-router.post('/logout',authCtrlLogout)
-
-router.post('/refresh_token',authCtrlGetAccessToken)
-
 router.put('/:id',updateUser)
 
 router.delete('/:id',deleteUser)

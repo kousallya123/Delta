@@ -6,7 +6,7 @@ const Dashboard = () => {
     const [open, setOpen] = useState(true);
     const Menus = [
     { dashboard: "Dashboard", src: "Chart_fill" },
-    // { approve: "Approved List", src: "Chat" },
+    { post: "Posts", src: "Chat" },
     // { reject: "Rejected List", src: "User" },
     // { slot: "Booking Slots ", src: "Calendar" },
     // { create: "Create Slots ", src: "Calendar" },
@@ -39,23 +39,23 @@ const Dashboard = () => {
       <div
         className={` ${
           open ? "w-72" : "w-20 "
-        } bg-black h-screen p-5  pt-8 relative duration-300`}
+        } bg-blue-100 h-screen p-5  pt-8 relative duration-300`}
       >
         <img
-          src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.cleanpng.com%2Fpng-delta-air-lines-image-computer-icons-logo-vector-g-6970346%2F&psig=AOvVaw0ANZUtKj4r5V1uDwpmVxqC&ust=1667961534616000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCJDxh4nHnfsCFQAAAAAdAAAAABAE"
+          src="/delta.png"
           className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
            border-2 rounded-full  ${!open && "rotate-180"}`}
           onClick={() => setOpen(!open)}
         />
         <div className="flex gap-x-4 items-center">
           <img 
-            src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.cleanpng.com%2Fpng-delta-air-lines-image-computer-icons-logo-vector-g-6970346%2F&psig=AOvVaw0ANZUtKj4r5V1uDwpmVxqC&ust=1667961534616000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCJDxh4nHnfsCFQAAAAAdAAAAABAE"
+            src="/delta.png"
             className={`cursor-pointer duration-500 h-10 ${
               open && "rotate-[360deg]"
             }`}
           />
           <h1
-            className={`text-white origin-left font-medium text-xl duration-200 ${
+            className={`text-blue-900 origin-left font-medium text-xl duration-200 ${
               !open && "scale-0"
             }`}
           >
@@ -66,7 +66,7 @@ const Dashboard = () => {
           {Menus.map((Menu, index) => (
             <li
             key={index}
-            className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+            className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-blue-900 text-sm items-center gap-x-4 
             ${Menu.gap ? "mt-9" : "mt-2"} ${
               index === 0 && "bg-light-white"
             } `}
@@ -74,9 +74,9 @@ const Dashboard = () => {
               <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style={{height:'10px',width:'10px'}}/>
               <span className={`${!open && "hidden"} origin-left duration-200`}>
                 {Menu.title}
-                <Link to='/adminHome'>{Menu.dashboard}</Link>
-                {/* <Link to='/approve'>{Menu.approve}</Link>
-                <Link to='/reject'>{Menu.reject}</Link>
+                <Link to='/admin-users'>{Menu.dashboard}</Link>
+                 <Link to='/admin-posts'>{Menu.post}</Link>
+                 {/* <Link to='/reject'>{Menu.reject}</Link>
                 <Link to='/slot'>{Menu.slot}</Link>
                 <Link to='/progress'>{Menu.progress}</Link>
                 <Link to='/create'>{Menu.create}</Link> */}

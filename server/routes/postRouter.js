@@ -1,7 +1,8 @@
 const express=require('express')
 const router=express.Router()
 const multer=require('multer')
-const {addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost,addComment,getPostComments}=require('../controllers/postCtrl')
+const {addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost,addComment,getPostComments,reportPost}=require('../controllers/postCtrl');
+const check = require('../middleware/verify');
 
 
 const storage = multer.diskStorage({
@@ -32,15 +33,18 @@ router.delete('/:id',deletePost)
 
 router.put('/like/:id',likePost) 
 
-router.get('/:id',getPost)
+router.get('/:id',check,getPost)
 
-router.get('/timeline/:userId',timelinePost)
+router.get('/timeline/:userId',check,timelinePost)
 
 router.get('/userpost/:userId',userPost)
 
 router.post('/addcomment/:id',addComment)
 
 router.get('/getcomments/:id',getPostComments)
+
+router.post('/report/:id',reportPost)
+
 
 
 module.exports=router

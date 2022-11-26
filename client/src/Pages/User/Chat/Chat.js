@@ -11,12 +11,15 @@ import InputEmoji from 'react-input-emoji'
 
 function Chat() {
   const user=useSelector(state=>state.user)
+  const [selected,setSelected]=useState(false)
   const [conversations,setConversations]=useState([])
   const [currentChat,setCurrentChat]=useState(false)
   const [messages,setMessages]=useState([])
   const [newMessage,setNewMessage]=useState('')
   const [onlineUsers,setOnlineUsers]=useState([])
   const [arrivalMessage,setarrivalMessage]=useState(null)
+  const [users,setUsers]=useState([])
+  const [showModal,setShowModal]=useState(false)
   const scrollRef=useRef()
   const socket=useRef()
   
@@ -113,7 +116,23 @@ function Chat() {
     console.log(newMessage);
     setNewMessage(newMessage)
   }
- 
+const fetchUsers=async()=>{
+  setShowModal(true)
+  const allUsers=await axios.get(`/admin/users`)
+  if(allUsers){
+   setUsers(allUsers.data)
+  }else{
+   console.log('error');
+  }
+}
+
+const startChat=async(receiverId)=>{
+     const  res= await axios.post('http://localhost:5000/chat',{senderId:user._id,receiverId:receiverId})
+     if(res){
+      window.location.reload()
+     }
+}
+
 
 
   return (
@@ -130,6 +149,8 @@ function Chat() {
               ))}
              
             </div>
+            <span className='text-gray-400'> Click here to start new chat </span>
+            <button className='rounded-full  bg-purple-600 px-3 py-1 text-white  text-2xl' value={showModal} onClick={fetchUsers}>+</button>
         </div>
         <div className='chatBox'>
            <div className='chatBoxWrapper'>
@@ -174,6 +195,68 @@ function Chat() {
          </div>
         </div>
       </div>
+
+
+      {showModal ? (
+    <>
+      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
+        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+       
+          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none ">
+            <div className="flex  justify-between p-5 border-b border-solid border-slate-200 rounded-t flex-col">
+              <h6 className="text-xl font-semibold">Choose one to start new conversation</h6>
+              {users.map((obj)=>(
+              <div className='flex flex-col  justify-between'>
+                {console.log(conversations,'dddddddddddddddddddd')}
+                {obj.username!==user.username&&
+                     <div className="relative p-6 flex  justify-between">
+                     <img class="w-12 h-12 rounded-full bg-gray-100" src='/assets/avatar.jpg'></img>
+                     {selected?  <div className='p-3 text-green-500' onClick={()=>setSelected(!selected)}>{obj.username} 
+                    </div>:
+                     <div className='py-3 mr-28' onClick={()=>setSelected(!selected)}>{obj.username}
+                     </div>
+                    }
+                     <div>
+                       <button
+                      className="bg-blue-500 text-white active:bg-emerald-600   text-sm px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      type="button"
+                      onClick={()=>startChat(obj._id)}
+                    >
+                     Start Chat
+                    </button>
+                    </div>
+                     </div>
+                }
+              
+            
+              </div>
+                ))}
+              <button
+                className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                onClick={() => setShowModal(false)}
+              >
+                <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                  ×
+                </span>
+              </button>
+            </div>
+            <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+              <button
+                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={() => setShowModal(false)}
+              >
+                Close
+              </button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+    </>
+  ) : null}
+
     </div>
   )
 }

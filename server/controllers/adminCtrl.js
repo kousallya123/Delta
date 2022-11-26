@@ -1,5 +1,7 @@
 const User = require('../models/userModel')
-
+const Post = require('../models/postSchema')
+const Reports=require('../models/reportSchema')
+const commentSchema = require('../models/commentSchema')
 
 const getUsers = (req,res)=>{
 try {
@@ -71,5 +73,37 @@ const adminLogin=(req,res)=>{
     }
 }
 
+const getAllPosts=async(req,res)=>{
+    try {
+        const allPost= await Post.find()
+        res.json(allPost)
+        
+    } catch (error) {
+       res.json(error) 
+    }
+}
 
-module.exports={getUsers,blockUser,UnblockUser,adminLogin}
+
+const getAllComment=async(req,res)=>{
+    try {
+        const allComment= await commentSchema.find()
+        res.json(allComment)
+        
+    } catch (error) {
+       res.json(error) 
+    }
+}
+
+
+
+const getAllReports=async(req,res)=>{
+    try {
+        const allReport= await Reports.find()
+        res.json(allReport)
+        
+    } catch (error) {
+       res.json(error) 
+    }
+}
+
+module.exports={getUsers,blockUser,UnblockUser,adminLogin,getAllPosts,getAllComment,getAllReports}

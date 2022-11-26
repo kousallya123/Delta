@@ -46,6 +46,7 @@ function Login() {
                             });
                         navigate("/home"); 
                         localStorage.setItem('user', JSON.stringify(data.user))
+                        localStorage.setItem('usertoken',(data.usertoken))
                         dispatch(login(data.user))        
                        
                     } else {
