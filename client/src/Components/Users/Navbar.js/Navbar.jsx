@@ -32,15 +32,14 @@ function Navbar() {
         if (result.isConfirmed) {
           Swal.fire(
             'logout!',
+            'Logoutted successfully.',
             'success'
           )
+          localStorage.removeItem('user')
+          dispatch(logout())
+          navigate('/')
         }
-      })
-      localStorage.removeItem('user')
-      dispatch(logout())
-      await axios.post('http://localhost:5000/logout')
-      navigate('/')
-      
+      })   
     }
    
   return (
@@ -71,11 +70,11 @@ function Navbar() {
         <Link to='/chat'>
         <ChatIcon/>
         </Link>
-        <span className="topbarIconBadge">2</span>
+        {/* <span className="topbarIconBadge">2</span> */}
         </div>
         <div className='topbarIconItem'>
         <NotificationsIcon/>
-        <span className="topbarIconBadge">5</span>
+        {/* <span className="topbarIconBadge">5</span> */}
         </div>
        </div>
        <>

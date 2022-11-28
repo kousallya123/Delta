@@ -64,7 +64,7 @@ function Share() {
            
            
             <input style={{display:"none"}} type='file'name='file' id='file' multiple onChange={(e)=>{ 
-              setImage(URL.createObjectURL(e.target.files[0]))
+              // setImage(URL.createObjectURL(e.target.files[0]))
               {setFile(e.target.files[0]) }
             }
             

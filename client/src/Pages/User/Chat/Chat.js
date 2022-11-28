@@ -91,7 +91,7 @@ function Chat() {
     }
      
     const receiverId=currentChat.members.find((member)=>member!==user._id)
-
+    
      socket.current.emit("sendMessage",{
       senderId:user._id,
       receiverId,
@@ -133,7 +133,7 @@ const startChat=async(receiverId)=>{
      }
 }
 
-
+console.log(onlineUsers,'hhhhhhhhhhhhhhhhh');
 
   return (
     <div>

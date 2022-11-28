@@ -4,14 +4,13 @@ import { useState } from 'react'
 import  './ChatOnline.css'
 
 function ChatOnline({onlineUsers,currentId,setCurrentChat}) {
+  // console.log(onlineUsers,'0000000000000',currentId,'11111111111111111',setCurrentChat,'2222222222222222222');
   const [friends,setFriends]=useState([])
   const [onlineFriends,setOnlinFriends]=useState([])
 
   useEffect(()=>{
     const getFriends=async()=>{
-      console.log(currentId,'awwwwwwwwww');
       const res=await axios.get('http://localhost:5000/chat/friendlist/'+currentId)
-      console.log(res,'rrrrrrrrrrrrrrrrrrrrrrrr');
       setFriends(res.data)
     }
     getFriends()
@@ -30,8 +29,7 @@ function ChatOnline({onlineUsers,currentId,setCurrentChat}) {
       console.log(error);
     }
   }
-
-  console.log(onlineFriends,'xxxxxxxxxxxxxxxx');
+  // console.log(onlineFriends,'vvvvvvvvvvvvvvvvvvvvvvv');
   return (
     <div className="chatOnline">
       {onlineFriends?.map((o)=>(

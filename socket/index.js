@@ -54,6 +54,7 @@ io.on("connection",(socket)=>{
     /*                               when disconnect                              */
     /* -------------------------------------------------------------------------- */
     socket.on("disconnect",()=>{
+     console.log('user is disconnetced');   
      removeUser(socket.id)  
      io.emit("getUsers",users)   
     })

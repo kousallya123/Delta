@@ -10,16 +10,35 @@ import { useNavigate, Link } from "react-router-dom";
 import {confirmAlert} from 'react-confirm-alert'
 import { useDispatch } from "react-redux";
 import { logout } from "../../../redux/userSlice";
+import Swal from 'sweetalert2'
 
 
 function Sidebar() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const handleLogout = () => {
-    localStorage.removeItem('user')
-            dispatch(logout())
-            navigate('/');
+  const handleLogout=async(e)=>{
+    e.preventDefault()
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't logout!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,logout!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'logout!',
+          'You are logoutted',
+          'success'
+        )
+        localStorage.removeItem('user')
+        dispatch(logout())
+        navigate('/')
+      }
+    })   
   }
 
 
@@ -52,7 +71,7 @@ function Sidebar() {
               className={` ${
                 menu?.bottom && ""
               } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-300 rounded-md`}>
-             {menu.name == 'Logout'? <div className="md:text-3xl lg:text-2xl" onClick={handleLogout}>{React.createElement(menu?.icon, )}</div> :<div className="md:text-3xl lg:text-2xl">{React.createElement(menu?.icon, )}</div> }
+             {menu.name == 'Logout'? <div className="md:text-3xl lg:text-2xl" onClick={(e)=>handleLogout(e)}>{React.createElement(menu?.icon, )}</div> :<div className="md:text-3xl lg:text-2xl">{React.createElement(menu?.icon, )}</div> }
               <h2 
                 style={{
                   transitionDelay: `${i + 3}00ms`,
