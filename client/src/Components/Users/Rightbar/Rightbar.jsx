@@ -11,7 +11,7 @@ function Rightbar() {
   const [users,setUsers]=useState([])
   const user = useSelector((state)=> state.user)
   const [check,setCheck]=useState(false)
-
+  const PF=process.env.REACT_APP_PUBLIC_FOLDER
 
   useEffect(()=>{
     console.log('button changed');
@@ -54,14 +54,14 @@ function Rightbar() {
   return (
 
     <div className='fixed'>
-      <h2 className='align-center justify-center p-5 text-blue-500 font-semibold'> Suggetions</h2>
+      <h2 className='align-center justify-center p-5 text-gray-500 font-semibold'> Suggetions</h2>
       {users.map((obj)=>( 
         <>
         {obj.username!==user.username&&
         
          <div class="flex items-center relative p-4 w-full bg-white rounded-lg overflow-hidden shadow hover:shadow-md mb-5">
           <Link to={`/profile/${obj.username}`}>
-         <img class="w-12 h-12 rounded-full bg-gray-100" src='/assets/avatar.jpg'></img>
+         <img class="w-12 h-12 rounded-full bg-gray-100" src={PF+obj.profilePicture}></img>
          </Link>
            <div class="ml-3">
              <p class="font-medium text-gray-800">{obj.username}</p>

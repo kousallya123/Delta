@@ -72,7 +72,14 @@
 
    position: absolute;
    top:10%;
-   font-size: 40px;
+   font-size: 20px;
    color: gray;
    cursor: default;
+}
+.noMessageText{
+   top:10%;
+   font-size: 20px;
+   color: gray;
+   cursor: default;
+
 }

@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 const defaultUser = JSON.parse(localStorage.getItem('user'))
 
 
-
 if(defaultUser){
     var { _id,username, email, profilePicture,status,coverPicture,followers, followings, createdAt,posts} = defaultUser
 }else{

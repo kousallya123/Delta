@@ -72,6 +72,10 @@
     padding: 5px;
     border-radius: 6px;
 }
+.followButton{
+    background-color: gray;
+    color: white;
+}
 .profileButtons{
     display: flex;
     align-items: center;

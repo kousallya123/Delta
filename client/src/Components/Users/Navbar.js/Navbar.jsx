@@ -14,10 +14,12 @@ import Swal from 'sweetalert2'
 import { MoreVert } from '@mui/icons-material';
 
 function Navbar() {
-  const user = useSelector((state)=> state.user)
+
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const navigate=useNavigate()
   const [drop,setDrop]=useState(false)
   const dispatch=useDispatch();
+  const user = useSelector((state)=> state.user)
     const handleLogout=async(e)=>{
       e.preventDefault();
       Swal.fire({
@@ -82,7 +84,7 @@ function Navbar() {
      <div class="relative inline-block">
          
 
-     <img src="/assets/c2.jpg" alt="" className="topbarImg" onClick={()=>setDrop(!drop)}/>
+     <img src={PF+user.profilePicture} alt="" className="topbarImg" onClick={()=>setDrop(!drop)}/>
 
         {/* <button class="relative z-10 flex items-center p-2 text-sm text-gray-600 bg-white border border-transparent rounded-md focus:border-blue-100 focus:border-radious-20 ">
             <span class="mx-1"><MoreVert /></span>

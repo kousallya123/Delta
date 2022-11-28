@@ -12,6 +12,7 @@ import UserProfile from './Components/Users/Profile/UserProfile';
 import Chat from './Pages/User/Chat/Chat';
 import Test from './Pages/Test';
 import AdminPostPage from './Pages/Admin/AdminPost';
+import AdminReportPage from './Pages/Admin/AdminReportPage';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
               <Route path='/admin-users' element={<AdminHomePage/>}/> 
               <Route path='/admin-posts' element={<AdminPostPage/>}/> 
               <Route path='/admin-login' element={<AdminLogin/>}/>  
+              <Route path='/admin-reports' element={<AdminReportPage/>}/>  
           </Routes>
        </Router>
     </div>

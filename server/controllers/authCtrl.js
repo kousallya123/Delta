@@ -76,18 +76,19 @@ const userModel = require('../models/userModel')
     
    const updateUser=async(req,res)=>{
       if(req.body.userId===req.params.id||req.body.isAdmin){
-        if(req.body.password){
+        if(req.body.editPost.password){
             try {
                 const salt=await bcrypt.genSalt(10)
-                req.body.password=await bcrypt.hash(req.body.password,salt)
+                req.body.editPost.password=await bcrypt.hash(req.body.editPost.password,salt)
             } catch (error) {
                 return res.json(error)
             }
         }
         try{
             const user=await Users.findByIdAndUpdate(req.params.id,{
-                $set:req.body,
+                $set:req.body.editPost,
             })
+            console.log(user,'aaaaaaaaaaaaaaaaaaaaaaaaaaa');
             res.json(user)
         }catch(error){
             return res.json(error)

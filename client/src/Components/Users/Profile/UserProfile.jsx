@@ -11,30 +11,56 @@ import {login} from '../../../redux/userSlice'
 
 function UserProfile() {
  const dispatch=useDispatch(); 
- const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+ const PF=process.env.REACT_APP_PUBLIC_FOLDER
  const user=useSelector((state)=>state.user) 
  const [edit,setEdit]=useState([])
  const [post,setPost]=useState([]) 
  const [showMod,SetShowMod]=useState(false)
-    
+ const [file,setFile]= useState([])
+
+
+
+ const handleChange = (e) => {
+  const { name, value } = e.target;
+  setEdit({
+    ...edit,
+    [name]: value,
+  })
+};
+
 
  const handleEdit=async(e)=>{
   e.preventDefault();
+   const editPost={
+    ...edit
+   }
+
+   if(file){
+    const data=new FormData();
+    const fileName=file.name
+    data.append("file",file)
+    data.append("name",fileName)
+    editPost.profilePicture=fileName
+    
+    try {
+      await axios.post('http://localhost:5000/post/upload',data)
+      // window.location.reload()
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
   try {
-    await axios.put("http://localhost:5000/"+user._id, { ...edit,userId:user._id})
-    axios.put("http://localhost:5000/"+user._id, { ...edit,userId:user._id})
-      .then((response) => {
-        dispatch(login(response.data)) 
-        Swal.fire({
+        const response=await axios.put("http://localhost:5000/"+user._id, {editPost,userId:user._id})
+         dispatch(login(response.data)) 
+         Swal.fire({
           position: 'top-end',
           icon: 'success',
           title: 'Your details is updated successfully',
           showConfirmButton: false,
           timer: 1500
         })
-        console.log(response,'updated suceesfullyyyyyyyyyyyyyyyyyy');
         
-      });
       SetShowMod(false)  
      
   } catch (error) {}
@@ -43,23 +69,15 @@ function UserProfile() {
 
 
 
+
+
   useEffect(() => {
     const fetchPost = async () => {
     const res = await axios.get(`http://localhost:5000/post/userpost/${user._id}`);
     setPost(res.data);
-    console.log(res);
   };
   fetchPost();
 },[user._id])
-
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setEdit({
-    ...edit,
-    [name]: value,
-  })
-};
-
 
 
   return (
@@ -75,14 +93,14 @@ const handleChange = (e) => {
     
 
       <img class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
-                   border-2 p-1" src={user.profilePicture?PF+user.profilePicture:'/assets/avatar.jpg'} alt="profile"/>
+                   border-2 p-1"src={PF+user.profilePicture} alt="profile"/>
     </div>
    <div class="w-8/12 md:w-7/12 ml-4">
        <div class="md:flex md:flex-wrap md:items-center mb-4">
         <h2 class="text-3xl inline-block font-light md:mr-2 mb-2 sm:mb-0">
           {user.username}
         </h2>
-        <a href="#" class="bg-blue-500 px-2 py-1 
+        <a href="#" class="bg-gray-500 px-2 py-1 
                       text-white font-semibold text-sm rounded block text-center 
                       sm:inline-block "  onClick={()=>SetShowMod(true)}>Edit profile</a>
       </div>
@@ -151,9 +169,12 @@ const handleChange = (e) => {
                     onChange={handleChange}
                   />
                   <input className='ml-5'
-                    type="file"
+                   type='file'name='file' id='file' onChange={(e)=>{ 
+                      // setImage(URL.createObjectURL(e.target.files[0]))
+                      {setFile(e.target.files[0]) }
+                    }
 
-                  /> 
+                   } /> 
                   {/* <span className='text-sm'>Update your profile pic</span> */}
                   <br /> <br />
                   <input 

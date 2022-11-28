@@ -69,20 +69,22 @@ function Post({post}) {
      const res=await axios.post(`http://localhost:5000/post/report/${post._id}`,{postId:post._id,userId:user._id,
     ...report})
     if(res){
-      // Swal.fire({
-      //   title: 'Post is reported',
-      //   showClass: {
-      //     popup: 'animate__animated animate__fadeInDown'
-      //   },
-      //   hideClass: {
-      //     popup: 'animate__animated animate__fadeOutUp'
-      //   }
-      // })
+      Swal.fire({
+        title: 'Post is reported',
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        }
+      })
+      setShowModal(false)
     }
   }
 
   return (
     <div className="post">
+      {post?.reports?.includes(user._id)?null:
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
@@ -155,6 +157,7 @@ function Post({post}) {
         <Comments post={post} />
             </div>
            </div>
+      }
            {showModal ? (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">

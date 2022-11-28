@@ -98,7 +98,7 @@ const getAllComment=async(req,res)=>{
 
 const getAllReports=async(req,res)=>{
     try {
-        const allReport= await Reports.find()
+        const allReport= await Reports.find().populate("postId")
         res.json(allReport)
         
     } catch (error) {

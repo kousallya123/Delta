@@ -12,11 +12,11 @@ function Share() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const submitHandler=async(e)=>{
     e.preventDefault() 
+   
     const newPost={
       userId:user._id,
       desc:desc,
     }
-    console.log(file,'filerererer.................')
     if(file){
       const data=new FormData();
       const fileName=file.name
@@ -37,21 +37,22 @@ function Share() {
     }catch(err){
      console.log(err);
     }
-    // {file && (
-    //   <div className="shareImgContainer">
-    //     <img className="shareImg" src={URL.createObjectURL(file)} alt="" />
-    //     <Cancel className="shareCancelImg" onClick={() => setFile(null)} />
-    //   </div>
-    // )}
+    {file && (
+      <div className="shareImgContainer">
+        <img className="shareImg" src={URL.createObjectURL(file)} alt="" />
+        <Cancel className="shareCancelImg" onClick={() => setFile(null)} />
+      </div>
+    )}
   }
   console.log('user detailssssssssssss');
   console.log(user);
   return (
+    <>
     <div className='share'>
       <div className='shareWrapper'>
        <div className="shareTop">
-        <img src={user.profilePicture? user.profilePicture:'/assets/c2.jpg'} className='shareProfileImg' alt=""></img>  
-        <input className="shareInput"placeholder={"What's in your mind " + user.username + "?"} onChange={(e)=> {setDesc(e.target.value)}} multiple></input>
+        <img src={PF+user.profilePicture} className='shareProfileImg' alt=""></img>  
+        <input className="shareInput"placeholder={"What's in your mind " + user.username + "?"} onChange={(e)=> {setDesc(e.target.value)}}  required></input>
 
        </div>
        <hr className='shareHr'/>
@@ -62,18 +63,14 @@ function Share() {
             <PermMedia htmlColor="tomato" className='shareIcon'/>
             <span className='shareOptionText'>Photo</span>
            
-           
-            <input style={{display:"none"}} type='file'name='file' id='file' multiple onChange={(e)=>{ 
-              // setImage(URL.createObjectURL(e.target.files[0]))
-              {setFile(e.target.files[0]) }
-            }
-            
-          }/>
+          
            </label>
            <img src={image}  classname= "w-20 h-20 "alt="" />
 
+           
           
          </div>
+       
 
          {/* <div className="shareOptions">
            <div className="shareOptions">
@@ -97,8 +94,21 @@ function Share() {
         
        </form>
       </div>
+    
       
     </div>
+    <div>
+      {file&&
+      <input style={{display:"none"}} type='file'name='file' id='file' multiple onChange={(e)=>{ 
+        // setImage(URL.createObjectURL(e.target.files[0]))
+        {setFile(e.target.files[0]) }
+      }
+      
+    }/>}
+    
+    </div>
+    
+  </>
   )
 }
 

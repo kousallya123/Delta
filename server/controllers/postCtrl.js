@@ -3,6 +3,7 @@ const Users=require('../models/userModel')
 const Post=require('../models/postSchema')
 const Comments=require('../models/commentSchema')
 const Report=require('../models/reportSchema')
+const postSchema = require('../models/postSchema')
 
 
 
@@ -36,6 +37,7 @@ const addPost=async(req,res)=>{
 const deletePost=async(req,res)=>{
     try{
         const post= await Post.findByIdAndDelete(req.params.id)
+        const comment=await Comments.DeleteMany(req.params.id)
         if(post.userId === req.body.userId){
            await post.deleteOne()
            res.json('post deleted successfully')
@@ -115,7 +117,6 @@ const getPost=async(req,res)=>{
     }
  }
  const getPostComments=async(req,res)=>{
-    // console.log(req.params.id);
     try {
       const postComment=await Comments.find({postId:req.params.id})
       res.json(postComment)
@@ -129,6 +130,7 @@ const getPost=async(req,res)=>{
     const newReport=new Report(req.body)
     try {
         const report=await newReport.save()
+        await Post.updateOne({_id:req.body.postId},{$push:{reports:req.body.userId}}) 
         res.json(report)
     } catch (error) {
         res.json(error)
@@ -136,6 +138,16 @@ const getPost=async(req,res)=>{
  }
 
 
+ const blockPost=async(req,res)=>{
+    try {
+       const response=await postSchema.findByIdAndUpdate({_id:req.params.id},{$set:{reportedStatus:"true"}}) 
+    //    console.log(response);   
+       res.json(response)  
+    } catch (error) {
+      res.json(error)  
+    }
+ }
 
 
-  module.exports={addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost,addComment,getPostComments,reportPost}
+
+  module.exports={addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost,addComment,getPostComments,reportPost,blockPost}

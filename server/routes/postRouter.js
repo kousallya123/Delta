@@ -1,7 +1,7 @@
 const express=require('express')
 const router=express.Router()
 const multer=require('multer')
-const {addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost,addComment,getPostComments,reportPost}=require('../controllers/postCtrl');
+const {addPost,updatePost,deletePost,likePost,getPost,timelinePost,userPost,addComment,getPostComments,reportPost,blockPost}=require('../controllers/postCtrl');
 const check = require('../middleware/verify');
 
 
@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage:storage});
 
-router.post('/upload', upload.array('file',2), (req, res) => {
+router.post('/upload', upload.single('file'), (req, res) => {
     console.log(req.body,'imagesssssssssssssssssssssssssss');
     try {
         res.json("success")
@@ -33,7 +33,7 @@ router.delete('/:id',deletePost)
 
 router.put('/like/:id',likePost) 
 
-router.get('/:id',check,getPost)
+router.get('/:id',getPost)
 
 router.get('/timeline/:userId',check,timelinePost)
 
@@ -45,6 +45,7 @@ router.get('/getcomments/:id',getPostComments)
 
 router.post('/report/:id',reportPost)
 
+router.get('/blockPost/:id',blockPost)
 
 
 module.exports=router

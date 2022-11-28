@@ -2,12 +2,14 @@ const mongoose=require('mongoose')
 
 const ReportSchema=new mongoose.Schema({
     userId:{
-        type:String,
-        required:true
+        type:mongoose.Schema.Types.ObjectId,
+        required:true,
+        ref:"user"
     },
     postId:{
-        type:String,
-        required:true
+        type:mongoose.Schema.Types.ObjectId,
+        required:true,
+        ref:"post"
     },
     Content:{
         type:String,

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import  './Conversation.css'
 
 function Conversation({conversation,currentUser}) {
+  const PF=process.env.REACT_APP_PUBLIC_FOLDER
   const [user,setUser]=useState(null) 
    useEffect(()=>{
        const friendId=conversation.members.find((m)=>m!==currentUser._id)
@@ -20,7 +21,7 @@ function Conversation({conversation,currentUser}) {
     
   return (
     <div className='conversation'>
-        <img className='conversationImage'src="/assets/b2.webp" alt=''/>
+        <img className='conversationImage'src={PF+user?.profilePicture} alt=''/>
         <span className='convarsationName'>{user?.username}</span>
     </div>
   )

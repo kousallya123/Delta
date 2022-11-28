@@ -29,7 +29,10 @@ function Feed() {
       <div className='feedWrapper'>
         <Share/>
         {posts.length===0?
-        <h1>No feeds to shown</h1>:
+        <>
+        <h1 className=' text-center text-3xl text-gray-500 p-5'>No feeds to shown</h1>
+        <img src="/assets/noPostImg.png" className='justify-center snap-center ml-60'></img>
+        </>:
          <div>
          {posts.map((p)=>(
              <Post key={p.id} post={p}/>
