@@ -47,8 +47,16 @@ io.on("connection",(socket)=>{
       })
     })
 
-
-
+    /* -------------------------------------------------------------------------- */
+    /*                              For Notifications                             */
+    /* -------------------------------------------------------------------------- */
+    socket.on("sendNotification",({senderId,receiverId,type})=>{
+       const receiver=getUser(receiverId)
+       io.to(receiver.socketId).emit("getNotification",{
+          senderId,
+          type,
+       })
+    }) 
 
     /* -------------------------------------------------------------------------- */
     /*                               when disconnect                              */

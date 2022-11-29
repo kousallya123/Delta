@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './Navbar.css'
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
@@ -13,13 +13,24 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import { MoreVert } from '@mui/icons-material';
 
-function Navbar() {
+function Navbar({socket}) {
 
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const navigate=useNavigate()
   const [drop,setDrop]=useState(false)
   const dispatch=useDispatch();
   const user = useSelector((state)=> state.user)
+  const [notifications,setNotifications]=useState([])
+  const [showNotification,setShowNotification]=useState(false)
+
+  useEffect(()=>{
+    socket?.on("getNotification",data=>{
+      setNotifications((prev)=>[...prev,data])
+    })
+  },[socket])
+
+  console.log(notifications,'oooooooooooooooooo');
+
     const handleLogout=async(e)=>{
       e.preventDefault();
       Swal.fire({
@@ -43,8 +54,29 @@ function Navbar() {
         }
       })   
     }
+
+    const displayNotifications = ({ senderId, type }) => {
+      let action;
+  
+      if (type === 1) {
+        action = "liked";
+      } else if (type === 2) {
+        action = "commented";
+      } else {
+        action = "shared";
+      }
+      return (
+        <span className="notification">{`${senderId} ${action} your post.`}</span>
+      );
+    };
    
+
+    const handleRead=()=>{
+      setNotifications([])
+      setShowNotification(false)
+    }
   return (
+    <>
     <div className='topbarContainer'>
      <div className="topbarLeft">
       <Link to='/home' style={{textDecoration:"none"}}>
@@ -75,15 +107,13 @@ function Navbar() {
         {/* <span className="topbarIconBadge">2</span> */}
         </div>
         <div className='topbarIconItem'>
-        <NotificationsIcon/>
-        {/* <span className="topbarIconBadge">5</span> */}
+        <NotificationsIcon onClick={()=>setShowNotification(!showNotification)}/>
+        <span className="topbarIconBadge">{notifications.length}</span>
         </div>
        </div>
        <>
      <div class="flex justify-center">
      <div class="relative inline-block">
-         
-
      <img src={PF+user.profilePicture} alt="" className="topbarImg" onClick={()=>setDrop(!drop)}/>
 
         {/* <button class="relative z-10 flex items-center p-2 text-sm text-gray-600 bg-white border border-transparent rounded-md focus:border-blue-100 focus:border-radious-20 ">
@@ -116,6 +146,13 @@ function Navbar() {
        {/* <button onClick={(e)=>handleLogout(e)}>Logout</button> */}
      </div>
     </div>
+    {showNotification&&
+    <div className='notifications'>
+    {notifications.map((n)=>displayNotifications(n))}
+    <button className='nButton' onClick={handleRead}>Mark as read</button>
+   </div>}
+    
+    </>
   )
 }
 

@@ -37,15 +37,15 @@ function Share() {
     }catch(err){
      console.log(err);
     }
-    {file && (
-      <div className="shareImgContainer">
-        <img className="shareImg" src={URL.createObjectURL(file)} alt="" />
-        <Cancel className="shareCancelImg" onClick={() => setFile(null)} />
-      </div>
-    )}
   }
-  console.log('user detailssssssssssss');
-  console.log(user);
+
+  const onInputChange=(e)=>{
+    setImage(URL.createObjectURL(e.target.files[0]))
+    {setFile(e.target.files[0]) }
+  }
+
+
+
   return (
     <>
     <div className='share'>
@@ -55,15 +55,40 @@ function Share() {
         <input className="shareInput"placeholder={"What's in your mind " + user.username + "?"} onChange={(e)=> {setDesc(e.target.value)}}  required></input>
 
        </div>
+        
        <hr className='shareHr'/>
+       <img src={image} alt=""/>
        
        <form className='shareBottom' onSubmit={submitHandler}>
          <div className="shareOptions">
            <label for='file' className="shareOptions">
+            <div  className="item">
             <PermMedia htmlColor="tomato" className='shareIcon'/>
             <span className='shareOptionText'>Photo</span>
-           
-          
+            </div>
+            <input style={{display:"none"}} type='file'name='file' id='file' multiple  onChange={onInputChange}/>
+           </label>
+         </div>
+         <button className='shareButton' type='submit'>Share</button>  
+       </form>   
+      </div>  
+    </div>
+    <div>
+    
+    </div>
+    
+  </>
+  )
+}
+
+export default Share
+
+{/* <form className='shareBottom' onSubmit={submitHandler}>
+         <div className="shareOptions">
+           <label for='file' className="shareOptions">
+            <PermMedia htmlColor="tomato" className='shareIcon'/>
+            <span className='shareOptionText'>Photo</span>
+            <input style={{display:"none"}} type='file'name='file' id='file' multiple onChange={(e)=>{onInputChange(e)} }/>
            </label>
            <img src={image}  classname= "w-20 h-20 "alt="" />
 
@@ -89,27 +114,7 @@ function Share() {
             <Room htmlColor="goldenrod" className='shareIcon'/>
             <span className='shareOptionText'>Location</span>
            </div>
-         </div> */}
+         </div> 
          <button className='shareButton' type='submit'>Share</button>
         
-       </form>
-      </div>
-    
-      
-    </div>
-    <div>
-      {file&&
-      <input style={{display:"none"}} type='file'name='file' id='file' multiple onChange={(e)=>{ 
-        // setImage(URL.createObjectURL(e.target.files[0]))
-        {setFile(e.target.files[0]) }
-      }
-      
-    }/>}
-    
-    </div>
-    
-  </>
-  )
-}
-
-export default Share
+       </form> */}

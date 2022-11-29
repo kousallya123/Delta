@@ -14,7 +14,8 @@ import Swal from 'sweetalert2'
 
 
 
-function Post({post}) {
+
+function Post({post,socket}) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState({});
@@ -25,16 +26,23 @@ function Post({post}) {
   const [report, setReport] = useState({
     Content: "",
   });
+ 
+  const handleNotification=(type)=>{
+    console.log('called notifiactionsssssssss');
+    socket.emit("sendNotification",{
+      senderId:currentUser._id,
+      receiverId:user._id,
+      type,
+    })
+  }
+
 
   const handleChange = (e) => {
-    console.log("handlechange ann");
     const { name, value } = e.target;
     setReport({
       ...report,
       [name]: value,
-    });
-    console.log(report);
-    console.log(e.target.value, "drtfgyhsdfghjkj");
+    })
   };  
 
   useEffect(() => {
@@ -144,9 +152,9 @@ function Post({post}) {
         <div className="postBottom">
           <div className="postBottomLeft">
           <div className='text-2xl text-slate-900' onClick={likeHandler}>{isLiked? <FavoriteOutlined style={{color:"#ed4956"}}/>:<FavoriteBorder/>}</div>
-            &nbsp;&nbsp;<ChatBubbleIcon />
-            &nbsp;&nbsp;<ShareIcon/>
-            &nbsp;&nbsp;
+            &nbsp;&nbsp;<ChatBubbleIcon onClick={()=>handleNotification(1)}/>
+            &nbsp;&nbsp;<ShareIcon onClick={()=>handleNotification(2)}/>
+            &nbsp;&nbsp;<DeleteOutline onClick={()=>handleNotification(3)}/>
             <span className="postLikeCounter">{like} people like it</span>
           </div>
           <div className="postBottomRight">

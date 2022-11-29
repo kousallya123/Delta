@@ -203,7 +203,7 @@ console.log(currentChat,'kkkkkkkkkkkkkkkkkkkk');
               
               <div className="">
               <ul class="min-w-full h-96 messagelist">
-          
+             
               {conversations.map((c)=>(
                   <div onClick={()=>setCurrentChat(c)}>
                     <Conversation conversation={c} currentUser={user}  />
@@ -222,6 +222,7 @@ console.log(currentChat,'kkkkkkkkkkkkkkkkkkkk');
             {
               currentChat?
               <>
+              {console.log(currentChat.members.filter(members=>(user._id)),'dddddddddddddddd')}
               <div className='conversationsss p-3 shadow-zinc-400'>
               <img className='flex h-11 w-11 rounded-full 'src={PF+user?.profilePicture} alt=''/>
               <span className='ml-5'>{user?.username}</span>
