@@ -4,7 +4,7 @@ import { useState } from 'react'
 import  './ChatOnline.css'
 
 function ChatOnline({onlineUsers,currentId,setCurrentChat}) {
-  // console.log(onlineUsers,'0000000000000',currentId,'11111111111111111',setCurrentChat,'2222222222222222222');
+  const PF=process.env.REACT_APP_PUBLIC_FOLDER
   const [friends,setFriends]=useState([])
   const [onlineFriends,setOnlinFriends]=useState([])
 
@@ -29,7 +29,6 @@ function ChatOnline({onlineUsers,currentId,setCurrentChat}) {
       console.log(error);
     }
   }
-  // console.log(onlineFriends,'vvvvvvvvvvvvvvvvvvvvvvv');
   return (
     <div className="chatOnline">
       {onlineFriends?.map((o)=>(
@@ -37,7 +36,7 @@ function ChatOnline({onlineUsers,currentId,setCurrentChat}) {
           <div className="chatOnlineImgContainer">
             <img
               className="chatOnlineImg"
-              src="/assets/avatar.jpg"
+              src={PF+o.profilePicture}
               alt=""
             />
             <div className="chatOnlineBadge"></div>

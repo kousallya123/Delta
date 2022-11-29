@@ -14,6 +14,7 @@
 
 .chatOnline{
    flex: 3.5; 
+   
 }
 .chatMenuWrapper,.chatBoxWrapper,.chatOnlineWrapper{
     padding: 10px 0;
@@ -82,4 +83,10 @@
    color: gray;
    cursor: default;
 
+}
+
+.conversationsss{
+   display: flex;
+   justify-content: left;
+   box-shadow: 1px 1px 1px 1px rgb(224, 217, 217);
 }

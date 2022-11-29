@@ -139,10 +139,10 @@ const startChat=async(receiverId)=>{
      }
 }
 
-console.log(onlineUsers,'hhhhhhhhhhhhhhhhh');
 
+console.log(currentChat,'kkkkkkkkkkkkkkkkkkkk');
   return (
-    <div class="h-screen chatscreen p-24">
+    <div class="h-screen chatscreen p-20">
     <section class=" shadow-xl rounded-md w-full lg:w-11/12 lg:mx-auto flex">
       {/* <!-- Left section --> */}
       <div class="w-full md:w-3/6 lg:w-3/6 xl:w-3/6 flex flex-col justify-start items-stretch  bg-white bg-opacity-80 rounded-md lg:rounded-none lg:rounded-l-md p-3">
@@ -187,21 +187,26 @@ console.log(onlineUsers,'hhhhhhhhhhhhhhhhh');
                   </li>
                 </ul>
               </div>
+             
             </div>
+           
             <div class="w-full p-1">
+            <h2 className='text-2xl font-bold text-center'>Chats</h2>
               <div class="w-full p-1">
+             
                 {/* <input
                   type="text"
                   placeholder="Search"
                   class="search-input bg-gray-600 bg-opacity-10 placeholder-gray-500 text-gray-400 text-sm py-1 px-10 rounded-md outline-none w-full focus:outline-none focus:ring"
-                /> */} <h2 className='text-2xl font-bold text-center'>Chats</h2>
+                /> */}
               </div>
+              
               <div className="">
-              <ul class="min-w-full h-96  overflow-y-scroll messagelist">
+              <ul class="min-w-full h-96 messagelist">
           
               {conversations.map((c)=>(
                   <div onClick={()=>setCurrentChat(c)}>
-                    <Conversation conversation={c} currentUser={user}/>
+                    <Conversation conversation={c} currentUser={user}  />
                   </div>
               ))}
 
@@ -212,11 +217,16 @@ console.log(onlineUsers,'hhhhhhhhhhhhhhhhh');
           </div>
         </div>
         </div>
-            <div className='chatBox'>
+        <div className='chatBox'>
            <div className='chatBoxWrapper'>
             {
               currentChat?
               <>
+              <div className='conversationsss p-3 shadow-zinc-400'>
+              <img className='flex h-11 w-11 rounded-full 'src={PF+user?.profilePicture} alt=''/>
+              <span className='ml-5'>{user?.username}</span>
+              </div>
+             
               {messages.length!==0?
                <div className='chatBoxTop'>
                {messages.map((m)=>(
@@ -224,7 +234,6 @@ console.log(onlineUsers,'hhhhhhhhhhhhhhhhh');
                   <Message message={m} own={m.sender===user._id}/>
                   </div>
                ))}
-            
              </div>:<div className='noMessageText'>Oops there is no messages...</div>
               }
              
@@ -253,8 +262,8 @@ console.log(onlineUsers,'hhhhhhhhhhhhhhhhh');
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
         <div className="relative w-auto my-6 mx-auto max-w-3xl">
        
-          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none ">
-            <div className="flex  justify-between p-5 border-b border-solid border-slate-200 rounded-t flex-col">
+          <div className="border-0 rounded-lg shadow-lg  relative flex flex-col w-full bg-white outline-none focus:outline-none ">
+            <div className="flex  justify-between p-5border-b border-solid border-slate-200 rounded-t flex-col">
               <h6 className="text-xl font-semibold">Choose one to start new conversation</h6>
               {users.map((obj)=>(
               <div className='flex flex-col  justify-between'>
