@@ -3,12 +3,15 @@ import {PermMedia,Label,EmojiEmotions,Room, Cancel} from '@mui/icons-material'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import VideoCameraBackIcon from '@mui/icons-material/VideoCameraBack';
 
 function Share() {
   const user = useSelector((state)=> state.user)
-  const [file,setFile]= useState([])
+  const [file,setFile]= useState('')
+  const [videofile,setVideoFile]= useState('')
   const [desc,setDesc]=useState('')
   const [image,setImage]=useState('')
+  const [video,setVideo]=useState('')
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const submitHandler=async(e)=>{
     e.preventDefault() 
@@ -32,6 +35,22 @@ function Share() {
         console.log(error);
       }
     }
+    if(videofile){
+      console.log('ooho you clicked a vide file');
+      const data=new FormData();
+      const fileName=videofile.name
+      data.append("file",videofile)
+      data.append("name",fileName)
+      newPost.video=fileName
+      
+      try {
+        await axios.post('http://localhost:5000/post/upload',data)
+        window.location.reload()
+        
+      } catch (error) {
+        console.log(error);
+      }
+    }
     try{
        await axios.post('http://localhost:5000/post',newPost)
     }catch(err){
@@ -42,6 +61,11 @@ function Share() {
   const onInputChange=(e)=>{
     setImage(URL.createObjectURL(e.target.files[0]))
     {setFile(e.target.files[0]) }
+  }
+
+  const onVideoChange=(e)=>{
+    setVideo(URL.createObjectURL(e.target.files[0]))
+    {setVideoFile(e.target.files[0]) }
   }
 
 
@@ -57,7 +81,8 @@ function Share() {
        </div>
         
        <hr className='shareHr'/>
-       <img src={image} alt=""/>
+       {image&& <img src={image} alt="" height="60px" width="60px" className='justify-center border-2 border-blue-200' />}
+       {video&&<video src={video} alt="" controls/>}
        
        <form className='shareBottom' onSubmit={submitHandler}>
          <div className="shareOptions">
@@ -65,9 +90,14 @@ function Share() {
             <div  className="item">
             <PermMedia htmlColor="tomato" className='shareIcon'/>
             <span className='shareOptionText'>Photo</span>
+            <input style={{display:"none"}} type='file'name='file' id='file'  onChange={onInputChange} accept=".png,.jpg,.webp"/>
             </div>
-            <input style={{display:"none"}} type='file'name='file' id='file' multiple  onChange={onInputChange}/>
-           </label>
+            </label>
+            <label for='videofile' className="shareOptions">  
+            <VideoCameraBackIcon htmlColor="blue" className='shareIcon'/>
+            <span className='shareOptionText'>Video</span>
+            <input style={{display:"none"}} type='file'name='videofile' id='videofile' onChange={onVideoChange}/>
+            </label>
          </div>
          <button className='shareButton' type='submit'>Share</button>  
        </form>   

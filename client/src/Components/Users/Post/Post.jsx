@@ -11,6 +11,7 @@ import {Link} from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Comments from '../Comments/Comments';
 import Swal from 'sweetalert2'
+import { Player } from 'video-react';
 
 
 
@@ -28,7 +29,6 @@ function Post({post,socket}) {
   });
  
   const handleNotification=(type)=>{
-    console.log('called notifiactionsssssssss');
     socket.emit("sendNotification",{
       senderId:currentUser._id,
       receiverId:user._id,
@@ -105,6 +105,7 @@ function Post({post,socket}) {
                     :  "/assets/avatar1.jpg"
                 }
                 alt=""
+                onClick={()=>handleNotification(3)}
               />
             </Link>
             <span className="postUsername">{user.username}</span>
@@ -148,13 +149,17 @@ function Post({post,socket}) {
         <div className="postCenter">
           <span className="postText">{post?.desc}</span>
           <img className="postImg" src={PF + post.img} alt="" />
+          {post?.video ?<Player>
+         <source src={PF + post.video} />
+       </Player>
+       // <video src= alt=""  className='w-100' autoPlay/>
+      :null}
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
-          <div className='text-2xl text-slate-900' onClick={likeHandler}>{isLiked? <FavoriteOutlined style={{color:"#ed4956"}}/>:<FavoriteBorder/>}</div>
-            &nbsp;&nbsp;<ChatBubbleIcon onClick={()=>handleNotification(1)}/>
-            &nbsp;&nbsp;<ShareIcon onClick={()=>handleNotification(2)}/>
-            &nbsp;&nbsp;<DeleteOutline onClick={()=>handleNotification(3)}/>
+          <div className='text-2xl text-slate-900' onClick={()=>{likeHandler();handleNotification(1)}}>{isLiked? <FavoriteOutlined style={{color:"#ed4956"}}/>:<FavoriteBorder/>}</div>
+            &nbsp;&nbsp;<ChatBubbleIcon onClick={()=>handleNotification(2)}/>
+            {/* &nbsp;&nbsp;<ShareIcon /> */}
             <span className="postLikeCounter">{like} people like it</span>
           </div>
           <div className="postBottomRight">

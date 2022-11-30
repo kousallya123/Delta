@@ -6,13 +6,22 @@ const addConversation=async(req,res)=>{
     const newConversation=new Conversation({
         members:[req.body.senderId,req.body.receiverId]
     })
-    try {
-        const savedConversation=await newConversation.save()
-        res.json(savedConversation) 
-        
-    } catch (error) {
-        res.json(error)
+    
+    const alreadyExists=await Conversation.findOne({members:{$all:[req.body.senderId,req.body.receiverId]}})
+    if(alreadyExists){
+      res.json(alreadyExists)
     }
+   else{
+    try {
+      const savedConversation=await newConversation.save()
+      res.json(savedConversation) 
+      
+    } catch (error) {
+      res.json(error)
+   }
+
+   }
+   
 }
 
 

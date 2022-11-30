@@ -28,6 +28,10 @@ function Chat() {
   const [showModal,setShowModal]=useState(false)
   const scrollRef=useRef()
   const socket=useRef()
+  const [showOnlineFriends,setShowOnlineFriends]=useState(false)
+  const [receiver,setReceiver]=useState('')
+  const [receivername,setReceiverName]=useState('')
+  const [receiverpic,setReceiverPic]=useState('')
   
   /* -------------------------------------------------------------------------- */
   /*                            for get conversations                           */
@@ -119,7 +123,6 @@ function Chat() {
 
 
   const handleChange=(newMessage)=>{
-    console.log(newMessage);
     setNewMessage(newMessage)
   }
 const fetchUsers=async()=>{
@@ -140,9 +143,20 @@ const startChat=async(receiverId)=>{
 }
 
 
-console.log(currentChat,'kkkkkkkkkkkkkkkkkkkk');
+useEffect(()=>{
+  const fetchReceiver=async()=>{
+    const res=await axios.get(`http://localhost:5000/findUser/${receiver}`)
+    setReceiverName(res.data.username)
+    setReceiverPic(res.data.profilePicture)
+  }
+  fetchReceiver()
+},[receiver])
+
+
   return (
-    <div class="h-screen chatscreen p-20">
+    <>
+     <Navbar/>
+    <div class="h-screen chatscreen p-20"> 
     <section class=" shadow-xl rounded-md w-full lg:w-11/12 lg:mx-auto flex">
       {/* <!-- Left section --> */}
       <div class="w-full md:w-3/6 lg:w-3/6 xl:w-3/6 flex flex-col justify-start items-stretch  bg-white bg-opacity-80 rounded-md lg:rounded-none lg:rounded-l-md p-3">
@@ -173,10 +187,10 @@ console.log(currentChat,'kkkkkkkkkkkkkkkkkkkk');
                   <FeedIcon/>
                     <p class="text-xs font-semibold">Home</p>
                   </li></Link> 
-                  <Link to='/friends'>  <li class="p-2 text-gray-900 cursor-pointer">
-                  <SupervisorAccountIcon/>
+                   <li class="p-2 text-gray-900 cursor-pointer">
+                  <SupervisorAccountIcon onClick={()=>setShowOnlineFriends(true)}/>
                     <p class="text-xs font-semibold">Friends</p>
-                  </li></Link>
+                  </li>
                   <Link to='/chat'><li class="p-2 text-gray-900 cursor-pointer">
                   <WorkIcon/>
                     <p class="text-xs font-semibold">Chat</p>
@@ -205,7 +219,8 @@ console.log(currentChat,'kkkkkkkkkkkkkkkkkkkk');
               <ul class="min-w-full h-96 messagelist">
              
               {conversations.map((c)=>(
-                  <div onClick={()=>setCurrentChat(c)}>
+                  <div onClick={()=>{setCurrentChat(c);setReceiver(c.members.filter(members => {
+                    return members !== user._id}))}}>
                     <Conversation conversation={c} currentUser={user}  />
                   </div>
               ))}
@@ -222,17 +237,17 @@ console.log(currentChat,'kkkkkkkkkkkkkkkkkkkk');
             {
               currentChat?
               <>
-              {console.log(currentChat.members.filter(members=>(user._id)),'dddddddddddddddd')}
+            
               <div className='conversationsss p-3 shadow-zinc-400'>
-              <img className='flex h-11 w-11 rounded-full 'src={PF+user?.profilePicture} alt=''/>
-              <span className='ml-5'>{user?.username}</span>
+              <img className='flex h-11 w-11 rounded-full 'src={PF+receiverpic} alt=''/>
+              <span className='ml-5'>{receivername}</span>
               </div>
              
               {messages.length!==0?
                <div className='chatBoxTop'>
                {messages.map((m)=>(
                  <div ref={scrollRef}>
-                  <Message message={m} own={m.sender===user._id}/>
+                  <Message message={m} own={m.sender===user._id}  pic={receiverpic}/>
                   </div>
                ))}
              </div>:<div className='noMessageText'>Oops there is no messages...</div>
@@ -316,7 +331,46 @@ console.log(currentChat,'kkkkkkkkkkkkkkkkkkkk');
       <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
     </>
     ) : null}
+    {showOnlineFriends&&
+     <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
+     <div className="relative w-auto my-6 mx-auto max-w-3xl">
+    
+       <div className="border-0 rounded-lg shadow-lg  relative flex flex-col w-full bg-white outline-none focus:outline-none">
+         <div className="flex  justify-between p-5border-b border-solid border-slate-200 rounded-t flex-col  p-10">
+           <h6 className="text-xl font-semibold">Online friends</h6>
+           <div   className=' chatOnline'>
+            {onlineUsers?<div className='chatOnlineWrapper'>
+               <ChatOnline onlineUsers={onlineUsers}
+              currentId={user._id}
+              setCurrentChat={setCurrentChat}
+              />
+         </div>:"Oops no one has in online"}
+         
+        </div>
+           <button
+             className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+             onClick={() => setShowOnlineFriends(false)}
+           >
+             <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+               ×
+             </span>
+           </button>
+         </div>
+         <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+           <button
+             className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+             type="button"
+             onClick={() => setShowOnlineFriends(false)}
+           >
+             Close
+           </button>
+           
+         </div>
+       </div>
+     </div>
+   </div>}
   </div>
+  </>
 
 
 

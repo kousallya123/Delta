@@ -85,11 +85,11 @@ const userModel = require('../models/userModel')
             }
         }
         try{
-            const user=await Users.findByIdAndUpdate(req.params.id,{
+            const user=await Users.updateOne({_id:req.params.id},{
                 $set:req.body.editPost,
             })
-            console.log(user,'aaaaaaaaaaaaaaaaaaaaaaaaaaa');
-            res.json(user)
+            const updatedUser=await Users.findById(req.params.id)
+            res.json(updatedUser)
         }catch(error){
             return res.json(error)
         }

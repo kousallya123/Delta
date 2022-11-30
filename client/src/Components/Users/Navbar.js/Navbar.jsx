@@ -26,7 +26,8 @@ function Navbar({socket}) {
   const user = useSelector((state)=> state.user)
   const [notifications,setNotifications]=useState([])
   const [showNotification,setShowNotification]=useState(false)
-  const [ data,setData]=useState('')
+  const [username,setUsername]=useState('')
+  const [userProfilePic,setUserProfilePic]=useState('')
 
   useEffect(()=>{
     socket?.on("getNotification",data=>{
@@ -34,7 +35,7 @@ function Navbar({socket}) {
     })
   },[socket])
 
-  console.log(notifications,'oooooooooooooooooo');
+
 
     const handleLogout=async(e)=>{
       e.preventDefault();
@@ -61,6 +62,18 @@ function Navbar({socket}) {
     }
 
     const displayNotifications = ({ senderId, type }) => {
+        try {
+          const fetchUser=async()=>{
+            const response=await axios.get('/findUser/'+senderId)
+            const username=response.data.username
+            const userProfilePic=response.data.profilePicture
+            setUsername(username)
+            setUserProfilePic(userProfilePic)
+         }
+         fetchUser()
+        } catch (error) {
+          console.log(error)
+        } 
       let action;
       if (type === 1) {
         action = "liked";
@@ -71,9 +84,11 @@ function Navbar({socket}) {
       }
       return (
         <div class="max-w-2xl mx-auto z-50 m-1 bg-transparent">
+        
      <div id="toast-default"
     class="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
     role="alert">
+       
      {action==="liked"&&
      <div
      class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
@@ -90,21 +105,15 @@ function Navbar({socket}) {
      class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-yellow-500 bg-yellow-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
     <AccountCircleIcon style={{coloe:"yellow"}}/>
    </div>}
+   <div> <img className='w-5 h-5 rounded-full' src={PF+userProfilePic}></img></div>
     
-    <div class="ml-3 text-sm font-normal">{`${senderId} ${action} your post.`}</div>
+    <div class="ml-3 text-sm font-normal">{`${username} ${action} your post.`}</div>
   </div>
-  </div>
+    </div>
         // <span className="notification">{`${senderId} ${action} your post.`}</span>
       );
     };
-useEffect(()=>{
-  axios.get(`http://localhost:5000/findUser/${notifications.senderId}`).then((response)=>{
 
-  setData(response.data)
-
-  })
-},[])
-console.log(data,"yetbui");
 
     const handleRead=()=>{
       setNotifications([])

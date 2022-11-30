@@ -9,6 +9,7 @@ const postSchema = require('../models/postSchema')
 
 const addPost=async(req,res)=>{
     const newPost=new Post(req.body)
+    console.log(newPost,'qqqqqqqqqqqqqqqqqqqqqqq');
     try {
       const savedPost=await newPost.save()
       res.json(savedPost)

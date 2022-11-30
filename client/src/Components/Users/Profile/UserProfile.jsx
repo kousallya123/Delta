@@ -52,7 +52,8 @@ function UserProfile() {
   }
   try {
         const response=await axios.put("http://localhost:5000/"+user._id, {editPost,userId:user._id})
-         dispatch(login(response.data)) 
+         dispatch(login(response.data))
+         
          Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -216,16 +217,14 @@ function UserProfile() {
 
 
     <div class="flex flex-wrap -mx-px md:-mx-3">
-
-   
     {post.map((obj)=>{
       return(
           
       <div class="w-1/3 p-px md:px-3">
       <a href="#">
         <article class="post bg-gray-100 text-white relative pb-full md:mb-6">
-          <img class="w-full h-full absolute left-0 top-0 object-cover" src={PF+obj.img} alt="image"/>
-
+          {obj.img &&<img class="w-full h-full absolute left-0 top-0 object-cover" src={PF+obj.img} alt="image" />}
+          <video src={PF+obj.video} />
           {/* <i class="fas fa-square absolute right-0 top-0 m-1"></i> */}
           <div class="overlay bg-gray-800 bg-opacity-25 w-full h-full absolute 
                             left-0 top-0 hidden">
