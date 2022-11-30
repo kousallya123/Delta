@@ -9,7 +9,7 @@ import './Home.css'
 function Homepage() {
   return (
     <div>
-       <Navbar/>
+       {/* <Navbar/> */}
        <div>
        <div className='flex h-screen w-full justify-between  '>
         <div hidden className=' md:block md:w-1/4 lg:w-3/12 md:m-2 lg:m-6'>

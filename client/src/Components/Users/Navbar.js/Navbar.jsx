@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './Navbar.css'
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import ChatIcon from '@mui/icons-material/Chat';
@@ -11,7 +12,10 @@ import { logout} from '../../../redux/userSlice';
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { MoreVert } from '@mui/icons-material';
+import { Favorite, MoreVert } from '@mui/icons-material';
+import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
+import ShareIcon from '@mui/icons-material/Share';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 function Navbar({socket}) {
 
@@ -22,6 +26,7 @@ function Navbar({socket}) {
   const user = useSelector((state)=> state.user)
   const [notifications,setNotifications]=useState([])
   const [showNotification,setShowNotification]=useState(false)
+  const [ data,setData]=useState('')
 
   useEffect(()=>{
     socket?.on("getNotification",data=>{
@@ -57,7 +62,6 @@ function Navbar({socket}) {
 
     const displayNotifications = ({ senderId, type }) => {
       let action;
-  
       if (type === 1) {
         action = "liked";
       } else if (type === 2) {
@@ -66,10 +70,41 @@ function Navbar({socket}) {
         action = "shared";
       }
       return (
-        <span className="notification">{`${senderId} ${action} your post.`}</span>
+        <div class="max-w-2xl mx-auto z-50 m-1 bg-transparent">
+     <div id="toast-default"
+    class="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+    role="alert">
+     {action==="liked"&&
+     <div
+     class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
+    <Favorite style={{color:"red"}}/>
+   </div>
+   }
+   {action==="commented"&&
+     <div
+     class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-blue-500 bg-blue-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
+    <MarkUnreadChatAltIcon style={{coloe:"blue"}}/>
+   </div>}
+   {action==="shared"&&
+     <div
+     class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-yellow-500 bg-yellow-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
+    <AccountCircleIcon style={{coloe:"yellow"}}/>
+   </div>}
+    
+    <div class="ml-3 text-sm font-normal">{`${senderId} ${action} your post.`}</div>
+  </div>
+  </div>
+        // <span className="notification">{`${senderId} ${action} your post.`}</span>
       );
     };
-   
+useEffect(()=>{
+  axios.get(`http://localhost:5000/findUser/${notifications.senderId}`).then((response)=>{
+
+  setData(response.data)
+
+  })
+},[])
+console.log(data,"yetbui");
 
     const handleRead=()=>{
       setNotifications([])
@@ -149,7 +184,10 @@ function Navbar({socket}) {
     {showNotification&&
     <div className='notifications'>
     {notifications.map((n)=>displayNotifications(n))}
-    <button className='nButton' onClick={handleRead}>Mark as read</button>
+    <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-collapse-toggle="toast-default" aria-label="Close">
+        <span class="sr-only">Close</span>
+        <svg class="w-5 h-5" fill="currentColor"  onClick={handleRead} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+    </button>
    </div>}
     
     </>

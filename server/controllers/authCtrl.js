@@ -168,7 +168,21 @@ const followUser=async(req,res)=>{
     }
  }
  
+ const getUserbyId = (req, res) => {
+  const id = req.params.id;
+  try {
+    Users.findById(id)
+      .then((response) => {
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        res.json(error);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
 
-module.exports={authCtrlRegister,authCtrlLogin,updateUser,deleteUser,getUser,unFollowUser,followUser}    
+module.exports={authCtrlRegister,authCtrlLogin,updateUser,deleteUser,getUser,unFollowUser,followUser,getUserbyId}    

@@ -47,9 +47,9 @@ function Sidebar() {
         { name: "messages", link: "/chat", icon: FiMessageSquare },
         { name: "Notifications", link: "/home", icon: MdNotificationsNone },
         { name: "Create", link: "/home", icon: BiMessageSquareAdd },
-        { name: "Setting", link: "/home", icon: RiSettings4Line },
+        { name: "Setting", link: "/rightbar", icon: RiSettings4Line },
         { name: "My Profile", link: "/userProfile", icon: CgProfile ,bottom:true},
-        { name: "Logout", link: "/", icon: HiOutlineLogout ,},
+        { name: "Logout", icon: HiOutlineLogout ,},
       ];
 
 
