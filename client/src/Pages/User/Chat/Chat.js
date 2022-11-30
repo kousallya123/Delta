@@ -13,6 +13,7 @@ import './Chat.css'
 import {Link} from 'react-router-dom'
 import {io} from 'socket.io-client'
 import InputEmoji from 'react-input-emoji'
+import Swal from 'sweetalert2'
 
 function Chat() {
   const user=useSelector(state=>state.user)
@@ -137,7 +138,18 @@ const fetchUsers=async()=>{
 
 const startChat=async(receiverId)=>{
      const  res= await axios.post('http://localhost:5000/chat',{senderId:user._id,receiverId:receiverId})
-     if(res){
+     console.log(res);
+     if(res.data==='alreadyExists'){
+      Swal.fire({
+        position: 'top-end',
+        text: 'You are already chatting with this user',
+        showConfirmButton: false,
+        timer: 1500,
+        background:'Tomato',
+        color:'white'
+      })
+      setShowModal(false)
+     }else{
       window.location.reload()
      }
 }
@@ -181,7 +193,7 @@ useEffect(()=>{
         <div class="flex-auto flex flex-col">
           <div class="flex-auto flex flex-row">
             <div class="p-1 flex flex-col justify-between items-center">
-              <div class="">
+              <div class="hidden md:block">
                 <ul class="">
                  <Link to='/home'><li class="p-2 text-gray-900 cursor-pointer a">
                   <FeedIcon/>
@@ -216,7 +228,7 @@ useEffect(()=>{
               </div>
               
               <div className="">
-              <ul class="min-w-full h-96 messagelist">
+              <ul class= " min-w-full h-96 messagelist">
              
               {conversations.map((c)=>(
                   <div onClick={()=>{setCurrentChat(c);setReceiver(c.members.filter(members => {

@@ -3,8 +3,7 @@ import {Link,useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../../redux/userSlice'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2'
 
 function Login() {
     const [email, setEmail] = useState('')
@@ -34,16 +33,14 @@ function Login() {
                
                 if (data) {
                     if (data.user) {
-                        toast.success('🦄 Wow so easy!', {
-                            position: "top-right",
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                            });
+                        Swal.fire({
+                            position: 'top-end',
+                            text: 'Login success',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            background:'MediumSeaGreen',
+                            color:'white',
+                          })
                         navigate("/home"); 
                         localStorage.setItem('user', JSON.stringify(data.user))
                         localStorage.setItem('usertoken',(data.usertoken))
@@ -88,7 +85,6 @@ function Login() {
                     <input className='p-2 rounded-lg  mt-2  border border-black hover:bg-purple-50 hover:border-purple-500' type="password" value={password} onChange={(e)=>{setPassword(e.target.value)}} />
                 </div>
                 <button className='w-full my-5 py-2 bg-purple-600 shadow-lg shadow-purple-500/50 hover:shadow-purple-500/40 text-white font-semibold rounded-lg'>Login</button>  
-                <ToastContainer position="top-right" autoClose={5000}hideProgressBar={false}newestOnTop={false}closeOnClickrtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light"/>
         </form>
     </div>
   )

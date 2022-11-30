@@ -22,7 +22,7 @@ function Conversation({conversation,currentUser}) {
   return (
     <div className='conversation'>
         <img className='conversationImage'src={PF+user?.profilePicture} alt=''/>
-        <span className='convarsationName'>{user?.username}</span>
+        <span className='convarsationName hidden md:block'>{user?.username}</span>
     </div>
   )
 }

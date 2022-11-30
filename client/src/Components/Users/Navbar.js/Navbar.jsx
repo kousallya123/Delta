@@ -49,11 +49,14 @@ function Navbar({socket}) {
         confirmButtonText: 'Yes,logout!'
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire(
-            'logout!',
-            'Logoutted successfully.',
-            'success'
-          )
+          Swal.fire({
+            position: 'top-end',
+            text: 'Logout success',
+            showConfirmButton: false,
+            timer: 1000,
+            background:'#9333ea',
+            color:'white',
+          })
           localStorage.removeItem('user')
           dispatch(logout())
           navigate('/')
@@ -76,11 +79,11 @@ function Navbar({socket}) {
         } 
       let action;
       if (type === 1) {
-        action = "liked";
+        action = "liked your post";
       } else if (type === 2) {
-        action = "commented";
+        action = "commented on your post";
       } else {
-        action = "shared";
+        action = "viewed your profile";
       }
       return (
         <div class="max-w-2xl mx-auto z-50 m-1 bg-transparent">
@@ -89,25 +92,25 @@ function Navbar({socket}) {
     class="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
     role="alert">
        
-     {action==="liked"&&
+     {action==="liked your post"&&
      <div
      class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
     <Favorite style={{color:"red"}}/>
    </div>
    }
-   {action==="commented"&&
+   {action==="commented on your post"&&
      <div
      class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-blue-500 bg-blue-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
     <MarkUnreadChatAltIcon style={{coloe:"blue"}}/>
    </div>}
-   {action==="shared"&&
+   {action==="viewed your profile"&&
      <div
      class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-yellow-500 bg-yellow-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
     <AccountCircleIcon style={{coloe:"yellow"}}/>
    </div>}
    <div> <img className='w-5 h-5 rounded-full' src={PF+userProfilePic}></img></div>
     
-    <div class="ml-3 text-sm font-normal">{`${username} ${action} your post.`}</div>
+    <div class="ml-3 text-sm font-normal">{`${username} ${action}.`}</div>
   </div>
     </div>
         // <span className="notification">{`${senderId} ${action} your post.`}</span>
@@ -135,9 +138,11 @@ function Navbar({socket}) {
      </div>
      <div className="topbarRight">
        <div className='topbarIcons'>
-        <div className='topbarIconItem'>
-        <HomeIcon/>
-        </div>
+       <Link to='/rightbar'>
+          <div className='topbarIconItem'>
+          <HomeIcon/>
+          </div>
+        </Link>
         <div className='topbarIconItem'>
         <FavoriteBorderIcon/>
         </div>

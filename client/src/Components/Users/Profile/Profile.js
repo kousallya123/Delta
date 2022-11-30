@@ -74,7 +74,7 @@ useEffect(()=>{
     <h2 class="text-3xl inline-block font-light md:mr-2 mb-2 sm:mb-0">
       {user?.username}
     </h2>
-    {user?.followers?.includes(users._id) ?<button className='followButton' onClick={(e) => { UnFollowUser(user._id) }}>Unfollow</button>:
+           {user?.followers?.includes(users._id) ?<button className='followButton' onClick={(e) => { UnFollowUser(user._id) }}>Unfollow</button>:
                <button className='followButton' onClick={(e) => { FollowUser(user._id) }}>Follow</button>
               }
   </div>
@@ -194,8 +194,8 @@ useEffect(()=>{
   <div class="w-1/3 p-px md:px-3">
   <a href="#">
     <article class="post bg-gray-100 text-white relative pb-full md:mb-6">
-      <img class="w-full h-full absolute left-0 top-0 object-cover" src={PF+obj.img} alt="image"/>
-
+      {obj.img ?<img class="w-full h-full absolute left-0 top-0 object-cover" src={PF+obj.img} alt="image"/>:
+      <video src={PF+obj.video}></video>}
       {/* <i class="fas fa-square absolute right-0 top-0 m-1"></i> */}
       <div class="overlay bg-gray-800 bg-opacity-25 w-full h-full absolute 
                         left-0 top-0 hidden">

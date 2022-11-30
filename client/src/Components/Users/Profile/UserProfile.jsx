@@ -6,7 +6,7 @@ import Navbar from '../Navbar.js/Navbar';
 import './Profile.css'
 import Swal from 'sweetalert2'
 import {login} from '../../../redux/userSlice'
-
+import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
 
 function UserProfile() {
@@ -53,7 +53,8 @@ function UserProfile() {
   try {
         const response=await axios.put("http://localhost:5000/"+user._id, {editPost,userId:user._id})
          dispatch(login(response.data))
-         
+         localStorage.removeItem('user')
+         localStorage.setItem('user',JSON.stringify(response.data))
          Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -63,14 +64,10 @@ function UserProfile() {
         })
         
       SetShowMod(false)  
-     
+    
   } catch (error) {}
 
 }
-
-
-
-
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -91,10 +88,9 @@ function UserProfile() {
   <header class="flex flex-wrap items-center p-4 md:py-8">
 
     <div class="md:w-3/12 md:ml-16">
-    
-
-      <img class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
+                  <img class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
                    border-2 p-1"src={PF+user.profilePicture} alt="profile"/>
+    
     </div>
    <div class="w-8/12 md:w-7/12 ml-4">
        <div class="md:flex md:flex-wrap md:items-center mb-4">
@@ -103,11 +99,11 @@ function UserProfile() {
         </h2>
         <a href="#" class="bg-gray-500 px-2 py-1 
                       text-white font-semibold text-sm rounded block text-center 
-                      sm:inline-block "  onClick={()=>SetShowMod(true)}>Edit profile</a>
+                      "  onClick={()=>SetShowMod(true)}>Edit profile</a>
       </div>
 
     
-      <ul class="hidden md:flex space-x-8 mb-4">
+      <ul class="flex space-x-8 mb-4">
         {/* <li>
           <span class="font-semibold">{user.posts.length}</span>
           posts
@@ -124,10 +120,10 @@ function UserProfile() {
       </ul>
 
    
-      <div class="hidden md:block">
+      <div class=" md:block">
         <h1 class="font-semibold">{user.email}</h1>
-        {/* <span>Travel, Nature and Music</span>
-        <p>Lorem ipsum dolor sit amet consectetur</p> */}
+        <span>{user.desc}</span>
+        {/* <p>Lorem ipsum dolor sit amet consectetur</p> */}
       </div>
     </div>
   </header>
@@ -163,20 +159,25 @@ function UserProfile() {
                   </button>
                 </div>
                 <div className="relative p-6 flex-auto">
+                <label for='file' className="shareOptions p-3">
+                     <InsertEmoticonIcon htmlColor="tomato" className='shareIcon'/>
+                     <span className='shareOptionText'>Update your profile photo</span>
+                     <input style={{display:"none"}} type='file'name='file' id='file' onChange={(e)=>{{setFile(e.target.files[0])}}} accept=".png,.jpg,.webp"/>
+                 </label>
                   <input
                     type="text"
                     name="username"
                     placeholder="Enter the username"
                     onChange={handleChange}
                   />
-                  <input className='ml-5'
-                   type='file'name='file' id='file' onChange={(e)=>{ 
-                      // setImage(URL.createObjectURL(e.target.files[0]))
-                      {setFile(e.target.files[0]) }
-                    }
-
-                   } /> 
-                  {/* <span className='text-sm'>Update your profile pic</span> */}
+                  <input
+                    className='ml-5'
+                    type="text"
+                    name="desc"
+                    placeholder="Change bio"
+                    onChange={handleChange}
+                  />
+               
                   <br /> <br />
                   <input 
                     type="text"

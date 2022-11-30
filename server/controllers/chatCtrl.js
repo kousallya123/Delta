@@ -9,7 +9,7 @@ const addConversation=async(req,res)=>{
     
     const alreadyExists=await Conversation.findOne({members:{$all:[req.body.senderId,req.body.receiverId]}})
     if(alreadyExists){
-      res.json(alreadyExists)
+      res.json("alreadyExists")
     }
    else{
     try {

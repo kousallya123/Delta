@@ -8,7 +8,6 @@ import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt
 import './Comments.css'
 
 function Comments({post}) {
-    console.log(post,'qqqqqqqqqqqqqqqqqqqqqqqqqqq');
     const [comment,setComment]=useState('')
     const [seeComments,setSeeComments]=useState([])
     const [commentShow,setCommentShow]=useState(false)

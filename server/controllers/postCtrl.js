@@ -24,7 +24,8 @@ const addPost=async(req,res)=>{
         const post= await Post.findById(req.params.id)
         if(post.userId === req.body.userId){
            await post.updateOne({$set:req.body})
-           res.json('post updated successfully')
+           const updatedPost=await Post.findById(req.params.id)
+           res.json(updatedPost)
         }else{
             res.json("you can update only your post")
         }

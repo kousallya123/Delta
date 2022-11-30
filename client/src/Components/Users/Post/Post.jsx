@@ -1,8 +1,4 @@
 import  './Post.css'
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import ShareIcon from '@mui/icons-material/Share';
-import SendIcon from '@mui/icons-material/Send';
 import {BookmarkBorder, MoreVert,Send,FavoriteBorder,Comment, FavoriteOutlined, DeleteOutline} from '@mui/icons-material'
 import {format}  from 'timeago.js'
 import {useState,useEffect, useContext} from 'react'
@@ -12,6 +8,8 @@ import { useSelector } from 'react-redux'
 import Comments from '../Comments/Comments';
 import Swal from 'sweetalert2'
 import { Player } from 'video-react';
+import  { FaRegComment } from 'react-icons/fa'
+import { width } from '@mui/system'
 
 
 
@@ -24,9 +22,11 @@ function Post({post,socket}) {
   const currentUser= useSelector((state)=>state.user)
   const [drop,setDrop]=useState(false)
   const [showModal,setShowModal]=useState(false)
+  const [editModal,setEditModal]=useState(false)
   const [report, setReport] = useState({
     Content: "",
   });
+  const [desc,setDesc]=useState('')
  
   const handleNotification=(type)=>{
     socket.emit("sendNotification",{
@@ -47,6 +47,7 @@ function Post({post,socket}) {
 
   useEffect(() => {
     setIsLiked(post.likes.includes(currentUser._id));
+    handleNotification(1)
   }, [currentUser._id, post.likes]);
 
   useEffect(() => {
@@ -90,9 +91,15 @@ function Post({post,socket}) {
     }
   }
 
+  const EditPost=async()=>{
+    setEditModal(!editModal)
+    const res=await axios.put(`http://localhost:5000/post/${post._id}`,{desc:desc,userId:currentUser._id})
+    setDesc(res.data.desc)
+  }
+
   return (
     <div className="post">
-      {post?.reports?.includes(user._id)?null:
+    {post?.reports?.includes(user._id)?null:
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
@@ -125,18 +132,20 @@ function Post({post,socket}) {
 
         <hr class="border-gray-200 dark:border-gray-700 "/>
         {post.userId===currentUser._id?
+        <>
          <a href="#" class="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
          onClick={deletePost}>
          Delete
-       </a>:
+       </a><hr/>
+       <a href="#" class="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+       onClick={()=>EditPost()}>
+         Edit post
+       </a></>:
           <a href="#" class="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
             value={showModal}  onClick={() => setShowModal(true)} >
           Report
             </a>
         }
-        
-       
-
 
         </div>:null
         }
@@ -147,7 +156,7 @@ function Post({post,socket}) {
       </div>
         </div>
         <div className="postCenter">
-          <span className="postText">{post?.desc}</span>
+          <span className="postText" value={desc} >{post?.desc}</span>
           <img className="postImg" src={PF + post.img} alt="" />
           {post?.video ?<Player>
          <source src={PF + post.video} />
@@ -157,10 +166,10 @@ function Post({post,socket}) {
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
-          <div className='text-2xl text-slate-900' onClick={()=>{likeHandler();handleNotification(1)}}>{isLiked? <FavoriteOutlined style={{color:"#ed4956"}}/>:<FavoriteBorder/>}</div>
-            &nbsp;&nbsp;<ChatBubbleIcon onClick={()=>handleNotification(2)}/>
+          <div className='text-2xl text-slate-900' onClick={likeHandler}>{isLiked? <FavoriteOutlined style={{color:"#ed4956"}}/>:<FavoriteBorder/>}</div>
+            &nbsp;&nbsp;<FaRegComment onClick={()=>handleNotification(2)} style={{height:"22px",width:"22px", marginTop:"2px"}}/>
             {/* &nbsp;&nbsp;<ShareIcon /> */}
-            <span className="postLikeCounter">{like} people like it</span>
+            <span className="postLikeCounter ml-2">{like} people like it</span>
           </div>
           <div className="postBottomRight">
             <span className="postCommentText">{post.comment} comments</span>
@@ -243,6 +252,47 @@ function Post({post,socket}) {
                 className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
                 onClick={() => setShowModal(false)}
+              >
+                Close
+              </button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+    </>
+  ) : null}
+    {editModal ? (
+    <>
+      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
+        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+       
+          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none ">
+            <div className="flex  justify-between p-5 border-b border-solid border-slate-200 rounded-t flex-col">
+              <p className="text-xl font-semibold">Edit your post</p>
+            </div>
+            <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+            <input
+                    type="text"
+                    name="desc"
+                    placeholder="Change post description"
+                    value={desc}
+                    onChange={(e)=>setDesc(e.target.value)}
+              />
+              </div>
+              <div className='p-8'>
+            <button
+                className="text-green-500 background-transparent bg-green-100 font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={EditPost}
+              >
+                Submit
+              </button>
+              <button
+                className="text-red-500 background-transparent  bg-red-100 font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={() => setEditModal(false)}
               >
                 Close
               </button>

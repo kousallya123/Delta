@@ -53,20 +53,27 @@ function Rightbar() {
   }
   return (
 
-    <div className='fixed'>
+    <div className='fixed items-center'>
       <h2 className='align-center justify-center p-5 text-gray-500 font-semibold'> Suggetions</h2>
       {users.map((obj)=>( 
         <>
         {obj.username!==user.username&&
         
-         <div class="flex items-center relative p-4 w-full bg-white rounded-lg overflow-hidden shadow hover:shadow-md mb-5">
+         <div class="flex items-center justify-around relative p-4 w-full bg-white rounded-lg overflow-hidden shadow hover:shadow-md mb-5">
           <Link to={`/profile/${obj.username}`}>
-         <img class="w-12 h-12 rounded-full bg-gray-100" src={PF+obj.profilePicture}></img>
+          <div>
+          <img class="w-12 h-12 rounded-full bg-gray-100" src={PF+obj.profilePicture}></img>
+          </div>  
          </Link>
-           <div class="ml-3">
-             <p class="font-medium text-gray-800">{obj.username}</p>
-             <p class="text-sm text-gray-600">{obj.email}</p>
-          </div>
+            <div>
+            <p class="font-medium text-gray-800">{obj.username}</p>
+            <p class="text-sm text-gray-600">{obj.email}</p>
+            </div>
+            <div>
+            {obj?.followers?.includes(user._id) ?<button className='bg-gray-500 px-2 py-1 text-white w-20 text-sm rounded block text-center ' onClick={(e) => { UnFollowUser(obj._id) }}>Unfollow</button>:
+               <button className='bg-gray-500 px-2 py-1 text-white w-20 text-sm rounded block text-center ' onClick={(e) => { FollowUser(obj._id) }}>Follow</button>
+              }
+            </div>
          
      </div>
      }

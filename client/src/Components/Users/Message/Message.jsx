@@ -13,7 +13,7 @@ function Message({message,own,pic}) {
        {own&&<img className='ml-3  messageImage'src={PF+user.profilePicture} alt=''></img>}
     </div>
 
-    <div className="messageBottom">{format(message.createdAt)}</div>
+    {own?<div className="messageBottom">{format(message.createdAt)}</div>:<div className="messageBottom">{format(message.createdAt)}</div>}
 </div>
 )
 }
