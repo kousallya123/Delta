@@ -33,7 +33,8 @@ function Rightbar() {
   const FollowUser = async(id) => {
     console.log('followed user');
     try {
-      const res= await axios.put(`http://localhost:5000/follow/${id}`,{ userId:user._id });
+      const res= await axios.put(`http://localhost:5000/follow/${id}`,{ userId:user._id },
+      {headers:{"x-access-token":localStorage.getItem('usertoken')}});
       console.log(res);
       setCheck(!check)
     } catch (err) {
@@ -43,7 +44,8 @@ function Rightbar() {
   const UnFollowUser = async(id) => {
     console.log('unfollowed user');
     try {
-      const res= await axios.put(`http://localhost:5000/unfollow/${id} `,{ userId:user._id });
+      const res= await axios.put(`http://localhost:5000/unfollow/${id} `,{ userId:user._id },
+      {headers:{"x-access-token":localStorage.getItem('usertoken')}});
       console.log(res);
       setCheck(!check)
     } catch (err) {

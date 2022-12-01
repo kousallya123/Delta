@@ -17,7 +17,8 @@ export default function Profile() {
 
 
 useEffect(()=>{
-  axios.get('/http://localhost:5000/')
+  axios.get('/http://localhost:5000/',
+  {headers:{"x-access-token":localStorage.getItem('usertoken')}})
 })
 
   useEffect(()=>{
@@ -33,10 +34,13 @@ useEffect(()=>{
       })
     })
   },[username,check])
+
+
   const FollowUser = async(id) => {
     console.log('followed user');
     try {
-      const res= await axios.put(`http://localhost:5000/follow/${id}`,{ userId:users._id });
+      const res= await axios.put(`http://localhost:5000/follow/${id}`,{ userId:users._id },
+      {headers:{"x-access-token":localStorage.getItem('usertoken')}});
       console.log(res);
       setCheck(!check)
     } catch (err) {
@@ -46,7 +50,8 @@ useEffect(()=>{
   const UnFollowUser = async(id) => {
     console.log('unfollowed user');
     try {
-      const res= await axios.put(`http://localhost:5000/unfollow/${id} `,{ userId:users._id });
+      const res= await axios.put(`http://localhost:5000/unfollow/${id} `,{ userId:users._id },
+      {headers:{"x-access-token":localStorage.getItem('usertoken')}});
       console.log(res);
       setCheck(!check)
     } catch (err) {

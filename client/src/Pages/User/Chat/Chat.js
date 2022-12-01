@@ -42,7 +42,8 @@ function Chat() {
   useEffect(()=>{
     const getConversations=async()=>{
       try {
-        const res=await axios.get(`/chat/${user._id}`)
+        const res=await axios.get(`/chat/${user._id}`,
+        {headers:{"x-access-token":localStorage.getItem('usertoken')}})
         setConversations(res.data)
       } catch (error) {
         console.log(error);
@@ -59,7 +60,8 @@ function Chat() {
   
   useEffect(()=>{
     const getMessages=async()=>{
-      const res= await axios.get('/chat/message/'+currentChat._id)
+      const res= await axios.get('/chat/message/'+currentChat._id,
+      {headers:{"x-access-token":localStorage.getItem('usertoken')}})
       setMessages(res.data)
     }
     getMessages()
@@ -110,7 +112,8 @@ function Chat() {
      })
 
     try {
-      const res=await axios.post(`/chat/message`,message)
+      const res=await axios.post(`/chat/message`,message,
+      {headers:{"x-access-token":localStorage.getItem('usertoken')}})
       setMessages([...messages,res.data])
       setNewMessage("")
     } catch (error) {
@@ -137,7 +140,8 @@ const fetchUsers=async()=>{
 }
 
 const startChat=async(receiverId)=>{
-     const  res= await axios.post('http://localhost:5000/chat',{senderId:user._id,receiverId:receiverId})
+     const  res= await axios.post('http://localhost:5000/chat',{senderId:user._id,receiverId:receiverId},
+     {headers:{"x-access-token":localStorage.getItem('usertoken')}})
      console.log(res);
      if(res.data==='alreadyExists'){
       Swal.fire({
@@ -157,7 +161,8 @@ const startChat=async(receiverId)=>{
 
 useEffect(()=>{
   const fetchReceiver=async()=>{
-    const res=await axios.get(`http://localhost:5000/findUser/${receiver}`)
+    const res=await axios.get(`http://localhost:5000/findUser/${receiver}`,
+    {headers:{"x-access-token":localStorage.getItem('usertoken')}})
     setReceiverName(res.data.username)
     setReceiverPic(res.data.profilePicture)
   }

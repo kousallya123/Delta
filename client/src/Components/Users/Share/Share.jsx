@@ -28,8 +28,9 @@ function Share() {
       newPost.img=fileName
       
       try {
-        await axios.post('http://localhost:5000/post/upload',data)
-        window.location.reload()
+        await axios.post('http://localhost:5000/post/upload',data,
+        {headers:{"x-access-token":localStorage.getItem('usertoken')}})
+        // window.location.reload()
         
       } catch (error) {
         console.log(error);
@@ -44,18 +45,23 @@ function Share() {
       newPost.video=fileName
       
       try {
-        await axios.post('http://localhost:5000/post/upload',data)
-        window.location.reload()
+        await axios.post('http://localhost:5000/post/upload',data,
+        {headers:{"x-access-token":localStorage.getItem('usertoken')}})
         
       } catch (error) {
         console.log(error);
       }
     }
     try{
-       await axios.post('http://localhost:5000/post',newPost)
+       await axios.post('http://localhost:5000/post',newPost,
+       {headers:{"x-access-token":localStorage.getItem('usertoken')}})
     }catch(err){
      console.log(err);
     }
+    setFile('')
+    setImage('')
+    setVideo('')
+    setDesc('')
   }
 
   const onInputChange=(e)=>{
@@ -76,7 +82,7 @@ function Share() {
       <div className='shareWrapper'>
        <div className="shareTop">
         <img src={PF+user.profilePicture} className='shareProfileImg' alt=""></img>  
-        <input className="shareInput"placeholder={"What's in your mind " + user.username + "?"} onChange={(e)=> {setDesc(e.target.value)}}  required></input>
+        <input className="shareInput"placeholder={"What's in your mind " + user.username + "?"} value={desc} onChange={(e)=> {setDesc(e.target.value)}}  required></input>
 
        </div>
         
@@ -93,7 +99,7 @@ function Share() {
             <input style={{display:"none"}} type='file'name='file' id='file'  onChange={onInputChange} accept=".png,.jpg,.webp"/>
             </div>
             </label>
-            <label for='videofile' className="shareOptions">  
+            <label for='videofile' className="shareOptions ml-3">  
             <VideoCameraBackIcon htmlColor="blue" className='shareIcon'/>
             <span className='shareOptionText'>Video</span>
             <input style={{display:"none"}} type='file'name='videofile' id='videofile' onChange={onVideoChange}/>

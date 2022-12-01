@@ -1,6 +1,6 @@
 
 import {  HiOutlineLogout } from "react-icons/hi";
-import { MdNotificationsNone } from "react-icons/md";
+import { MdNotificationsNone ,MdExplore} from "react-icons/md";
 import { RiSettings4Line } from "react-icons/ri";
 import { FiMessageSquare} from "react-icons/fi";
 import { BiHome, BiMessageSquareAdd} from "react-icons/bi";
@@ -11,6 +11,7 @@ import {confirmAlert} from 'react-confirm-alert'
 import { useDispatch } from "react-redux";
 import { logout } from "../../../redux/userSlice";
 import Swal from 'sweetalert2'
+
 
 
 function Sidebar() {
@@ -47,7 +48,7 @@ function Sidebar() {
         { name: "messages", link: "/chat", icon: FiMessageSquare },
         { name: "Notifications", link: "/home", icon: MdNotificationsNone },
         { name: "Create", link: "/home", icon: BiMessageSquareAdd },
-        { name: "Setting", link: "/rightbar", icon: RiSettings4Line },
+        { name: "Explore", link: "/explore", icon: MdExplore },
         { name: "My Profile", link: "/userProfile", icon: CgProfile ,bottom:true},
         { name: "Logout", icon: HiOutlineLogout ,},
       ];
@@ -59,7 +60,7 @@ function Sidebar() {
         
         <div hidden className="text-center mt-8 mb-9 lg:block flex justify-center ">
         
-          {/* <img className="md:w-1/2 lg:w-1/3 inline" src="/assets/b2.webp" alt="" /> */}
+          <img className="md:w-1/2 lg:w-1/3 inline" src="/assets/delta.png" alt="" />
             
           {/* <h2 hidden className="font-bold text-xl lg:block">LOGO</h2> */}
         </div>

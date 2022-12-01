@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout} from '../../../redux/userSlice';
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
+import { MdNotificationsNone ,MdExplore} from "react-icons/md";
 import Swal from 'sweetalert2'
 import { Favorite, MoreVert } from '@mui/icons-material';
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
@@ -58,6 +59,7 @@ function Navbar({socket}) {
             color:'white',
           })
           localStorage.removeItem('user')
+          localStorage.removeItem('usertoken')
           dispatch(logout())
           navigate('/')
         }
@@ -67,7 +69,8 @@ function Navbar({socket}) {
     const displayNotifications = ({ senderId, type }) => {
         try {
           const fetchUser=async()=>{
-            const response=await axios.get('/findUser/'+senderId)
+            const response=await axios.get('/findUser/'+senderId,
+            {headers:{"x-access-token":localStorage.getItem('usertoken')}})
             const username=response.data.username
             const userProfilePic=response.data.profilePicture
             setUsername(username)
@@ -138,9 +141,9 @@ function Navbar({socket}) {
      </div>
      <div className="topbarRight">
        <div className='topbarIcons'>
-       <Link to='/rightbar'>
+       <Link to='/explore'>
           <div className='topbarIconItem'>
-          <HomeIcon/>
+          <MdExplore style={{height:"22px",width:"22px", marginTop:"2px"}}/>
           </div>
         </Link>
         <div className='topbarIconItem'>

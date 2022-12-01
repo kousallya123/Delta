@@ -43,7 +43,7 @@ function UserProfile() {
     editPost.profilePicture=fileName
     
     try {
-      await axios.post('http://localhost:5000/post/upload',data)
+      await axios.post('http://localhost:5000/post/upload',data ,{headers:{"x-access-token":localStorage.getItem('usertoken')}})
       // window.location.reload()
       
     } catch (error) {
@@ -51,7 +51,8 @@ function UserProfile() {
     }
   }
   try {
-        const response=await axios.put("http://localhost:5000/"+user._id, {editPost,userId:user._id})
+        const response=await axios.put("http://localhost:5000/"+user._id, {editPost,userId:user._id},
+        {headers:{"x-access-token":localStorage.getItem('usertoken')}})
          dispatch(login(response.data))
          localStorage.removeItem('user')
          localStorage.setItem('user',JSON.stringify(response.data))
@@ -71,7 +72,8 @@ function UserProfile() {
 
   useEffect(() => {
     const fetchPost = async () => {
-    const res = await axios.get(`http://localhost:5000/post/userpost/${user._id}`);
+    const res = await axios.get(`http://localhost:5000/post/userpost/${user._id}`,
+    {headers:{"x-access-token":localStorage.getItem('usertoken')}});
     setPost(res.data);
   };
   fetchPost();

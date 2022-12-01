@@ -13,7 +13,7 @@ import Chat from './Pages/User/Chat/Chat';
 import Test from './Pages/Test';
 import AdminPostPage from './Pages/Admin/AdminPost';
 import AdminReportPage from './Pages/Admin/AdminReportPage';
-import Rightbar from './Components/Users/Rightbar/Rightbar';
+import Explore from './Pages/User/Explore';
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
               <Route path='/home' element={<Homepage/>}/>
               <Route path='/profile/:username' element={<ProfilePage/>}/>
               <Route path='/userProfile' element={<UserProfile/>}/> 
-              <Route path='/rightbar' element={<Rightbar/>}/> 
+              <Route path='/explore' element={<Explore/>}/> 
               <Route path='/chat' element={<Chat/>}/> 
               <Route path='/test' element={<Test/>} />
           </Routes>

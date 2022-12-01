@@ -47,19 +47,21 @@ function Post({post,socket}) {
 
   useEffect(() => {
     setIsLiked(post.likes.includes(currentUser._id));
-    handleNotification(1)
   }, [currentUser._id, post.likes]);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users?userId=${post.userId}`);
+      const res = await axios.get(`/users?userId=${post.userId}`,
+      {headers:{"x-access-token":localStorage.getItem('usertoken')}});
       setUser(res.data);
     };
     fetchUser();
   }, [post.userId]);
+
   const likeHandler = () => {
     try {
-      axios.put(`/post/like/${post._id} `,{ userId: currentUser._id });
+      axios.put(`/post/like/${post._id} `,{ userId: currentUser._id },
+      {headers:{"x-access-token":localStorage.getItem('usertoken')}});
     } catch (err) {}
     setLike(isLiked ? like - 1 : like + 1);
     setIsLiked(!isLiked);
@@ -67,16 +69,23 @@ function Post({post,socket}) {
 
 
   const deletePost=async()=>{
-    const res= await axios.delete(`http://localhost:5000/post/${post._id}`,{ userId: currentUser._id })
-    window.location.reload()
-    alert('post deleted successfully')
+    console.log('delete post');
+    const res= await axios.delete(`http://localhost:5000/post/${post._id}`,{ userId: currentUser._id },
+    {headers:{"x-access-token":localStorage.getItem('usertoken')}}
+    )
+    console.log(res);
+    if(res){
+      alert('post deleted successfully')
+    }
+   
   }
 
 
   const reportPost=async()=>{
     setShowModal(true)
      const res=await axios.post(`http://localhost:5000/post/report/${post._id}`,{postId:post._id,userId:user._id,
-    ...report})
+    ...report},
+    {headers:{"x-access-token":localStorage.getItem('usertoken')}})
     if(res){
       Swal.fire({
         title: 'Post is reported',
@@ -222,23 +231,23 @@ function Post({post,socket}) {
                       </div> 
                       
                  
-              <button
+              {/* <button
                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                 onClick={() => setShowModal(false)}
               >
                 <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
                   ×
                 </span>
-              </button>
+              </button> */}
               </div>
-              <button
+              {/* <button
                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                 onClick={() => setShowModal(false)}
               >
                 <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
                   ×
                 </span>
-              </button>
+              </button> */}
             </div>
             <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
             <button

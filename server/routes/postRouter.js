@@ -25,27 +25,27 @@ router.post('/upload', upload.single('file'), (req, res) => {
     }
 })
 
-router.post("/",addPost)
+router.post("/",check,addPost)
 
 router.put('/:id',updatePost) 
 
 router.delete('/:id',deletePost) 
 
-router.put('/like/:id',likePost) 
+router.put('/like/:id',check,likePost) 
 
-router.get('/:id',getPost)
+router.get('/:id',check,getPost)
 
 router.get('/timeline/:userId',check,timelinePost)
 
 router.get('/userpost/:userId',userPost)
 
-router.post('/addcomment/:id',addComment)
+router.post('/addcomment/:id',check,addComment)
 
-router.get('/getcomments/:id',getPostComments)
+router.get('/getcomments/:id',check,getPostComments)
 
 router.post('/report/:id',reportPost)
 
-router.get('/blockPost/:id',blockPost)
+router.get('/blockPost/:id',check,blockPost)
 
 
 module.exports=router

@@ -15,7 +15,9 @@ function Comments({post}) {
  
     const handleComment=async(e)=>{
          e.preventDefault()
-         await axios.post(`http://localhost:5000/post/addcomment/${post._id}`,{userId:currentUser._id,comment:comment,postId:post._id})
+         await axios.post(`http://localhost:5000/post/addcomment/${post._id}`,
+         {headers:{"x-access-token":localStorage.getItem('usertoken')}},
+         {userId:currentUser._id,comment:comment,postId:post._id})
          setComment("")
       }
     

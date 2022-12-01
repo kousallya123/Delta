@@ -37,6 +37,7 @@ const addPost=async(req,res)=>{
 }
 
 const deletePost=async(req,res)=>{
+    console.log('reached hereeeeeeeee');
     try{
         const post= await Post.findByIdAndDelete(req.params.id)
         const comment=await Comments.DeleteMany(req.params.id)

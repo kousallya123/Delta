@@ -32,7 +32,7 @@ function Feed() {
        )
       }
       fetchPost()
-   },[])
+   },[posts])
 
 
   return (
