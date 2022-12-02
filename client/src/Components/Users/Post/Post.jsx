@@ -175,7 +175,7 @@ function Post({post,socket}) {
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
-          <div className='text-2xl text-slate-900' onClick={likeHandler}>{isLiked? <FavoriteOutlined style={{color:"#ed4956"}}/>:<FavoriteBorder/>}</div>
+          <div className='text-2xl text-slate-900' onClick={()=>{likeHandler();handleNotification(1)}}>{isLiked? <FavoriteOutlined style={{color:"#ed4956"}}/>:<FavoriteBorder/>}</div>
             &nbsp;&nbsp;<FaRegComment onClick={()=>handleNotification(2)} style={{height:"22px",width:"22px", marginTop:"2px"}}/>
             {/* &nbsp;&nbsp;<ShareIcon /> */}
             <span className="postLikeCounter ml-2">{like} people like it</span>

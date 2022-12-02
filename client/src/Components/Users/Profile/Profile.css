@@ -75,6 +75,7 @@
 .followButton{
     background-color: gray;
     color: white;
+    margin-left: 10px;
 }
 .profileButtons{
     display: flex;

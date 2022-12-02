@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../../redux/userSlice'
 import Swal from 'sweetalert2'
+import NotFound from '../../NotFound'
 
 function Login() {
     const [email, setEmail] = useState('')
@@ -12,6 +13,7 @@ function Login() {
     const navigate=useNavigate()
     const dispatch=useDispatch()
     const user = useSelector((state)=> state.user)
+    const [error,setError]=useState('')
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -55,11 +57,13 @@ function Login() {
             }
         } catch (error) {
             console.log(error.message);
+            setError(error)
         }
     }
   return (
-    <div>
-        
+    <>
+    {error?  <NotFound error={error}/> :
+    <div>     
      <div className="mb-10 mt-7">
             <div className="flex justify-center">
                 <img alt=""className="h-14 w-14"
@@ -87,6 +91,8 @@ function Login() {
                 <button className='w-full my-5 py-2 bg-purple-600 shadow-lg shadow-purple-500/50 hover:shadow-purple-500/40 text-white font-semibold rounded-lg'>Login</button>  
         </form>
     </div>
+  }
+  </>
   )
 }
 

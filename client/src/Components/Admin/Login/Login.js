@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import NotFound from '../../NotFound'
 
 export default function AdminLogin() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const navigate=useNavigate()
+    const [error,setError]=useState('')
 
     // useEffect(() => {
     //     if(adminDetails){
@@ -44,10 +46,14 @@ export default function AdminLogin() {
            }
        } catch (error) {
            console.log(error.message);
+           setError(error)
        }
     }
   return (
+    <>
+    {error? <NotFound error={error}/> :
     <div>
+        
     <div className="mb-10 mt-7">
            <div className="flex justify-center">
                <img alt=""className="h-14 w-14"
@@ -67,8 +73,9 @@ export default function AdminLogin() {
                    <label className=''>Password</label>
                    <input className='p-2 rounded-lg  mt-2  border border-black hover:bg-purple-50 hover:border-purple-500' type="password" value={password} onChange={(e)=>{setPassword(e.target.value)}} />
                </div>
-               <button  className='w-full my-5 py-2 bg-purple-600 shadow-lg shadow-purple-500/50 hover:shadow-purple-500/40 text-white font-semibold rounded-lg'>Login</button>  
+               <button  className='w-full my-5 py-2 bg-blue-600 shadow-lg shadow-purple-500/50 hover:shadow-blue-500/40 text-white font-semibold rounded-lg'>Login</button>  
        </form>
-   </div>
+   </div>}
+   </>
   )
 }

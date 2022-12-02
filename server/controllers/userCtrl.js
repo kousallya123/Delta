@@ -161,7 +161,7 @@ const followUser=async(req,res)=>{
          }
 
        } catch (error) {
-         res.json(error)
+         res.json("error")
        }
     }else{
      res.json("You can't unfollow yourself")
@@ -184,5 +184,16 @@ const followUser=async(req,res)=>{
 };
 
 
+const searchUser=async(req,res)=>{
+  let data=req.body.search
+  try {
+    let users=await Users.find({username: {$regex: '^' +data, $options: 'i'}})
+    res.json(users)
+    
+  } catch (error) {
+    res.json(error) 
+  }
+}
 
-module.exports={authCtrlRegister,authCtrlLogin,updateUser,deleteUser,getUser,unFollowUser,followUser,getUserbyId}    
+
+module.exports={authCtrlRegister,authCtrlLogin,updateUser,deleteUser,getUser,unFollowUser,followUser,getUserbyId,searchUser}    

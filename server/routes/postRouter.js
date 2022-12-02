@@ -41,7 +41,7 @@ router.get('/userpost/:userId',userPost)
 
 router.post('/addcomment/:id',check,addComment)
 
-router.get('/getcomments/:id',check,getPostComments)
+router.get('/getcomments/:id',getPostComments)
 
 router.post('/report/:id',reportPost)
 

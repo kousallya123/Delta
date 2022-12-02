@@ -58,11 +58,10 @@ function Sidebar() {
     <>
     <div hidden className="border shadow-md min-h-screen lg:pl-7 lg:pr-12 bg-white fixed md:block  md:w-20  lg:w-64 overflow-hidden ">
         
-        <div hidden className="text-center mt-8 mb-9 lg:block flex justify-center ">
+        <div hidden className="text-center lg:block flex justify-center ">
         
-          <img className="md:w-1/2 lg:w-1/3 inline" src="/assets/delta.png" alt="" />
+          <img src='/assets/logofinal.png'></img>
             
-          {/* <h2 hidden className="font-bold text-xl lg:block">LOGO</h2> */}
         </div>
         <div className=" flex flex-col gap-6 justify-start relative md:items-center lg:items-start">
           {menus?.map((menu, i) => (

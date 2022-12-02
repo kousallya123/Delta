@@ -55,7 +55,7 @@ function Rightbar() {
   }
   return (
 
-    <div className='fixed items-center'>
+    <div className=' items-center'>
       <h2 className='align-center justify-center p-5 text-gray-500 font-semibold'> Suggetions</h2>
       {users.map((obj)=>( 
         <>

@@ -29,6 +29,9 @@ function Navbar({socket}) {
   const [showNotification,setShowNotification]=useState(false)
   const [username,setUsername]=useState('')
   const [userProfilePic,setUserProfilePic]=useState('')
+  const [search,setSearch]=useState('')
+  const [userFound,setUserFound]=useState([])
+  const [searchModal,setSearchModal]=useState(false)
 
   useEffect(()=>{
     socket?.on("getNotification",data=>{
@@ -37,6 +40,22 @@ function Navbar({socket}) {
   },[socket])
 
 
+  const handleSearch=async(e)=>{
+    try {
+      if(e.target.value.length>0){
+        setSearchModal(true)
+      }else{
+        setSearchModal(false)
+      }
+      const search=e.target.value
+        const user=await axios.put(`http://localhost:5000/search/User`,{search})
+        console.log(user.data,'aaaaaaaaaaaaaaaaaaa');
+        setUserFound(user.data)
+    } catch (error) {
+      console.log(error);
+    }
+   
+  }
 
     const handleLogout=async(e)=>{
       e.preventDefault();
@@ -89,7 +108,7 @@ function Navbar({socket}) {
         action = "viewed your profile";
       }
       return (
-        <div class="max-w-2xl mx-auto z-50 m-1 bg-transparent">
+      <div class="max-w-2xl mx-auto z-50 m-1 bg-transparent">
         
      <div id="toast-default"
     class="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
@@ -125,6 +144,8 @@ function Navbar({socket}) {
       setNotifications([])
       setShowNotification(false)
     }
+
+
   return (
     <>
     <div className='topbarContainer'>
@@ -136,7 +157,7 @@ function Navbar({socket}) {
      <div className="topbarCenter">
       <div className="searchBar">
        <SearchIcon className='searchIcon'/>
-       <input className='searchInput' placeholder='Search for friend, post or video' />
+       <input className='searchInput' placeholder='Search for users'  onChange={handleSearch}/>
       </div>
      </div>
      <div className="topbarRight">
@@ -206,7 +227,35 @@ function Navbar({socket}) {
         <svg class="w-5 h-5" fill="currentColor"  onClick={handleRead} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
     </button>
    </div>}
-    
+   {searchModal ? (
+    <>
+      
+        <div className="p-10 mr-8  justify-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 ">
+          <div className="relative w-auto my-6 mx-auto max-w-3xl">
+            <div className="border-0 rounded-xl shadow-lg relative flex flex-col min-w-[300px] bg-gray-200   ">
+            {userFound.map((u)=>(
+              <div className="flex">
+                <div className="p-4 flex  items-center">
+                  <Link to={`/profile/${u.username}`}>
+                 <div> <img className="w-10 h-10 rounded-full" src={PF+u.profilePicture}></img></div>
+                 </Link>
+                  <div><h2 className="font-bold">{u.username}</h2>
+                  <span className="text-xs">{u.email}</span></div>
+                </div>
+                
+              </div>
+                ))}
+            </div>
+          </div>
+        </div>
+      
+      
+      
+    </>
+  ) : null}
+
+
+
     </>
   )
 }

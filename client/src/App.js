@@ -10,7 +10,6 @@ import ProfilePage from './Pages/User/ProfilePage';
 import { useSelector } from 'react-redux';
 import UserProfile from './Components/Users/Profile/UserProfile';
 import Chat from './Pages/User/Chat/Chat';
-import Test from './Pages/Test';
 import AdminPostPage from './Pages/Admin/AdminPost';
 import AdminReportPage from './Pages/Admin/AdminReportPage';
 import Explore from './Pages/User/Explore';
@@ -27,7 +26,6 @@ function App() {
               <Route path='/userProfile' element={<UserProfile/>}/> 
               <Route path='/explore' element={<Explore/>}/> 
               <Route path='/chat' element={<Chat/>}/> 
-              <Route path='/test' element={<Test/>} />
           </Routes>
           <Routes>  
           <Route path='/sidebar' element={<Sidebar/>}/>

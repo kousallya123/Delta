@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router";
 import Navbar from "../Navbar.js/Navbar";
 import { useSelector } from "react-redux";
+import {Link} from 'react-router-dom'
 
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -82,10 +83,11 @@ useEffect(()=>{
            {user?.followers?.includes(users._id) ?<button className='followButton' onClick={(e) => { UnFollowUser(user._id) }}>Unfollow</button>:
                <button className='followButton' onClick={(e) => { FollowUser(user._id) }}>Follow</button>
               }
+           <Link to='/chat'><button className='followButton'>Message</button>  </Link> 
   </div>
 
 
-  <ul class="hidden md:flex space-x-8 mb-4">
+  <ul class="flex space-x-8 mb-4">
     {/* <li>
       <span class="font-semibold">{user.posts.length}</span>
       posts
@@ -195,10 +197,11 @@ useEffect(()=>{
 
 {post?.map((obj)=>{
   return(
-      
-  <div class="w-1/3 p-px md:px-3">
-  <a href="#">
-    <article class="post bg-gray-100 text-white relative pb-full md:mb-6">
+      <>
+      {obj?.img && (
+      <div class="w-1/3 p-px md:px-3">
+      <a href="#">
+      <article class="post bg-gray-100 text-white relative pb-full md:mb-6">
       {obj.img ?<img class="w-full h-full absolute left-0 top-0 object-cover" src={PF+obj.img} alt="image"/>:
       <video src={PF+obj.video}></video>}
       {/* <i class="fas fa-square absolute right-0 top-0 m-1"></i> */}
@@ -219,9 +222,9 @@ useEffect(()=>{
       </div>
 
     </article>
-  </a>
-   </div>
-
+       </a>
+      </div>)}
+     </>
   )
 })
 }

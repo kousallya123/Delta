@@ -9,7 +9,7 @@ import {io} from 'socket.io-client'
 import Navbar from '../Navbar.js/Navbar'
 
 function Feed() {
-    const user = useSelector((state)=> state.user)
+   const user = useSelector((state)=> state.user)
    const [posts,setPosts]=useState([])
    const [socket,setSocket]=useState(null)
   

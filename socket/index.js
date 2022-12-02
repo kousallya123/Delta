@@ -50,8 +50,10 @@ io.on("connection",(socket)=>{
     /* -------------------------------------------------------------------------- */
     /*                              For Notifications                             */
     /* -------------------------------------------------------------------------- */
+
     socket.on("sendNotification",({senderId,receiverId,type})=>{
        const receiver=getUser(receiverId)
+       console.log(receiver,'hhhhhhhhhhhhhhhhhhhhh')
        io.to(receiver.socketId).emit("getNotification",{
           senderId,
           type,
