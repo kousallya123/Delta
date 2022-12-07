@@ -1,13 +1,14 @@
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import NotFound from '../../NotFound'
 import  './ChatOnline.css'
 
 function ChatOnline({onlineUsers,currentId,setCurrentChat}) {
   const PF=process.env.REACT_APP_PUBLIC_FOLDER
   const [friends,setFriends]=useState([])
   const [onlineFriends,setOnlinFriends]=useState([])
-
+ const [error,setError]=useState('')
   useEffect(()=>{
     const getFriends=async()=>{
       const res=await axios.get('http://localhost:5000/chat/friendlist/'+currentId,
@@ -29,9 +30,12 @@ function ChatOnline({onlineUsers,currentId,setCurrentChat}) {
       setCurrentChat(res.data)
     } catch (error) {
       console.log(error);
+      setError(error)
     }
   }
   return (
+    <>
+    {error ? <NotFound error={error}/>:
     <div className="chatOnline">
       {onlineFriends?.map((o)=>(
           <div className="chatOnlineFriend" onClick={()=>handleClick(o)}>
@@ -48,7 +52,8 @@ function ChatOnline({onlineUsers,currentId,setCurrentChat}) {
         
       ))}
        
-    </div>
+    </div> }
+    </>
   )
 }
 

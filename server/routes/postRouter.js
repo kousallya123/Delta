@@ -39,7 +39,7 @@ router.get('/timeline/:userId',check,timelinePost)
 
 router.get('/userpost/:userId',userPost)
 
-router.post('/addcomment/:id',check,addComment)
+router.post('/addcomment/:id',addComment)
 
 router.get('/getcomments/:id',getPostComments)
 

@@ -63,10 +63,17 @@ function Login() {
   return (
     <>
     {error?  <NotFound error={error}/> :
-    <div>     
-     <div className="mb-10 mt-7">
+     <div class="flex items-center min-h-screen bg-gray-50">
+     <div class="flex-1 h-full max-w-4xl mx-auto bg-white rounded-lg shadow-xl">
+         <div class="flex flex-col md:flex-row">
+             <div class="h-32 md:h-auto md:w-1/2">
+                 <img class="object-cover w-full h-full" src="https://source.unsplash.com/user/erondu/1600x900"
+                     alt="img" />
+             </div>
+             <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+                 <div class="w-full">
             <div className="flex justify-center">
-                <img alt=""className="h-14 w-14"
+              <img alt=""className="h-14 w-14"
                   src="https://media.istockphoto.com/vectors/impossible-triangle-penrose-optical-illusion-purple-gradient-endless-vector-id1210588277"/>
             </div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Login to your account
@@ -76,8 +83,7 @@ function Login() {
                Signup
             </Link>
             </p>
-        </div>
-        <form className='max-w-[400px] w-full h-max mx-auto rounded-lg p-8 px-8 ' onSubmit={handleSubmit}>
+           <form className='max-w-[400px] w-full h-max mx-auto rounded-lg p-8 px-8 ' onSubmit={handleSubmit}>
                 {errorMessage && <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">{errorMessage}</div>}
        
                 <div className='flex flex-col text-gray-400 py-2'>
@@ -89,8 +95,15 @@ function Login() {
                     <input className='p-2 rounded-lg  mt-2  border border-black hover:bg-purple-50 hover:border-purple-500' type="password" value={password} onChange={(e)=>{setPassword(e.target.value)}} />
                 </div>
                 <button className='w-full my-5 py-2 bg-purple-600 shadow-lg shadow-purple-500/50 hover:shadow-purple-500/40 text-white font-semibold rounded-lg'>Login</button>  
-        </form>
-    </div>
+            </form>
+         </div>
+
+                     
+                 </div>
+             </div>
+         </div>
+     </div>
+   
   }
   </>
   )

@@ -2,6 +2,8 @@ const Users=require('../models/userModel')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
 const userModel = require('../models/userModel')
+const Notification= require('../models/notificationSchema')
+const notificationSchema = require('../models/notificationSchema')
 
     const authCtrlRegister=async(req,res)=>{
         try {
@@ -195,5 +197,38 @@ const searchUser=async(req,res)=>{
   }
 }
 
+const Notifications=async(req,res)=>{
+  const notification=new Notification(req.body)
+  try {
+      const notifications=await notification.save()
+      res.json(notifications)
+  } catch (error) {
+      res.json(error)
+  }
 
-module.exports={authCtrlRegister,authCtrlLogin,updateUser,deleteUser,getUser,unFollowUser,followUser,getUserbyId,searchUser}    
+}
+
+
+const getNotifications=async(req,res)=>{
+  try {
+    const notification= await Notification.find({receiverId:req.params.id}).populate("senderId")
+    res.json(notification) 
+  } catch (error) {
+    res.json(error)
+  }
+
+}
+
+const deleteNotifications=async(req,res)=>{
+  try {
+    const res=await Notification.deleteMany({receiverId:req.params.id})
+    if(res){
+      res.json('success')
+    }  
+  } catch (error) {
+    res.json(error)
+  }
+}
+
+
+module.exports={authCtrlRegister,authCtrlLogin,updateUser,deleteUser,getUser,unFollowUser,followUser,getUserbyId,searchUser,Notifications,getNotifications,deleteNotifications}    

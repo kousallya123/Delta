@@ -16,14 +16,15 @@ function Comments({post}) {
     const handleComment=async(e)=>{
          e.preventDefault()
          await axios.post(`http://localhost:5000/post/addcomment/${post._id}`,
-         {headers:{"x-access-token":localStorage.getItem('usertoken')}},
          {userId:currentUser._id,comment:comment,postId:post._id})
+         console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaa');
          setComment("")
       }
     
       useEffect(()=>{
         const postComments=async()=>{
-          const comments= await axios.get(`http://localhost:5000/post/getcomments/${post._id}`)
+          const comments= await axios.get(`http://localhost:5000/post/getcomments/${post._id}` ,
+          {headers:{"x-access-token":localStorage.getItem('usertoken')}},)
             setSeeComments(comments.data);
           }
           postComments()
@@ -43,7 +44,7 @@ function Comments({post}) {
               className="border-none flex-1 focus:ring-0 outline-none"placeholder="Add a comment..." />
              <button type="submit" className="font-semibold text-blue-400" >Post</button>
           </form>
-            <p onClick={handleShow}>see comments</p>
+            <p onClick={handleShow} className='cursor-pointer'>see comments</p>
           {
             seeComments.map((obj)=>{
 

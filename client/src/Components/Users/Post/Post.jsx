@@ -27,8 +27,14 @@ function Post({post,socket}) {
     Content: "",
   });
   const [desc,setDesc]=useState('')
- 
-  const handleNotification=(type)=>{
+  const [error,setError]=useState('')
+
+  const handleNotification=async(type)=>{
+    const notification=await axios.post(`http://localhost:5000/notification`,{
+      senderId:currentUser._id,
+      receiverId:user._id,
+      type, 
+    })
     socket.emit("sendNotification",{
       senderId:currentUser._id,
       receiverId:user._id,
@@ -62,7 +68,9 @@ function Post({post,socket}) {
     try {
       axios.put(`/post/like/${post._id} `,{ userId: currentUser._id },
       {headers:{"x-access-token":localStorage.getItem('usertoken')}});
-    } catch (err) {}
+    } catch (err) {
+      setError(error)
+    }
     setLike(isLiked ? like - 1 : like + 1);
     setIsLiked(!isLiked);
   };
@@ -166,7 +174,7 @@ function Post({post,socket}) {
         </div>
         <div className="postCenter">
           <span className="postText" value={desc} >{post?.desc}</span>
-          <img className="postImg" src={PF + post.img} alt="" />
+          <img className="postImg" src={PF + post.img} alt="" loading="lazy"/>
           {post?.video ?<Player>
          <source src={PF + post.video} />
        </Player>

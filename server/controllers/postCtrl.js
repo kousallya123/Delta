@@ -119,6 +119,7 @@ const getPost=async(req,res)=>{
         res.json(error)
     }
  }
+ 
  const getPostComments=async(req,res)=>{
     try {
       const postComment=await Comments.find({postId:req.params.id})

@@ -222,7 +222,7 @@ useEffect(()=>{
             </div>
            
             <div class="w-full p-1">
-            <h2 className='text-2xl font-bold text-center'>Chats</h2>
+            <h2 className='hidden md:flex text-2xl font-bold text-center'>Chats</h2>
               <div class="w-full p-1">
              
                 {/* <input
@@ -233,11 +233,12 @@ useEffect(()=>{
               </div>
               
               <div className="">
-              <ul class= " min-w-full h-96 messagelist">
+              <ul class= " h-96 messagelist">
              
               {conversations.map((c)=>(
                   <div onClick={()=>{setCurrentChat(c);setReceiver(c.members.filter(members => {
                     return members !== user._id}))}}>
+                      {console.log(c.members.filter(members=>(members!==user._id)))}
                     <Conversation conversation={c} currentUser={user}  />
                   </div>
               ))}

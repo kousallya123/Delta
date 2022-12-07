@@ -1,112 +1,165 @@
-import React,{useState} from 'react'
-import {Link,useNavigate} from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
 
 function Signup() {
-    const [name,SetName] = useState('');
-    const [email,SetEmail] = useState('');
-    const [password,SetPassword] = useState('');
-    const [confirm,SetConfirm] = useState('');
+    const [name, SetName] = useState('');
+    const [email, SetEmail] = useState('');
+    const [password, SetPassword] = useState('');
+    const [confirm, SetConfirm] = useState('');
     const [errorMessage, setErrorMessage] = useState('')
     const navigate = useNavigate()
-    
 
 
-    const handleConfirm = (e)=>{
-     SetConfirm(e.target.value)
+
+    const handleConfirm = (e) => {
+        SetConfirm(e.target.value)
     }
 
-    const handleSubmit =  async (e)=>{
+    const handleSubmit = async (e) => {
         e.preventDefault()
-    try {
-        if (!name) {
-            setErrorMessage("Name is required");
-        } else if (name.length < 3) {
-            setErrorMessage("Name must be atleast 3 characters");
-        } else if (!name.match(/^[A-Za-z][A-Za-z ]*$/)) {
-            setErrorMessage("Enter a valid name");
-        } else if (!email) {
-            setErrorMessage("Email is required");
-        } else if (!email.match(/^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/)) {
-            setErrorMessage("Enter a valid email");
-        } else if (!password) {
-            setErrorMessage("Password is required");
-        } else if (password.length < 4) {
-            setErrorMessage("Password must be atleast 4 characters");
-        } else if (password.length > 20) {
-            setErrorMessage("Password must be less than 20 characters");
-        }else if (password!=confirm) {
-            setErrorMessage("Password does not matched");
-        } else {
-           const {data} = await axios.post(`http://localhost:5000/register`,{
-                username:name,
-                email:email,
-                password:password
-            })
-            console.log('data');
-            console.log(data);
-            if (data) {
-                if (data.user) {
-                    console.log('redirect to login');
-                    navigate("/");  
+        try {
+            if (!name) {
+                setErrorMessage("Name is required");
+            } else if (name.length < 3) {
+                setErrorMessage("Name must be atleast 3 characters");
+            } else if (!name.match(/^[A-Za-z][A-Za-z ]*$/)) {
+                setErrorMessage("Enter a valid name");
+            } else if (!email) {
+                setErrorMessage("Email is required");
+            } else if (!email.match(/^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/)) {
+                setErrorMessage("Enter a valid email");
+            } else if (!password) {
+                setErrorMessage("Password is required");
+            } else if (password.length < 4) {
+                setErrorMessage("Password must be atleast 4 characters");
+            } else if (password.length > 20) {
+                setErrorMessage("Password must be less than 20 characters");
+            } else if (password != confirm) {
+                setErrorMessage("Password does not matched");
+            } else {
+                const { data } = await axios.post(`http://localhost:5000/register`, {
+                    username: name,
+                    email: email,
+                    password: password
+                })
+                console.log('data');
+                console.log(data);
+                if (data) {
+                    if (data.user) {
+                        console.log('redirect to login');
+                        navigate("/");
+                    } else {
+                        setErrorMessage(data.msg)
+                    }
                 } else {
-                    setErrorMessage(data.msg)
+                    setErrorMessage('Something went wrong')
                 }
-            }else{
-                setErrorMessage('Something went wrong')
+
             }
-
-         }
-     } catch (error) {
-    console.log(error.message);
+        } catch (error) {
+            console.log(error.message);
+        }
     }
-   }
 
-  return (
-    <div>
-    <div className="mb-10 mt-7">
-           <div className="flex justify-center">
-               <img alt=""className="h-14 w-14"
-                 src="https://media.istockphoto.com/vectors/impossible-triangle-penrose-optical-illusion-purple-gradient-endless-vector-id1210588277"/>
-           </div>
-           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Signup to create an account
-           </h2>
-           <p className="mt-2 text-center text-sm text-gray-600 mt-5">Already have an account?
-           <Link to='/'  className="font-medium text-purple-600 hover:text-purple-500">
-              Login
-           </Link>
-           </p>
-       </div>
-       <form className='max-w-[500px] w-full h-max mx-auto rounded-lg p-8 px-8 'onSubmit={handleSubmit}>
-               {errorMessage && <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">{errorMessage}</div>}
-               <div className='flex flex-col text-gray-400 py-2'>
-                   <label className='text-gray-400 text-bold'>Username</label>
-                   <input className='rounded-lg  mt-2 p-2 border border-black hover:bg-purple-50 hover:border-purple-500' type="text"value={name}
-                    onChange={(e)=>SetName(e.target.value)} />
-               </div>
-               <div className='flex flex-col text-gray-400 py-2'>
-                   <label className='text-gray-400 text-bold'>Email</label>
-                   <input className='rounded-lg  mt-2 p-2 border border-black hover:bg-purple-50 hover:border-purple-500' type="text" value={email}
-                    onChange={(e)=>SetEmail(e.target.value)} />
-               </div>
-               <div className='flex flex-col text-gray-400 py-2'>
-                   <label className=''>Password</label>
-                   <input className='p-2 rounded-lg  mt-2  border border-black hover:bg-slate-100 hover:border-purple-500' type="password" value={password}
-                    onChange={(e)=>SetPassword(e.target.value)} />
-               </div>
-               <div className='flex flex-col text-gray-400 py-2'>
-                   <label className='text-gray-400 text-bold'>Confirm password</label>
-                   <input className='rounded-lg  mt-2 p-2 border border-black hover:bg-purple-50 hover:border-purple-500' type="password" value={confirm}
-                    onChange={handleConfirm}/>
-               </div>
-         
-               <button  className='w-full my-5 py-2 bg-purple-600 shadow-lg shadow-purple-500/50 hover:shadow-purple-500/40 text-white font-semibold rounded-lg'>Signup</button>
-              
-       </form>
-   </div>
-  )
+    return (
+        <div class="flex items-center min-h-screen bg-gray-50">
+            <div class="flex-1 h-full max-w-4xl mx-auto bg-white rounded-lg shadow-xl">
+                <div class="flex flex-col md:flex-row">
+                    <div class="h-32 md:h-auto md:w-1/2">
+                        <img class="object-cover w-full h-full" src="https://source.unsplash.com/user/erondu/1600x900"
+                            alt="img" />
+                    </div>
+                    <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+                        <div class="w-full">
+                            <div className="flex justify-center">
+                                <img alt="" className="h-14 w-14"
+                                    src="https://media.istockphoto.com/vectors/impossible-triangle-penrose-optical-illusion-purple-gradient-endless-vector-id1210588277" />
+                            </div>
+                            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Signup to create an account
+                            </h2>
+                            <p className="mt-2 text-center text-sm text-gray-600 mt-5">Already have an account?
+                                <Link to='/' className="font-medium text-purple-600 hover:text-purple-500">
+                                    Login
+                                </Link>
+                            </p>
+                            <form className='max-w-[500px] w-full h-max mx-auto rounded-lg p-8 px-8 ' onSubmit={handleSubmit}>
+                                {errorMessage && <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">{errorMessage}</div>}
+                                <div className='flex flex-col text-gray-400 py-2'>
+                                    <label className='text-gray-400 text-bold'>Username</label>
+                                    <input className='rounded-lg  mt-2 p-2 border border-black hover:bg-purple-50 hover:border-purple-500' type="text" value={name}
+                                        onChange={(e) => SetName(e.target.value)} />
+                                </div>
+                                <div className='flex flex-col text-gray-400 py-2'>
+                                    <label className='text-gray-400 text-bold'>Email</label>
+                                    <input className='rounded-lg  mt-2 p-2 border border-black hover:bg-purple-50 hover:border-purple-500' type="text" value={email}
+                                        onChange={(e) => SetEmail(e.target.value)} />
+                                </div>
+                                <div className='flex flex-col text-gray-400 py-2'>
+                                    <label className=''>Password</label>
+                                    <input className='p-2 rounded-lg  mt-2  border border-black hover:bg-slate-100 hover:border-purple-500' type="password" value={password}
+                                        onChange={(e) => SetPassword(e.target.value)} />
+                                </div>
+                                <div className='flex flex-col text-gray-400 py-2'>
+                                    <label className='text-gray-400 text-bold'>Confirm password</label>
+                                    <input className='rounded-lg  mt-2 p-2 border border-black hover:bg-purple-50 hover:border-purple-500' type="password" value={confirm}
+                                        onChange={handleConfirm} />
+                                </div>
+
+                                <button className='w-full my-5 py-2 bg-purple-600 shadow-lg shadow-purple-500/50 hover:shadow-purple-500/40 text-white font-semibold rounded-lg'>Signup</button>
+
+                            </form>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        //     <div>
+        //     <div className="mb-10 mt-7">
+        //            <div className="flex justify-center">
+        //                <img alt=""className="h-14 w-14"
+        //                  src="https://media.istockphoto.com/vectors/impossible-triangle-penrose-optical-illusion-purple-gradient-endless-vector-id1210588277"/>
+        //            </div>
+        //            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Signup to create an account
+        //            </h2>
+        //            <p className="mt-2 text-center text-sm text-gray-600 mt-5">Already have an account?
+        //            <Link to='/'  className="font-medium text-purple-600 hover:text-purple-500">
+        //               Login
+        //            </Link>
+        //            </p>
+        //        </div>
+        //        <form className='max-w-[500px] w-full h-max mx-auto rounded-lg p-8 px-8 'onSubmit={handleSubmit}>
+        //                {errorMessage && <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">{errorMessage}</div>}
+        //                <div className='flex flex-col text-gray-400 py-2'>
+        //                    <label className='text-gray-400 text-bold'>Username</label>
+        //                    <input className='rounded-lg  mt-2 p-2 border border-black hover:bg-purple-50 hover:border-purple-500' type="text"value={name}
+        //                     onChange={(e)=>SetName(e.target.value)} />
+        //                </div>
+        //                <div className='flex flex-col text-gray-400 py-2'>
+        //                    <label className='text-gray-400 text-bold'>Email</label>
+        //                    <input className='rounded-lg  mt-2 p-2 border border-black hover:bg-purple-50 hover:border-purple-500' type="text" value={email}
+        //                     onChange={(e)=>SetEmail(e.target.value)} />
+        //                </div>
+        //                <div className='flex flex-col text-gray-400 py-2'>
+        //                    <label className=''>Password</label>
+        //                    <input className='p-2 rounded-lg  mt-2  border border-black hover:bg-slate-100 hover:border-purple-500' type="password" value={password}
+        //                     onChange={(e)=>SetPassword(e.target.value)} />
+        //                </div>
+        //                <div className='flex flex-col text-gray-400 py-2'>
+        //                    <label className='text-gray-400 text-bold'>Confirm password</label>
+        //                    <input className='rounded-lg  mt-2 p-2 border border-black hover:bg-purple-50 hover:border-purple-500' type="password" value={confirm}
+        //                     onChange={handleConfirm}/>
+        //                </div>
+
+        //                <button  className='w-full my-5 py-2 bg-purple-600 shadow-lg shadow-purple-500/50 hover:shadow-purple-500/40 text-white font-semibold rounded-lg'>Signup</button>
+
+        //        </form>
+        //    </div>
+    )
 }
 
 export default Signup
