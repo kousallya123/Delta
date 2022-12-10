@@ -2,8 +2,9 @@ const mongoose=require('mongoose')
 
 const CommentSchema=new mongoose.Schema({
     userId:{
-        type:String,
-        required:true
+        type:mongoose.Schema.Types.ObjectId,
+        required:true,
+        ref:"user"
     },
     postId:{
         type:String,

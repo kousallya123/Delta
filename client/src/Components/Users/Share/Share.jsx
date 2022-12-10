@@ -30,7 +30,7 @@ function Share() {
       try {
         await axios.post('http://localhost:5000/post/upload',data,
         {headers:{"x-access-token":localStorage.getItem('usertoken')}})
-        // window.location.reload()
+        window.location.reload()
         
       } catch (error) {
         console.log(error);

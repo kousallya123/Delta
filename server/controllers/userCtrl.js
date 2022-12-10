@@ -1,9 +1,26 @@
 const Users=require('../models/userModel')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
+const nodemailer=require('nodemailer')
 const userModel = require('../models/userModel')
 const Notification= require('../models/notificationSchema')
 const notificationSchema = require('../models/notificationSchema')
+const userVerification = require("../models/verification");
+  
+   /* -------------------------------------------------------------------------- */
+   /*                                email config                                */
+   /* -------------------------------------------------------------------------- */
+      const transporter=nodemailer.createTransport({
+        service:"gmail",
+        auth: {
+          user: "deltadelta9595@gmail.com",
+          pass: "cfzvwlesenvqltlw",
+        },
+      })
+
+
+
+
 
     const authCtrlRegister=async(req,res)=>{
         try {
@@ -27,15 +44,19 @@ const notificationSchema = require('../models/notificationSchema')
             fullname,username:newUserName,email,password:passwordHash
           })
 
-          await newUser.save()
+          await newUser.save().then(async(result)=>{
+            sendOtp(result,res)
+            res.json({
+              msg:'register success',
+              user:{
+                 ...newUser._doc,
+                 password:''
+              }  
+            })
 
-           res.json({
-            msg:'register success',
-            user:{
-               ...newUser._doc,
-               password:''
-            }  
-        })
+          })
+
+          
 
         } catch (error) {
             return res.json({msg:error.message})
@@ -212,7 +233,14 @@ const Notifications=async(req,res)=>{
 const getNotifications=async(req,res)=>{
   try {
     const notification= await Notification.find({receiverId:req.params.id}).populate("senderId")
-    res.json(notification) 
+    let count = notification.filter((obj) => {
+      if (obj.status == "true") {
+        return obj;
+      }
+    }); 
+    let countLength = count.length;
+    console.log(countLength,'lllllllllll');
+    res.json({notification,countLength}) 
   } catch (error) {
     res.json(error)
   }
@@ -230,5 +258,168 @@ const deleteNotifications=async(req,res)=>{
   }
 }
 
+const sendPasswordLink=async(req,res)=>{
+  const {email}=req.body
+  if(!email){
+    res.json('Enter your Email')
+  }
+  try {
+    const user=await userModel.findOne({email:email})
+    const token=jwt.sign({_id:user._id}, process.env.JWT_KEY,{
+      expiresIn:"120s"
+    })
+    const usertoken=await userModel.findByIdAndUpdate({_id:user._id},{token:token},{new:true})
+    if(usertoken){
+        const mailOptions={
+        from:"deltadelta9595@gmail.com",
+        to:email,
+        subject:"Sending a email for password reset",
+        text:`Click this link to reset your password http://localhost:3000/forgot/${user._id}/${usertoken.token}`
+      }
+      transporter.sendMail(mailOptions,(error,info)=>{
+        if(error){
+          console.log(error);
+          res.json('email not sended properly')
+        }else{
+          console.log('email send',info.response);
+          res.json('Email send successfully')
 
-module.exports={authCtrlRegister,authCtrlLogin,updateUser,deleteUser,getUser,unFollowUser,followUser,getUserbyId,searchUser,Notifications,getNotifications,deleteNotifications}    
+        }
+      })
+    }
+    
+  } catch (error) {
+    res.json(error)
+  }
+ 
+}
+
+const updatePassword=async(req,res)=>{
+  const {password}=req.body
+  try {
+    const salt=await bcrypt.genSalt(10)
+    const newpassword=await bcrypt.hash(password,salt)
+    const user=await Users.updateOne({_id:req.params.id},{
+      $set:{password:newpassword},
+  })
+  const updatedUser=await Users.findById(req.params.id)
+  res.json(updatedUser)
+   } catch (error) {
+    return res.json(error)
+   }
+}
+
+
+
+  const getSuggestions = async (req, res) => {
+    try {
+       Users.find({followers:{$nin:req.params.id}}).limit(5)  
+          .then((response) => {
+             res.status(200).json(response)
+          })
+          .catch((err) => {
+             res.status(500).json("Something went wrong")
+          })
+    } catch (error) {
+       res.status(500).json({ message: "Something went wrong!" })
+    }
+ }
+
+
+
+
+ 
+const sendOtp = async (result, res) => {
+  console.log(result, "hey there");
+  try {
+    const OTP = await Math.floor(100000 + Math.random() * 900000).toString();
+    console.log(OTP);
+    var senEMail = {
+      from: "deltadelta9595@gmail.com",
+      to: result.email,
+      subject: "Sending Email My Instagram",
+      text: `Hi ${result.username} Your OTP pin has been generated `,
+      html: `<h1>Hi ${result.username}</h1><p>Your OTP is ${OTP}</p>`,
+    };
+
+    let hashOTP = await bcrypt.hash(OTP, 10);
+    let verify = await userVerification.findOne({ userId: result._id });
+    if (!verify) {
+      const userverification = new userVerification({
+        userId: result._id,
+        Otp: hashOTP,
+        Created: Date.now(),
+        Expiry: Date.now() + 100000,
+      });
+      await userverification.save();
+    } else {
+      await userVerification.updateOne(
+        { userId: result._id },
+        { Otp: hashOTP }
+      );
+    }
+
+    transporter.sendMail(senEMail, function (error, info) {
+      console.log("oioioioi");
+      if (error) {
+        console.log(error, "yuyuuy");
+      } else {
+        res.json({
+          status: "pending",
+          msg: "Verification otp mail sent",
+          mail: result.email,
+          user: result,
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+const verifyOtp = async (req, res) => {
+  console.log(req.body.OTP,'llllllllllll');
+  let OtpVerify = await userVerification.findOne({ userId: req.body.user });
+  let correctOtp = await bcrypt.compare(req.body.OTP, OtpVerify.Otp);
+  if (correctOtp) {
+    await Users.updateOne(
+      { _id: req.body.user },
+      { $set: { verified: "true" } }
+    );
+    res.status(200).json({ verified: true });
+  } else {
+    res.status(200).json({ verified: false, msg: "Incorrect OTP" });
+  }
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                 RESEND OTP                                 */
+/* -------------------------------------------------------------------------- */
+
+
+const resendOTP=  async (req, res) => {
+  console.log(req.body,'jjjjjjjjjjjjjjjjjjjjjjj');
+  sendOtp(req.body, res).then((response) => {
+      res.status(200).json(true)
+  })
+
+}
+
+
+
+const ReadNotification = async (req, res) => {
+  console.log('kkkkkkkkkkkkkkkkkkkkkkkkkkk');
+  try {
+    let data = await notificationSchema.updateMany(
+      { userId: req.params.userId },
+      { $set: {status:"false"} }
+    );
+    res.status(200).json("updated");
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+
+module.exports={authCtrlRegister,authCtrlLogin,updateUser,deleteUser,getUser,unFollowUser,followUser,getUserbyId,searchUser,Notifications,getNotifications,deleteNotifications,sendPasswordLink,updatePassword,getSuggestions,verifyOtp,resendOTP,ReadNotification}    

@@ -7,12 +7,13 @@ import { useSelector } from 'react-redux'
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import './Comments.css'
 
-function Comments({post}) {
+function Comments({post,socket}) {
     const [comment,setComment]=useState('')
     const [seeComments,setSeeComments]=useState([])
     const [commentShow,setCommentShow]=useState(false)
     const currentUser= useSelector((state)=>state.user)
- 
+    const [user,setUser]=useState('')
+    const PF=process.env.REACT_APP_PUBLIC_FOLDER
     const handleComment=async(e)=>{
          e.preventDefault()
          await axios.post(`http://localhost:5000/post/addcomment/${post._id}`,
@@ -20,6 +21,15 @@ function Comments({post}) {
          console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaa');
          setComment("")
       }
+
+      useEffect(() => {
+        const fetchUser = async () => {
+          const res = await axios.get(`/users?userId=${post.userId}`,
+          {headers:{"x-access-token":localStorage.getItem('usertoken')}});
+          setUser(res.data);
+        };
+        fetchUser();
+      }, [post.userId]);
     
       useEffect(()=>{
         const postComments=async()=>{
@@ -33,7 +43,20 @@ function Comments({post}) {
       const handleShow=()=>{
         setCommentShow(!commentShow)
       }
-  
+      const handleNotification=async(type)=>{
+        const notification=await axios.post(`http://localhost:5000/notification`,{
+          senderId:currentUser._id,
+          receiverId:user._id,
+          type, 
+        })
+        socket.emit("sendNotification",{
+          senderId:currentUser._id,
+          receiverId:user._id,
+          type,
+        })
+      }
+    
+
 
   return (
     <div>
@@ -42,7 +65,7 @@ function Comments({post}) {
              <input
               type="text" value={comment} onChange={(e)=>setComment(e.target.value)}
               className="border-none flex-1 focus:ring-0 outline-none"placeholder="Add a comment..." />
-             <button type="submit" className="font-semibold text-blue-400" >Post</button>
+             <button type="submit" className="font-semibold text-blue-400"  onClick={()=>handleNotification(2)}>Post</button>
           </form>
             <p onClick={handleShow} className='cursor-pointer'>see comments</p>
           {
@@ -53,7 +76,11 @@ function Comments({post}) {
                 {commentShow?
                 <div className='commentSection'>
                 <div className='commentLeft'>
-                   <p>{obj.comment}&nbsp;</p> 
+                  <img src={PF+obj.userId.profilePicture} className='w-8 h-8 mt-1 rounded-full'/> 
+                 {obj.userId.username===currentUser.username?   <p className='font-semibold px-2 mt-1'>You</p>:
+                  <p className='font-semibold px-2 mt-1'>{obj.userId.username}</p> }
+                  
+                   <p className='mt-1'>{obj.comment}&nbsp;</p> 
                    <p className='commentDate'>{format(obj.createdAt)}</p>
                 </div>   
                 </div>:null}

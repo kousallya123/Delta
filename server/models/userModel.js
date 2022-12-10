@@ -19,7 +19,8 @@ const userSchema=new mongoose.Schema({
     required:true
  },
  profilePicture:{
-    type:String
+    type:String,
+    default:"photo1.jpg"
  },
  coverPicture:{
    type:String
@@ -46,7 +47,10 @@ followings:{
 isAdmin:{
    type:Boolean,
    default:false,
-}
+},
+token:{
+   type:String,
+},
 },{
    timestamps:true 
 })

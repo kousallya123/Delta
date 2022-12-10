@@ -96,6 +96,11 @@ function Login() {
                 </div>
                 <button className='w-full my-5 py-2 bg-purple-600 shadow-lg shadow-purple-500/50 hover:shadow-purple-500/40 text-white font-semibold rounded-lg'>Login</button>  
             </form>
+            <p className=" text-center text-sm text-gray-600 mt-5">Forgot your password?
+            <Link to='/password'  className="font-medium text-purple-600 hover:text-purple-500">
+               Click here
+            </Link>
+            </p>
          </div>
 
                      

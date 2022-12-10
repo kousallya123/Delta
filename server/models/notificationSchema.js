@@ -13,6 +13,10 @@ const NotificationSchema=new mongoose.Schema({
     type:{
         type:String,
         max:500
+    },
+    status:{
+        type:String,
+        default:"true"
     }
     },{
         timestamps:true 

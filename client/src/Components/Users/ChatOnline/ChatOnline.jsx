@@ -35,7 +35,7 @@ function ChatOnline({onlineUsers,currentId,setCurrentChat}) {
   }
   return (
     <>
-    {error ? <NotFound error={error}/>:
+  
     <div className="chatOnline">
       {onlineFriends?.map((o)=>(
           <div className="chatOnlineFriend" onClick={()=>handleClick(o)}>
@@ -52,7 +52,7 @@ function ChatOnline({onlineUsers,currentId,setCurrentChat}) {
         
       ))}
        
-    </div> }
+    </div> 
     </>
   )
 }

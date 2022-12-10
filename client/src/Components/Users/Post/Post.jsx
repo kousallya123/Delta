@@ -15,7 +15,7 @@ import { width } from '@mui/system'
 
 
 function Post({post,socket}) {
-  const [like, setLike] = useState(post.likes.length);
+  const [like, setLike] = useState(post?.likes?.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState({});
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -30,16 +30,19 @@ function Post({post,socket}) {
   const [error,setError]=useState('')
 
   const handleNotification=async(type)=>{
-    const notification=await axios.post(`http://localhost:5000/notification`,{
-      senderId:currentUser._id,
-      receiverId:user._id,
-      type, 
-    })
-    socket.emit("sendNotification",{
-      senderId:currentUser._id,
-      receiverId:user._id,
-      type,
-    })
+    if(currentUser._id!==user._id){
+      const notification=await axios.post(`http://localhost:5000/notification`,{
+        senderId:currentUser._id,
+        receiverId:user._id,
+        type, 
+      })
+      socket.emit("sendNotification",{
+        senderId:currentUser._id,
+        receiverId:user._id,
+        type,
+      })
+    }
+    
   }
 
 
@@ -184,7 +187,7 @@ function Post({post,socket}) {
         <div className="postBottom">
           <div className="postBottomLeft">
           <div className='text-2xl text-slate-900' onClick={()=>{likeHandler();handleNotification(1)}}>{isLiked? <FavoriteOutlined style={{color:"#ed4956"}}/>:<FavoriteBorder/>}</div>
-            &nbsp;&nbsp;<FaRegComment onClick={()=>handleNotification(2)} style={{height:"22px",width:"22px", marginTop:"2px"}}/>
+            &nbsp;&nbsp;<FaRegComment style={{height:"22px",width:"22px", marginTop:"2px"}}/>
             {/* &nbsp;&nbsp;<ShareIcon /> */}
             <span className="postLikeCounter ml-2">{like} people like it</span>
           </div>
@@ -193,7 +196,7 @@ function Post({post,socket}) {
           </div>
         </div>
         <div>
-        <Comments post={post} />
+        <Comments post={post} socket={socket}/>
             </div>
            </div>
       }

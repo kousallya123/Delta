@@ -172,7 +172,10 @@ useEffect(()=>{
 
   return (
     <>
-     <Navbar/>
+    <div className='bg-gray-500'> 
+    <Navbar/>
+    </div>
+    
     <div class="h-screen chatscreen p-20"> 
     <section class=" shadow-xl rounded-md w-full lg:w-11/12 lg:mx-auto flex">
       {/* <!-- Left section --> */}
@@ -293,12 +296,12 @@ useEffect(()=>{
      
     {showModal ? (
     <>
-      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
+      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative w-auto my-6 mx-auto max-w-3xl">
        
           <div className="border-0 rounded-lg shadow-lg  relative flex flex-col w-full bg-white outline-none focus:outline-none ">
             <div className="flex  justify-between p-5border-b border-solid border-slate-200 rounded-t flex-col">
-              <h6 className="text-xl font-semibold">Choose one to start new conversation</h6>
+              <h6 className="text-xl font-semibold p-3">Choose one to start new conversation</h6>
               {users.map((obj)=>(
               <div className='flex flex-col  justify-between'>
                 {obj.username!==user.username&&

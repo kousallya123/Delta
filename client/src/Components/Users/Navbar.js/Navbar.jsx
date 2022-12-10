@@ -35,28 +35,32 @@ function Navbar({ socket }) {
   const [userFound, setUserFound] = useState([])
   const [searchModal, setSearchModal] = useState(false)
   const [sender,setSender]=useState('')
- const [error,setError]=useState('')
+  const [error,setError]=useState('')
+  const [count,setCount]=useState('')
+  const [change,setChange]=useState()
 
   useEffect(()=>{
     socket?.on("getNotification",data=>{
-      setNotifications((prev)=>[...prev,data])
+      setChange(new Date())
     })
    
   },[socket])
 
-
+   useEffect(()=>{
     const fetchNotification = async () => {
-        axios.get(`http://localhost:5000/notification/${user._id}`).then((response)=>{
-        setNotifications(response.data)
-      })
-    
-    }
-
+      axios.get(`http://localhost:5000/notification/${user._id}`).then((response)=>{
+      setNotifications(response.data.notification)
+      setCount(response.data.countLength)
+    }) }
+    fetchNotification()
+   },[count,socket,change])
+  
+  console.log(count,'kkkkkkkkkkkkkkkkkkkkk');
 
 
   const handleSearch = async (e) => {
     try {
-      if (e.target.value.length > 0) {
+      if (e.target.value.length > 0) { 
         setSearchModal(true)
       } else {
         setSearchModal(false)
@@ -99,59 +103,16 @@ function Navbar({ socket }) {
     })
   }
 
-  //   const displayNotifications = ({ senderId, type }) => {
-  //       try {
-  //         const fetchUser=async()=>{
-  //           const response=await axios.get('/findUser/'+senderId,
-  //           {headers:{"x-access-token":localStorage.getItem('usertoken')}})
-  //           const username=response.data.username
-  //           const userProfilePic=response.data.profilePicture
-  //           setUsername(username)
-  //           setUserProfilePic(userProfilePic)
-  //        }
-  //        fetchUser()
-  //       } catch (error) {
-  //         console.log(error)
-  //       } 
-  //     let action;
-  //     if (type ===1) {
-  //       action = "liked your post";
-  //     } else if (type ===2) {
-  //       action = "commented on your post";
-  //     } else {
-  //       action = "viewed your profile";
-  //     }
-  //     return (
-  //     <div class="max-w-2xl mx-auto z-50 m-1 bg-transparent">
-
-  //    <div id="toast-default"
-  //   class="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
-  //   role="alert">
-
-  //    {action==="liked your post"&&
-  //    <div
-  //    class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
-  //   <Favorite style={{color:"red"}}/>
-  //  </div>
-  //  }
-  //  {action==="commented on your post"&&
-  //    <div
-  //    class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-blue-500 bg-blue-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
-  //   <MarkUnreadChatAltIcon style={{coloe:"blue"}}/>
-  //  </div>}
-  //  {action==="viewed your profile"&&
-  //    <div
-  //    class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-yellow-500 bg-yellow-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
-  //   <AccountCircleIcon style={{coloe:"yellow"}}/>
-  //  </div>}
-  //  <div> <img className='w-5 h-5 rounded-full' src={PF+userProfilePic}></img></div>
-
-  //   <div class="ml-3 text-sm font-normal">{`${username} ${action}.`}</div>
-  // </div>
-  //   </div>
-  //       // <span className="notification">{`${senderId} ${action} your post.`}</span>
-  //     );
-  //   };
+   const handleRead=async(e)=>{
+    setShowNotification(!showNotification)
+      try {
+        const { data } = await axios.put(`http://localhost:5000/notification/viewed/${user._id}`);
+        console.log(data);
+        setCount('')
+      } catch (error) {
+        console.log(error);
+      }
+   }
 
   return (
     <>
@@ -187,8 +148,8 @@ function Navbar({ socket }) {
               {/* <span className="topbarIconBadge">2</span> */}
             </div>
             <div className='topbarIconItem'>
-              <NotificationsIcon onClick={() =>{setShowNotification(!showNotification);fetchNotification()}} />
-              {notifications.length!==0 &&   <span className="topbarIconBadge">{notifications.length}</span> }
+              <NotificationsIcon onClick={(e) =>handleRead(e)} />
+              {count!==0 &&<span className="topbarIconBadge">{count}</span>} 
             
             </div>
           </div>
@@ -227,43 +188,11 @@ function Navbar({ socket }) {
           {/* <button onClick={(e)=>handleLogout(e)}>Logout</button> */}
         </div>
       </div>}
-    
-     
-        {/* {notifications?.map((n) => (
-            <div className='notifications z-50 w-[200px] flex justify-end'>
-                {n.type==='1' &&
-                <>
-                 <div
-                class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
-                <Favorite style={{color:"red"}}/>
-               </div> <p> {n?.senderId?.username} liked your post </p></>
-                }
-                 {n.type==='2' &&
-                 <>
-               <div
-                 class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-blue-500 bg-blue-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
-                 <MarkUnreadChatAltIcon style={{coloe:"blue"}}/>
-               </div> <p> {n?.senderId?.username} commented your post </p></>
-                }
-                 {n.type==='3' &&
-                 <>
-                 <div
-                class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-yellow-500 bg-yellow-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
-                 <AccountCircleIcon style={{coloe:"yellow"}}/>
-                 </div> <p> {n?.senderId?.username} viewed your profile </p></>
-                }
-              
-            </div>
-          ))} */}
-          {/* <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-collapse-toggle="toast-default" aria-label="Close">
-        <span class="sr-only">Close</span>
-        <svg class="w-5 h-5" fill="currentColor" onClick={handleRead} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-        </button> */}
  {showNotification ?(
      <>
      <div class="absolute right-0 z-20 w-60 py-2   bg-white rounded-md shadow-xl dark:bg-blue-200 m-5 mr-52 overflow-y-auto max-h-44 no-scrollbar">
-       {notifications.length != 0 ? (
-         notifications.map((obj) => {
+       {notifications?.length !== 0 ? (
+         notifications?.map((obj) => {
            return (
              <a
                href="#"

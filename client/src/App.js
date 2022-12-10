@@ -13,6 +13,9 @@ import Chat from './Pages/User/Chat/Chat';
 import AdminPostPage from './Pages/Admin/AdminPost';
 import AdminReportPage from './Pages/Admin/AdminReportPage';
 import Explore from './Pages/User/Explore';
+import Password from './Components/Users/Password/Password';
+import NotFound from './Components/NotFound';
+import ForgotPassword from './Components/Users/Password/ForgotPassword';
 
 function App() {
   return (
@@ -26,6 +29,9 @@ function App() {
               <Route path='/userProfile' element={<UserProfile/>}/> 
               <Route path='/explore' element={<Explore/>}/> 
               <Route path='/chat' element={<Chat/>}/> 
+              <Route path='/password' element={<Password/>}/>
+              <Route path='/forgot/:id/:token' element={<ForgotPassword/>}/>  
+              <Route path='*' element={<NotFound error='not found'/>}/>  
           </Routes>
           <Routes>  
           <Route path='/sidebar' element={<Sidebar/>}/>

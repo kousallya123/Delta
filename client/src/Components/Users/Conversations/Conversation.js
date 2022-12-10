@@ -25,10 +25,10 @@ function Conversation({conversation,currentUser}) {
     
   return (
     <>
-    {error? <NotFound error={error}/>: <div className='conversation hidden md:flex'>
+    <div className='conversation hidden md:flex'>
         <img className='conversationImage'src={PF+user?.profilePicture} alt=''/>
         <span className='convarsationName hidden md:block'>{user?.username}</span>
-    </div>}
+    </div>
    
     </>
   )

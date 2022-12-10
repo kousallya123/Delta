@@ -51,8 +51,7 @@ function UserProfile() {
     }
   }
   try {
-        const response=await axios.put("http://localhost:5000/"+user._id, {editPost,userId:user._id},
-        {headers:{"x-access-token":localStorage.getItem('usertoken')}})
+        const response=await axios.put("http://localhost:5000/"+user._id, {editPost,userId:user._id})
          dispatch(login(response.data))
          localStorage.removeItem('user')
          localStorage.setItem('user',JSON.stringify(response.data))
@@ -166,6 +165,7 @@ function UserProfile() {
                      <span className='shareOptionText'>Update your profile photo</span>
                      <input style={{display:"none"}} type='file'name='file' id='file' onChange={(e)=>{{setFile(e.target.files[0])}}} accept=".png,.jpg,.webp"/>
                  </label>
+               
                   <input
                     type="text"
                     name="username"

@@ -21,7 +21,7 @@ function Rightbar() {
 
   useEffect(()=>{
     const fetchUsers=async()=>{
-     const allUsers=await axios.get(`/admin/users`)
+     const allUsers=await axios.get(`/suggestions/${user._id}`)
      if(allUsers){
       setUsers(allUsers.data)
      }else{

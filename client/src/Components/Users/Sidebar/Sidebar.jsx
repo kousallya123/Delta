@@ -46,7 +46,6 @@ function Sidebar() {
     const menus = [
         { name: "Home", link: "/home", icon: BiHome },
         { name: "messages", link: "/chat", icon: FiMessageSquare },
-        { name: "Notifications", link: "/home", icon: MdNotificationsNone },
         { name: "Create", link: "/home", icon: BiMessageSquareAdd },
         { name: "Explore", link: "/explore", icon: MdExplore },
         { name: "My Profile", link: "/userProfile", icon: CgProfile ,bottom:true},
@@ -59,8 +58,9 @@ function Sidebar() {
     <div hidden className="border shadow-md min-h-screen lg:pl-7 lg:pr-12 bg-white fixed md:block  md:w-20  lg:w-64 overflow-hidden ">
         
         <div hidden className="text-center lg:block flex justify-center ">
-        
-          <img src='/assets/logofinal.png'></img>
+          <Link to='/home'>
+          <img src='/assets/logofinal.png' ></img>
+          </Link>
             
         </div>
         <div className=" flex flex-col gap-6 justify-start relative md:items-center lg:items-start">
