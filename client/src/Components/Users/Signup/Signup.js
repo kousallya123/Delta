@@ -24,6 +24,9 @@ function Signup() {
     const handleConfirm = (e) => {
         SetConfirm(e.target.value)
     }
+    const axiosInstance=axios.create({
+        baseURL:process.env.REACT_APP_API_URL,
+       })
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -47,7 +50,7 @@ function Signup() {
             } else if (password != confirm) {
                 setErrorMessage("Password does not matched");
             } else {
-                const { data } = await axios.post(`http://localhost:5000/register`, {
+                const { data } = await axiosInstance.post(`register`, {
                     username: name,
                     email: email,
                     password: password

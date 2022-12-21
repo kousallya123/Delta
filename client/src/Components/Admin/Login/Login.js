@@ -9,7 +9,9 @@ export default function AdminLogin() {
     const [errorMessage, setErrorMessage] = useState('')
     const navigate=useNavigate()
     const [error,setError]=useState('')
-
+    const axiosInstance=axios.create({
+        baseURL:process.env.REACT_APP_API_URL,
+       })
     // useEffect(() => {
     //     if(adminDetails){
     //       navigate('/admin-users')
@@ -30,7 +32,7 @@ export default function AdminLogin() {
            } else if (password.length > 20) {
                setErrorMessage("Password must be less than 20 characters");
            } else {
-               const { data } = await axios.post('http://localhost:5000/admin/login', {
+               const { data } = await axiosInstance.post('admin/login', {
                    email: email,
                    password: password
                });

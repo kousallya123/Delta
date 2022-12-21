@@ -12,6 +12,9 @@ function Feed() {
    const user = useSelector((state)=> state.user)
    const [posts,setPosts]=useState([])
    const [socket,setSocket]=useState(null)
+   const axiosInstance=axios.create({
+    baseURL:process.env.REACT_APP_API_URL,
+   })
   
   useEffect(()=>{
     setSocket(io('http://localhost:2002'))
@@ -23,7 +26,7 @@ function Feed() {
 
    useEffect (()=>{
       const fetchPost=async()=>{
-        const res=await axios.get(`http://localhost:5000/post/timeline/${user._id}`,
+        const res=await axiosInstance.get(`post/timeline/${user._id}`,
         {headers:{"x-access-token":localStorage.getItem('usertoken')}})
         setPosts(
           res.data.sort((p1,p2)=>{

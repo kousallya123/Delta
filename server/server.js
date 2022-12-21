@@ -10,13 +10,13 @@ app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
 
-app.use('/images',express.static(path.join(__dirname,'public/images')))
+app.use('/api/images',express.static(path.join(__dirname,'public/images')))
 
 
-app.use('/',require('./routes/userRouter'))
-app.use('/post',require('./routes/postRouter'))
-app.use('/admin',require('./routes/adminRouter'))
-app.use('/chat',require('./routes/chatRouter'))
+app.use('/api/',require('./routes/userRouter'))
+app.use('/api/post',require('./routes/postRouter'))
+app.use('/api/admin',require('./routes/adminRouter'))
+app.use('/api/chat',require('./routes/chatRouter'))
 
 
 const URI=process.env.MONGODB_URL
