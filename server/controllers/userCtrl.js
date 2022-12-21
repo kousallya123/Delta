@@ -56,6 +56,7 @@ const userVerification = require("../models/verification");
 
           })
 
+
           
 
         } catch (error) {
@@ -107,7 +108,7 @@ const userVerification = require("../models/verification");
                 return res.json(error)
             }
         }
-        try{
+        try{ 
             const user=await Users.updateOne({_id:req.params.id},{
                 $set:req.body.editPost,
             })
@@ -295,18 +296,27 @@ const sendPasswordLink=async(req,res)=>{
 }
 
 const updatePassword=async(req,res)=>{
-  const {password}=req.body
-  try {
-    const salt=await bcrypt.genSalt(10)
-    const newpassword=await bcrypt.hash(password,salt)
-    const user=await Users.updateOne({_id:req.params.id},{
-      $set:{password:newpassword},
-  })
-  const updatedUser=await Users.findById(req.params.id)
-  res.json(updatedUser)
-   } catch (error) {
-    return res.json(error)
-   }
+  const {password,token}=req.body
+  let tok= await Users.findOne({token:token})
+  console.log(tok);
+  if(tok){
+    try {
+      const salt=await bcrypt.genSalt(10)
+      const newpassword=await bcrypt.hash(password,salt)
+      const user=await Users.updateOne({_id:req.params.id},{
+        $set:{password:newpassword},
+    })
+    const updatedUser=await Users.findById(req.params.id)
+    res.json(updatedUser)
+     } catch (error) {
+      return res.json(error)
+     }
+
+  }else{
+    res.json({error:"Something went wrong!!!"})
+  }
+ 
+ 
 }
 
 
@@ -360,9 +370,8 @@ const sendOtp = async (result, res) => {
     }
 
     transporter.sendMail(senEMail, function (error, info) {
-      console.log("oioioioi");
       if (error) {
-        console.log(error, "yuyuuy");
+        console.log(error);
       } else {
         res.json({
           status: "pending",
@@ -399,7 +408,7 @@ const verifyOtp = async (req, res) => {
 
 
 const resendOTP=  async (req, res) => {
-  console.log(req.body,'jjjjjjjjjjjjjjjjjjjjjjj');
+  console.log(req.body);
   sendOtp(req.body, res).then((response) => {
       res.status(200).json(true)
   })
@@ -409,7 +418,6 @@ const resendOTP=  async (req, res) => {
 
 
 const ReadNotification = async (req, res) => {
-  console.log('kkkkkkkkkkkkkkkkkkkkkkkkkkk');
   try {
     let data = await notificationSchema.updateMany(
       { userId: req.params.userId },

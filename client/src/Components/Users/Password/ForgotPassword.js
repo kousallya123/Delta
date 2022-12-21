@@ -10,6 +10,7 @@ function ForgotPassword() {
   const [errorMessage,setErrorMessage]=useState('')
   const navigate=useNavigate()
   const userId = useParams().id;
+  const userToken=useParams().token;
   const handleConfirm = (e) => {
     SetConfirm(e.target.value)
 }
@@ -27,9 +28,11 @@ const handleSubmit = async (e) => {
     } else if (password != confirm) {
       setErrorMessage("Password does not matched");
     }else{
-      const response=await axios.put(`http://localhost:5000/updatePassword/${userId}`, {password:password,userId:userId})
+      const response=await axios.put(`http://localhost:5000/updatePassword/${userId}`, {password:password,userId:userId,token:userToken})
      if(response.data){
         navigate('/')
+     }else{
+      setErrorMessage(response.error)
      }
     }
     

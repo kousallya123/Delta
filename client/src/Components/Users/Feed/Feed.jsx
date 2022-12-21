@@ -55,8 +55,6 @@ function Feed() {
          </div>
         
         }
-        
-       
        
       </div>
     </div>

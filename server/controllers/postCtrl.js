@@ -117,6 +117,9 @@ const getPost=async(req,res)=>{
         res.json(comments)
     } catch (error) {
         res.json(error)
+
+
+        
     }
  }
  

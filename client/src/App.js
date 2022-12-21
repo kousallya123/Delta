@@ -31,7 +31,7 @@ function App() {
               <Route path='/chat' element={<Chat/>}/> 
               <Route path='/password' element={<Password/>}/>
               <Route path='/forgot/:id/:token' element={<ForgotPassword/>}/>  
-              <Route path='*' element={<NotFound error='not found'/>}/>  
+              <Route path='*' element={<NotFound/>}/>  
           </Routes>
           <Routes>  
           <Route path='/sidebar' element={<Sidebar/>}/>

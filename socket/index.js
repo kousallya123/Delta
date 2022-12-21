@@ -40,7 +40,7 @@ io.on("connection",(socket)=>{
     /* -------------------------------------------------------------------------- */
     socket.on("sendMessage",({senderId,receiverId,text})=>{
       const user=getUser(receiverId)
-      io.to(user.socketId).emit("getMessage",{
+      io.to(user?.socketId).emit("getMessage",{
         senderId,
         text,
 
@@ -53,7 +53,6 @@ io.on("connection",(socket)=>{
 
     socket.on("sendNotification",({senderId,receiverId,type})=>{
        const receiver=getUser(receiverId)
-       console.log('kkkkkkkkkkkkkkkk');
        console.log(receiver);
        io.to(receiver?.socketId).emit("getNotification",{
           senderId,
